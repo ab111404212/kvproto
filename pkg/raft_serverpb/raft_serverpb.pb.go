@@ -9,8 +9,11 @@ import (
 	"math"
 	math_bits "math/bits"
 
+	disk_usage "github.com/ab111404212/kvproto/pkg/disk_usage"
+	eraftpb "github.com/ab111404212/kvproto/pkg/eraftpb"
+	kvrpcpb "github.com/ab111404212/kvproto/pkg/kvrpcpb"
+	metapb "github.com/ab111404212/kvproto/pkg/metapb"
 	proto "github.com/golang/protobuf/proto"
-	eraftpb "github.com/pingcap/kvproto/pkg/eraftpb"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -98,24 +101,24 @@ func (ExtraMessageType) EnumDescriptor() ([]byte, []int) {
 }
 
 type RaftMessage struct {
-	RegionId    uint64           `protobuf:"varint,1,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
-	FromPeer    *Peer            `protobuf:"bytes,2,opt,name=from_peer,json=fromPeer,proto3" json:"from_peer,omitempty"`
-	ToPeer      *Peer            `protobuf:"bytes,3,opt,name=to_peer,json=toPeer,proto3" json:"to_peer,omitempty"`
-	Message     *eraftpb.Message `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
-	RegionEpoch *RegionEpoch     `protobuf:"bytes,5,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
+	RegionId    uint64              `protobuf:"varint,1,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
+	FromPeer    *metapb.Peer        `protobuf:"bytes,2,opt,name=from_peer,json=fromPeer,proto3" json:"from_peer,omitempty"`
+	ToPeer      *metapb.Peer        `protobuf:"bytes,3,opt,name=to_peer,json=toPeer,proto3" json:"to_peer,omitempty"`
+	Message     *eraftpb.Message    `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
+	RegionEpoch *metapb.RegionEpoch `protobuf:"bytes,5,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
 	// true means to_peer is a tombstone peer and it should remove itself.
 	IsTombstone bool `protobuf:"varint,6,opt,name=is_tombstone,json=isTombstone,proto3" json:"is_tombstone,omitempty"`
 	// Region key range [start_key, end_key).
 	StartKey []byte `protobuf:"bytes,7,opt,name=start_key,json=startKey,proto3" json:"start_key,omitempty"`
 	EndKey   []byte `protobuf:"bytes,8,opt,name=end_key,json=endKey,proto3" json:"end_key,omitempty"`
 	// If it has value, to_peer should be removed if merge is never going to complete.
-	MergeTarget          *Region       `protobuf:"bytes,9,opt,name=merge_target,json=mergeTarget,proto3" json:"merge_target,omitempty"`
-	ExtraMsg             *ExtraMessage `protobuf:"bytes,10,opt,name=extra_msg,json=extraMsg,proto3" json:"extra_msg,omitempty"`
-	ExtraCtx             []byte        `protobuf:"bytes,11,opt,name=extra_ctx,json=extraCtx,proto3" json:"extra_ctx,omitempty"`
-	DiskUsage            DiskUsage     `protobuf:"varint,12,opt,name=disk_usage,json=diskUsage,proto3,enum=disk_usage.DiskUsage" json:"disk_usage,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
-	XXX_unrecognized     []byte        `json:"-"`
-	XXX_sizecache        int32         `json:"-"`
+	MergeTarget          *metapb.Region       `protobuf:"bytes,9,opt,name=merge_target,json=mergeTarget,proto3" json:"merge_target,omitempty"`
+	ExtraMsg             *ExtraMessage        `protobuf:"bytes,10,opt,name=extra_msg,json=extraMsg,proto3" json:"extra_msg,omitempty"`
+	ExtraCtx             []byte               `protobuf:"bytes,11,opt,name=extra_ctx,json=extraCtx,proto3" json:"extra_ctx,omitempty"`
+	DiskUsage            disk_usage.DiskUsage `protobuf:"varint,12,opt,name=disk_usage,json=diskUsage,proto3,enum=disk_usage.DiskUsage" json:"disk_usage,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
 }
 
 func (m *RaftMessage) Reset()         { *m = RaftMessage{} }
@@ -158,14 +161,14 @@ func (m *RaftMessage) GetRegionId() uint64 {
 	return 0
 }
 
-func (m *RaftMessage) GetFromPeer() *Peer {
+func (m *RaftMessage) GetFromPeer() *metapb.Peer {
 	if m != nil {
 		return m.FromPeer
 	}
 	return nil
 }
 
-func (m *RaftMessage) GetToPeer() *Peer {
+func (m *RaftMessage) GetToPeer() *metapb.Peer {
 	if m != nil {
 		return m.ToPeer
 	}
@@ -179,7 +182,7 @@ func (m *RaftMessage) GetMessage() *eraftpb.Message {
 	return nil
 }
 
-func (m *RaftMessage) GetRegionEpoch() *RegionEpoch {
+func (m *RaftMessage) GetRegionEpoch() *metapb.RegionEpoch {
 	if m != nil {
 		return m.RegionEpoch
 	}
@@ -207,7 +210,7 @@ func (m *RaftMessage) GetEndKey() []byte {
 	return nil
 }
 
-func (m *RaftMessage) GetMergeTarget() *Region {
+func (m *RaftMessage) GetMergeTarget() *metapb.Region {
 	if m != nil {
 		return m.MergeTarget
 	}
@@ -228,11 +231,11 @@ func (m *RaftMessage) GetExtraCtx() []byte {
 	return nil
 }
 
-func (m *RaftMessage) GetDiskUsage() DiskUsage {
+func (m *RaftMessage) GetDiskUsage() disk_usage.DiskUsage {
 	if m != nil {
 		return m.DiskUsage
 	}
-	return DiskUsage_Normal
+	return disk_usage.DiskUsage_Normal
 }
 
 type RaftTruncatedState struct {
@@ -559,14 +562,14 @@ func (m *KeyValue) GetValue() []byte {
 }
 
 type RaftSnapshotData struct {
-	Region               *Region       `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
-	FileSize             uint64        `protobuf:"varint,2,opt,name=file_size,json=fileSize,proto3" json:"file_size,omitempty"`
-	Data                 []*KeyValue   `protobuf:"bytes,3,rep,name=data,proto3" json:"data,omitempty"`
-	Version              uint64        `protobuf:"varint,4,opt,name=version,proto3" json:"version,omitempty"`
-	Meta                 *SnapshotMeta `protobuf:"bytes,5,opt,name=meta,proto3" json:"meta,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
-	XXX_unrecognized     []byte        `json:"-"`
-	XXX_sizecache        int32         `json:"-"`
+	Region               *metapb.Region `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
+	FileSize             uint64         `protobuf:"varint,2,opt,name=file_size,json=fileSize,proto3" json:"file_size,omitempty"`
+	Data                 []*KeyValue    `protobuf:"bytes,3,rep,name=data,proto3" json:"data,omitempty"`
+	Version              uint64         `protobuf:"varint,4,opt,name=version,proto3" json:"version,omitempty"`
+	Meta                 *SnapshotMeta  `protobuf:"bytes,5,opt,name=meta,proto3" json:"meta,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *RaftSnapshotData) Reset()         { *m = RaftSnapshotData{} }
@@ -602,7 +605,7 @@ func (m *RaftSnapshotData) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RaftSnapshotData proto.InternalMessageInfo
 
-func (m *RaftSnapshotData) GetRegion() *Region {
+func (m *RaftSnapshotData) GetRegion() *metapb.Region {
 	if m != nil {
 		return m.Region
 	}
@@ -638,12 +641,12 @@ func (m *RaftSnapshotData) GetMeta() *SnapshotMeta {
 }
 
 type StoreIdent struct {
-	ClusterId            uint64     `protobuf:"varint,1,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
-	StoreId              uint64     `protobuf:"varint,2,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
-	ApiVersion           APIVersion `protobuf:"varint,3,opt,name=api_version,json=apiVersion,proto3,enum=kvrpcpb.APIVersion" json:"api_version,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
-	XXX_unrecognized     []byte     `json:"-"`
-	XXX_sizecache        int32      `json:"-"`
+	ClusterId            uint64             `protobuf:"varint,1,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
+	StoreId              uint64             `protobuf:"varint,2,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	ApiVersion           kvrpcpb.APIVersion `protobuf:"varint,3,opt,name=api_version,json=apiVersion,proto3,enum=kvrpcpb.APIVersion" json:"api_version,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
+	XXX_unrecognized     []byte             `json:"-"`
+	XXX_sizecache        int32              `json:"-"`
 }
 
 func (m *StoreIdent) Reset()         { *m = StoreIdent{} }
@@ -693,11 +696,11 @@ func (m *StoreIdent) GetStoreId() uint64 {
 	return 0
 }
 
-func (m *StoreIdent) GetApiVersion() APIVersion {
+func (m *StoreIdent) GetApiVersion() kvrpcpb.APIVersion {
 	if m != nil {
 		return m.ApiVersion
 	}
-	return APIVersion_V1
+	return kvrpcpb.APIVersion_V1
 }
 
 type RaftLocalState struct {
@@ -835,12 +838,12 @@ func (m *RaftApplyState) GetTruncatedState() *RaftTruncatedState {
 }
 
 type MergeState struct {
-	MinIndex             uint64   `protobuf:"varint,1,opt,name=min_index,json=minIndex,proto3" json:"min_index,omitempty"`
-	Target               *Region  `protobuf:"bytes,2,opt,name=target,proto3" json:"target,omitempty"`
-	Commit               uint64   `protobuf:"varint,3,opt,name=commit,proto3" json:"commit,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	MinIndex             uint64         `protobuf:"varint,1,opt,name=min_index,json=minIndex,proto3" json:"min_index,omitempty"`
+	Target               *metapb.Region `protobuf:"bytes,2,opt,name=target,proto3" json:"target,omitempty"`
+	Commit               uint64         `protobuf:"varint,3,opt,name=commit,proto3" json:"commit,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *MergeState) Reset()         { *m = MergeState{} }
@@ -883,7 +886,7 @@ func (m *MergeState) GetMinIndex() uint64 {
 	return 0
 }
 
-func (m *MergeState) GetTarget() *Region {
+func (m *MergeState) GetTarget() *metapb.Region {
 	if m != nil {
 		return m.Target
 	}
@@ -898,9 +901,9 @@ func (m *MergeState) GetCommit() uint64 {
 }
 
 type RegionLocalState struct {
-	State      PeerState   `protobuf:"varint,1,opt,name=state,proto3,enum=raft_serverpb.PeerState" json:"state,omitempty"`
-	Region     *Region     `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
-	MergeState *MergeState `protobuf:"bytes,3,opt,name=merge_state,json=mergeState,proto3" json:"merge_state,omitempty"`
+	State      PeerState      `protobuf:"varint,1,opt,name=state,proto3,enum=raft_serverpb.PeerState" json:"state,omitempty"`
+	Region     *metapb.Region `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
+	MergeState *MergeState    `protobuf:"bytes,3,opt,name=merge_state,json=mergeState,proto3" json:"merge_state,omitempty"`
 	// The apply index corresponding to the storage when it's initialized.
 	TabletIndex          uint64   `protobuf:"varint,4,opt,name=tablet_index,json=tabletIndex,proto3" json:"tablet_index,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -948,7 +951,7 @@ func (m *RegionLocalState) GetState() PeerState {
 	return PeerState_Normal
 }
 
-func (m *RegionLocalState) GetRegion() *Region {
+func (m *RegionLocalState) GetRegion() *metapb.Region {
 	if m != nil {
 		return m.Region
 	}
@@ -972,7 +975,7 @@ func (m *RegionLocalState) GetTabletIndex() uint64 {
 type ExtraMessage struct {
 	Type                 ExtraMessageType `protobuf:"varint,1,opt,name=type,proto3,enum=raft_serverpb.ExtraMessageType" json:"type,omitempty"`
 	PremergeCommit       uint64           `protobuf:"varint,2,opt,name=premerge_commit,json=premergeCommit,proto3" json:"premerge_commit,omitempty"`
-	CheckPeers           []*Peer          `protobuf:"bytes,3,rep,name=check_peers,json=checkPeers,proto3" json:"check_peers,omitempty"`
+	CheckPeers           []*metapb.Peer   `protobuf:"bytes,3,rep,name=check_peers,json=checkPeers,proto3" json:"check_peers,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
 	XXX_unrecognized     []byte           `json:"-"`
 	XXX_sizecache        int32            `json:"-"`
@@ -1025,7 +1028,7 @@ func (m *ExtraMessage) GetPremergeCommit() uint64 {
 	return 0
 }
 
-func (m *ExtraMessage) GetCheckPeers() []*Peer {
+func (m *ExtraMessage) GetCheckPeers() []*metapb.Peer {
 	if m != nil {
 		return m.CheckPeers
 	}
@@ -2339,7 +2342,7 @@ func (m *RaftMessage) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.FromPeer == nil {
-				m.FromPeer = &Peer{}
+				m.FromPeer = &metapb.Peer{}
 			}
 			if err := m.FromPeer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -2375,7 +2378,7 @@ func (m *RaftMessage) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.ToPeer == nil {
-				m.ToPeer = &Peer{}
+				m.ToPeer = &metapb.Peer{}
 			}
 			if err := m.ToPeer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -2447,7 +2450,7 @@ func (m *RaftMessage) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionEpoch == nil {
-				m.RegionEpoch = &RegionEpoch{}
+				m.RegionEpoch = &metapb.RegionEpoch{}
 			}
 			if err := m.RegionEpoch.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -2571,7 +2574,7 @@ func (m *RaftMessage) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.MergeTarget == nil {
-				m.MergeTarget = &Region{}
+				m.MergeTarget = &metapb.Region{}
 			}
 			if err := m.MergeTarget.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -2661,7 +2664,7 @@ func (m *RaftMessage) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.DiskUsage |= DiskUsage(b&0x7F) << shift
+				m.DiskUsage |= disk_usage.DiskUsage(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -3353,7 +3356,7 @@ func (m *RaftSnapshotData) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Region == nil {
-				m.Region = &Region{}
+				m.Region = &metapb.Region{}
 			}
 			if err := m.Region.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -3570,7 +3573,7 @@ func (m *StoreIdent) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.ApiVersion |= APIVersion(b&0x7F) << shift
+				m.ApiVersion |= kvrpcpb.APIVersion(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -3944,7 +3947,7 @@ func (m *MergeState) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Target == nil {
-				m.Target = &Region{}
+				m.Target = &metapb.Region{}
 			}
 			if err := m.Target.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -4069,7 +4072,7 @@ func (m *RegionLocalState) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Region == nil {
-				m.Region = &Region{}
+				m.Region = &metapb.Region{}
 			}
 			if err := m.Region.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -4248,7 +4251,7 @@ func (m *ExtraMessage) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CheckPeers = append(m.CheckPeers, &Peer{})
+			m.CheckPeers = append(m.CheckPeers, &metapb.Peer{})
 			if err := m.CheckPeers[len(m.CheckPeers)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}

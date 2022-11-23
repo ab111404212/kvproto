@@ -10,6 +10,10 @@ import (
 	"math"
 	math_bits "math/bits"
 
+	brpb "github.com/ab111404212/kvproto/pkg/brpb"
+	errorpb "github.com/ab111404212/kvproto/pkg/errorpb"
+	kvrpcpb "github.com/ab111404212/kvproto/pkg/kvrpcpb"
+	metapb "github.com/ab111404212/kvproto/pkg/metapb"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
@@ -220,20 +224,20 @@ func (m *Range) GetEnd() []byte {
 }
 
 type SSTMeta struct {
-	Uuid            []byte       `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Range           *Range       `protobuf:"bytes,2,opt,name=range,proto3" json:"range,omitempty"`
-	Crc32           uint32       `protobuf:"varint,3,opt,name=crc32,proto3" json:"crc32,omitempty"`
-	Length          uint64       `protobuf:"varint,4,opt,name=length,proto3" json:"length,omitempty"`
-	CfName          string       `protobuf:"bytes,5,opt,name=cf_name,json=cfName,proto3" json:"cf_name,omitempty"`
-	RegionId        uint64       `protobuf:"varint,6,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
-	RegionEpoch     *RegionEpoch `protobuf:"bytes,7,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
-	EndKeyExclusive bool         `protobuf:"varint,8,opt,name=end_key_exclusive,json=endKeyExclusive,proto3" json:"end_key_exclusive,omitempty"`
+	Uuid            []byte              `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Range           *Range              `protobuf:"bytes,2,opt,name=range,proto3" json:"range,omitempty"`
+	Crc32           uint32              `protobuf:"varint,3,opt,name=crc32,proto3" json:"crc32,omitempty"`
+	Length          uint64              `protobuf:"varint,4,opt,name=length,proto3" json:"length,omitempty"`
+	CfName          string              `protobuf:"bytes,5,opt,name=cf_name,json=cfName,proto3" json:"cf_name,omitempty"`
+	RegionId        uint64              `protobuf:"varint,6,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
+	RegionEpoch     *metapb.RegionEpoch `protobuf:"bytes,7,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
+	EndKeyExclusive bool                `protobuf:"varint,8,opt,name=end_key_exclusive,json=endKeyExclusive,proto3" json:"end_key_exclusive,omitempty"`
 	// total_kvs and total_bytes is equivalent to PD's approximate_keys and approximate_size
 	// set these values can save time from tikv upload keys and size to PD through Heartbeat.
 	TotalKvs   uint64 `protobuf:"varint,9,opt,name=total_kvs,json=totalKvs,proto3" json:"total_kvs,omitempty"`
 	TotalBytes uint64 `protobuf:"varint,10,opt,name=total_bytes,json=totalBytes,proto3" json:"total_bytes,omitempty"`
 	// API version implies the encode of the key and value.
-	ApiVersion APIVersion `protobuf:"varint,11,opt,name=api_version,json=apiVersion,proto3,enum=kvrpcpb.APIVersion" json:"api_version,omitempty"`
+	ApiVersion kvrpcpb.APIVersion `protobuf:"varint,11,opt,name=api_version,json=apiVersion,proto3,enum=kvrpcpb.APIVersion" json:"api_version,omitempty"`
 	// cipher_iv is used to encrypt/decrypt sst
 	CipherIv             []byte   `protobuf:"bytes,12,opt,name=cipher_iv,json=cipherIv,proto3" json:"cipher_iv,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -316,7 +320,7 @@ func (m *SSTMeta) GetRegionId() uint64 {
 	return 0
 }
 
-func (m *SSTMeta) GetRegionEpoch() *RegionEpoch {
+func (m *SSTMeta) GetRegionEpoch() *metapb.RegionEpoch {
 	if m != nil {
 		return m.RegionEpoch
 	}
@@ -344,11 +348,11 @@ func (m *SSTMeta) GetTotalBytes() uint64 {
 	return 0
 }
 
-func (m *SSTMeta) GetApiVersion() APIVersion {
+func (m *SSTMeta) GetApiVersion() kvrpcpb.APIVersion {
 	if m != nil {
 		return m.ApiVersion
 	}
-	return APIVersion_V1
+	return kvrpcpb.APIVersion_V1
 }
 
 func (m *SSTMeta) GetCipherIv() []byte {
@@ -551,11 +555,11 @@ func (m *UploadResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_UploadResponse proto.InternalMessageInfo
 
 type IngestRequest struct {
-	Context              *Context `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
-	Sst                  *SSTMeta `protobuf:"bytes,2,opt,name=sst,proto3" json:"sst,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Context              *kvrpcpb.Context `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
+	Sst                  *SSTMeta         `protobuf:"bytes,2,opt,name=sst,proto3" json:"sst,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
 }
 
 func (m *IngestRequest) Reset()         { *m = IngestRequest{} }
@@ -591,7 +595,7 @@ func (m *IngestRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_IngestRequest proto.InternalMessageInfo
 
-func (m *IngestRequest) GetContext() *Context {
+func (m *IngestRequest) GetContext() *kvrpcpb.Context {
 	if m != nil {
 		return m.Context
 	}
@@ -606,11 +610,11 @@ func (m *IngestRequest) GetSst() *SSTMeta {
 }
 
 type MultiIngestRequest struct {
-	Context              *Context   `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
-	Ssts                 []*SSTMeta `protobuf:"bytes,2,rep,name=ssts,proto3" json:"ssts,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
-	XXX_unrecognized     []byte     `json:"-"`
-	XXX_sizecache        int32      `json:"-"`
+	Context              *kvrpcpb.Context `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
+	Ssts                 []*SSTMeta       `protobuf:"bytes,2,rep,name=ssts,proto3" json:"ssts,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
 }
 
 func (m *MultiIngestRequest) Reset()         { *m = MultiIngestRequest{} }
@@ -646,7 +650,7 @@ func (m *MultiIngestRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MultiIngestRequest proto.InternalMessageInfo
 
-func (m *MultiIngestRequest) GetContext() *Context {
+func (m *MultiIngestRequest) GetContext() *kvrpcpb.Context {
 	if m != nil {
 		return m.Context
 	}
@@ -661,10 +665,10 @@ func (m *MultiIngestRequest) GetSsts() []*SSTMeta {
 }
 
 type IngestResponse struct {
-	Error                *Error   `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Error                *errorpb.Error `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *IngestResponse) Reset()         { *m = IngestResponse{} }
@@ -700,7 +704,7 @@ func (m *IngestResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_IngestResponse proto.InternalMessageInfo
 
-func (m *IngestResponse) GetError() *Error {
+func (m *IngestResponse) GetError() *errorpb.Error {
 	if m != nil {
 		return m.Error
 	}
@@ -825,14 +829,14 @@ type DownloadRequest struct {
 	//
 	// You need to ensure that the keys before and after rewriting are in the
 	// same order, otherwise the RPC request will fail.
-	RewriteRule    RewriteRule     `protobuf:"bytes,13,opt,name=rewrite_rule,json=rewriteRule,proto3" json:"rewrite_rule"`
-	StorageBackend *StorageBackend `protobuf:"bytes,14,opt,name=storage_backend,json=storageBackend,proto3" json:"storage_backend,omitempty"`
-	IsRawKv        bool            `protobuf:"varint,15,opt,name=is_raw_kv,json=isRawKv,proto3" json:"is_raw_kv,omitempty"`
+	RewriteRule    RewriteRule          `protobuf:"bytes,13,opt,name=rewrite_rule,json=rewriteRule,proto3" json:"rewrite_rule"`
+	StorageBackend *brpb.StorageBackend `protobuf:"bytes,14,opt,name=storage_backend,json=storageBackend,proto3" json:"storage_backend,omitempty"`
+	IsRawKv        bool                 `protobuf:"varint,15,opt,name=is_raw_kv,json=isRawKv,proto3" json:"is_raw_kv,omitempty"`
 	// cipher_info is used to decrypt sst when download sst
-	CipherInfo           *CipherInfo `protobuf:"bytes,16,opt,name=cipher_info,json=cipherInfo,proto3" json:"cipher_info,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	CipherInfo           *brpb.CipherInfo `protobuf:"bytes,16,opt,name=cipher_info,json=cipherInfo,proto3" json:"cipher_info,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
 }
 
 func (m *DownloadRequest) Reset()         { *m = DownloadRequest{} }
@@ -889,7 +893,7 @@ func (m *DownloadRequest) GetRewriteRule() RewriteRule {
 	return RewriteRule{}
 }
 
-func (m *DownloadRequest) GetStorageBackend() *StorageBackend {
+func (m *DownloadRequest) GetStorageBackend() *brpb.StorageBackend {
 	if m != nil {
 		return m.StorageBackend
 	}
@@ -903,7 +907,7 @@ func (m *DownloadRequest) GetIsRawKv() bool {
 	return false
 }
 
-func (m *DownloadRequest) GetCipherInfo() *CipherInfo {
+func (m *DownloadRequest) GetCipherInfo() *brpb.CipherInfo {
 	if m != nil {
 		return m.CipherInfo
 	}
@@ -915,10 +919,10 @@ func (m *DownloadRequest) GetCipherInfo() *CipherInfo {
 type Error struct {
 	Message string `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 	// We meet some internal errors of the store.
-	StoreError           *Error   `protobuf:"bytes,2,opt,name=store_error,json=storeError,proto3" json:"store_error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	StoreError           *errorpb.Error `protobuf:"bytes,2,opt,name=store_error,json=storeError,proto3" json:"store_error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *Error) Reset()         { *m = Error{} }
@@ -961,7 +965,7 @@ func (m *Error) GetMessage() string {
 	return ""
 }
 
-func (m *Error) GetStoreError() *Error {
+func (m *Error) GetStoreError() *errorpb.Error {
 	if m != nil {
 		return m.StoreError
 	}
@@ -1615,9 +1619,9 @@ func (m *RawWriteResponse) GetMetas() []*SSTMeta {
 }
 
 type DuplicateDetectRequest struct {
-	Context  *Context `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
-	StartKey []byte   `protobuf:"bytes,2,opt,name=start_key,json=startKey,proto3" json:"start_key,omitempty"`
-	EndKey   []byte   `protobuf:"bytes,3,opt,name=end_key,json=endKey,proto3" json:"end_key,omitempty"`
+	Context  *kvrpcpb.Context `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
+	StartKey []byte           `protobuf:"bytes,2,opt,name=start_key,json=startKey,proto3" json:"start_key,omitempty"`
+	EndKey   []byte           `protobuf:"bytes,3,opt,name=end_key,json=endKey,proto3" json:"end_key,omitempty"`
 	// Return only the keys found by scanning, not their values.
 	KeyOnly bool `protobuf:"varint,4,opt,name=key_only,json=keyOnly,proto3" json:"key_only,omitempty"`
 	// We only check the data whose timestamp is larger than `min_commit_ts`. `min_commit_ts` is exclueded.
@@ -1660,7 +1664,7 @@ func (m *DuplicateDetectRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_DuplicateDetectRequest proto.InternalMessageInfo
 
-func (m *DuplicateDetectRequest) GetContext() *Context {
+func (m *DuplicateDetectRequest) GetContext() *kvrpcpb.Context {
 	if m != nil {
 		return m.Context
 	}
@@ -1759,8 +1763,8 @@ func (m *KvPair) GetCommitTs() uint64 {
 }
 
 type DuplicateDetectResponse struct {
-	RegionError *Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	KeyError    *Error `protobuf:"bytes,2,opt,name=key_error,json=keyError,proto3" json:"key_error,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	KeyError    *Error         `protobuf:"bytes,2,opt,name=key_error,json=keyError,proto3" json:"key_error,omitempty"`
 	// The these keys will be in asc order (but commit time is in desc order),
 	//  and the content is just like following:
 	// [
@@ -1810,7 +1814,7 @@ func (m *DuplicateDetectResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_DuplicateDetectResponse proto.InternalMessageInfo
 
-func (m *DuplicateDetectResponse) GetRegionError() *Error {
+func (m *DuplicateDetectResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -1974,15 +1978,15 @@ type ApplyRequest struct {
 	//
 	// You need to ensure that the keys before and after rewriting are in the
 	// same order, otherwise the RPC request will fail.
-	RewriteRule    RewriteRule     `protobuf:"bytes,2,opt,name=rewrite_rule,json=rewriteRule,proto3" json:"rewrite_rule"`
-	StorageBackend *StorageBackend `protobuf:"bytes,3,opt,name=storage_backend,json=storageBackend,proto3" json:"storage_backend,omitempty"`
+	RewriteRule    RewriteRule          `protobuf:"bytes,2,opt,name=rewrite_rule,json=rewriteRule,proto3" json:"rewrite_rule"`
+	StorageBackend *brpb.StorageBackend `protobuf:"bytes,3,opt,name=storage_backend,json=storageBackend,proto3" json:"storage_backend,omitempty"`
 	// context represents region info and it used to build raft commands.
-	Context *Context `protobuf:"bytes,4,opt,name=context,proto3" json:"context,omitempty"`
+	Context *kvrpcpb.Context `protobuf:"bytes,4,opt,name=context,proto3" json:"context,omitempty"`
 	// cipher_info is used to decrypt kv file when download file.
-	CipherInfo           *CipherInfo `protobuf:"bytes,11,opt,name=cipher_info,json=cipherInfo,proto3" json:"cipher_info,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	CipherInfo           *brpb.CipherInfo `protobuf:"bytes,11,opt,name=cipher_info,json=cipherInfo,proto3" json:"cipher_info,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
 }
 
 func (m *ApplyRequest) Reset()         { *m = ApplyRequest{} }
@@ -2032,21 +2036,21 @@ func (m *ApplyRequest) GetRewriteRule() RewriteRule {
 	return RewriteRule{}
 }
 
-func (m *ApplyRequest) GetStorageBackend() *StorageBackend {
+func (m *ApplyRequest) GetStorageBackend() *brpb.StorageBackend {
 	if m != nil {
 		return m.StorageBackend
 	}
 	return nil
 }
 
-func (m *ApplyRequest) GetContext() *Context {
+func (m *ApplyRequest) GetContext() *kvrpcpb.Context {
 	if m != nil {
 		return m.Context
 	}
 	return nil
 }
 
-func (m *ApplyRequest) GetCipherInfo() *CipherInfo {
+func (m *ApplyRequest) GetCipherInfo() *brpb.CipherInfo {
 	if m != nil {
 		return m.CipherInfo
 	}
@@ -5946,7 +5950,7 @@ func (m *SSTMeta) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionEpoch == nil {
-				m.RegionEpoch = &RegionEpoch{}
+				m.RegionEpoch = &metapb.RegionEpoch{}
 			}
 			if err := m.RegionEpoch.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -6024,7 +6028,7 @@ func (m *SSTMeta) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.ApiVersion |= APIVersion(b&0x7F) << shift
+				m.ApiVersion |= kvrpcpb.APIVersion(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -6452,7 +6456,7 @@ func (m *IngestRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Context == nil {
-				m.Context = &Context{}
+				m.Context = &kvrpcpb.Context{}
 			}
 			if err := m.Context.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -6575,7 +6579,7 @@ func (m *MultiIngestRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Context == nil {
-				m.Context = &Context{}
+				m.Context = &kvrpcpb.Context{}
 			}
 			if err := m.Context.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -6696,7 +6700,7 @@ func (m *IngestResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Error == nil {
-				m.Error = &Error{}
+				m.Error = &errorpb.Error{}
 			}
 			if err := m.Error.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -7038,7 +7042,7 @@ func (m *DownloadRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.StorageBackend == nil {
-				m.StorageBackend = &StorageBackend{}
+				m.StorageBackend = &brpb.StorageBackend{}
 			}
 			if err := m.StorageBackend.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -7094,7 +7098,7 @@ func (m *DownloadRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.CipherInfo == nil {
-				m.CipherInfo = &CipherInfo{}
+				m.CipherInfo = &brpb.CipherInfo{}
 			}
 			if err := m.CipherInfo.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -7213,7 +7217,7 @@ func (m *Error) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.StoreError == nil {
-				m.StoreError = &Error{}
+				m.StoreError = &errorpb.Error{}
 			}
 			if err := m.StoreError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -8448,7 +8452,7 @@ func (m *DuplicateDetectRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Context == nil {
-				m.Context = &Context{}
+				m.Context = &kvrpcpb.Context{}
 			}
 			if err := m.Context.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -8780,7 +8784,7 @@ func (m *DuplicateDetectResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -9319,7 +9323,7 @@ func (m *ApplyRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.StorageBackend == nil {
-				m.StorageBackend = &StorageBackend{}
+				m.StorageBackend = &brpb.StorageBackend{}
 			}
 			if err := m.StorageBackend.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -9355,7 +9359,7 @@ func (m *ApplyRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Context == nil {
-				m.Context = &Context{}
+				m.Context = &kvrpcpb.Context{}
 			}
 			if err := m.Context.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -9391,7 +9395,7 @@ func (m *ApplyRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.CipherInfo == nil {
-				m.CipherInfo = &CipherInfo{}
+				m.CipherInfo = &brpb.CipherInfo{}
 			}
 			if err := m.CipherInfo.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err

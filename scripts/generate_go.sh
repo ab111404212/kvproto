@@ -15,7 +15,7 @@ if [ -z $GOPATH ]; then
     exit 1
 fi
 
-GO_PREFIX_PATH=github.com/pingcap/kvproto/pkg
+GO_PREFIX_PATH=github.com/ab111404212/kvproto/pkg
 export PATH=$KVPROTO_ROOT/_tools/bin:$GOPATH/bin:$PATH
 
 echo "install tools..."

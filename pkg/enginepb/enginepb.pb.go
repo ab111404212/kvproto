@@ -10,6 +10,9 @@ import (
 	"math"
 	math_bits "math/bits"
 
+	metapb "github.com/ab111404212/kvproto/pkg/metapb"
+	raft_cmdpb "github.com/ab111404212/kvproto/pkg/raft_cmdpb"
+	raft_serverpb "github.com/ab111404212/kvproto/pkg/raft_serverpb"
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -120,14 +123,14 @@ func (m *CommandRequestHeader) GetContext() []byte {
 type CommandRequest struct {
 	Header *CommandRequestHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
 	// kv put / delete
-	Requests []*Request `protobuf:"bytes,2,rep,name=requests,proto3" json:"requests,omitempty"`
+	Requests []*raft_cmdpb.Request `protobuf:"bytes,2,rep,name=requests,proto3" json:"requests,omitempty"`
 	// region metadata manipulation command.
-	AdminRequest *AdminRequest `protobuf:"bytes,3,opt,name=admin_request,json=adminRequest,proto3" json:"admin_request,omitempty"`
+	AdminRequest *raft_cmdpb.AdminRequest `protobuf:"bytes,3,opt,name=admin_request,json=adminRequest,proto3" json:"admin_request,omitempty"`
 	// region metadata manipulation result.
-	AdminResponse        *AdminResponse `protobuf:"bytes,4,opt,name=admin_response,json=adminResponse,proto3" json:"admin_response,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
-	XXX_unrecognized     []byte         `json:"-"`
-	XXX_sizecache        int32          `json:"-"`
+	AdminResponse        *raft_cmdpb.AdminResponse `protobuf:"bytes,4,opt,name=admin_response,json=adminResponse,proto3" json:"admin_response,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                  `json:"-"`
+	XXX_unrecognized     []byte                    `json:"-"`
+	XXX_sizecache        int32                     `json:"-"`
 }
 
 func (m *CommandRequest) Reset()         { *m = CommandRequest{} }
@@ -170,21 +173,21 @@ func (m *CommandRequest) GetHeader() *CommandRequestHeader {
 	return nil
 }
 
-func (m *CommandRequest) GetRequests() []*Request {
+func (m *CommandRequest) GetRequests() []*raft_cmdpb.Request {
 	if m != nil {
 		return m.Requests
 	}
 	return nil
 }
 
-func (m *CommandRequest) GetAdminRequest() *AdminRequest {
+func (m *CommandRequest) GetAdminRequest() *raft_cmdpb.AdminRequest {
 	if m != nil {
 		return m.AdminRequest
 	}
 	return nil
 }
 
-func (m *CommandRequest) GetAdminResponse() *AdminResponse {
+func (m *CommandRequest) GetAdminResponse() *raft_cmdpb.AdminResponse {
 	if m != nil {
 		return m.AdminResponse
 	}
@@ -295,12 +298,12 @@ func (m *CommandResponseHeader) GetDestroyed() bool {
 }
 
 type CommandResponse struct {
-	Header               *CommandResponseHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	ApplyState           *RaftApplyState        `protobuf:"bytes,2,opt,name=apply_state,json=applyState,proto3" json:"apply_state,omitempty"`
-	AppliedTerm          uint64                 `protobuf:"varint,3,opt,name=applied_term,json=appliedTerm,proto3" json:"applied_term,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}               `json:"-"`
-	XXX_unrecognized     []byte                 `json:"-"`
-	XXX_sizecache        int32                  `json:"-"`
+	Header               *CommandResponseHeader        `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
+	ApplyState           *raft_serverpb.RaftApplyState `protobuf:"bytes,2,opt,name=apply_state,json=applyState,proto3" json:"apply_state,omitempty"`
+	AppliedTerm          uint64                        `protobuf:"varint,3,opt,name=applied_term,json=appliedTerm,proto3" json:"applied_term,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                      `json:"-"`
+	XXX_unrecognized     []byte                        `json:"-"`
+	XXX_sizecache        int32                         `json:"-"`
 }
 
 func (m *CommandResponse) Reset()         { *m = CommandResponse{} }
@@ -343,7 +346,7 @@ func (m *CommandResponse) GetHeader() *CommandResponseHeader {
 	return nil
 }
 
-func (m *CommandResponse) GetApplyState() *RaftApplyState {
+func (m *CommandResponse) GetApplyState() *raft_serverpb.RaftApplyState {
 	if m != nil {
 		return m.ApplyState
 	}
@@ -405,12 +408,12 @@ func (m *CommandResponseBatch) GetResponses() []*CommandResponse {
 }
 
 type SnapshotState struct {
-	Region               *Region         `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
-	Peer                 *Peer           `protobuf:"bytes,2,opt,name=peer,proto3" json:"peer,omitempty"`
-	ApplyState           *RaftApplyState `protobuf:"bytes,3,opt,name=apply_state,json=applyState,proto3" json:"apply_state,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
-	XXX_unrecognized     []byte          `json:"-"`
-	XXX_sizecache        int32           `json:"-"`
+	Region               *metapb.Region                `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
+	Peer                 *metapb.Peer                  `protobuf:"bytes,2,opt,name=peer,proto3" json:"peer,omitempty"`
+	ApplyState           *raft_serverpb.RaftApplyState `protobuf:"bytes,3,opt,name=apply_state,json=applyState,proto3" json:"apply_state,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                      `json:"-"`
+	XXX_unrecognized     []byte                        `json:"-"`
+	XXX_sizecache        int32                         `json:"-"`
 }
 
 func (m *SnapshotState) Reset()         { *m = SnapshotState{} }
@@ -446,21 +449,21 @@ func (m *SnapshotState) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_SnapshotState proto.InternalMessageInfo
 
-func (m *SnapshotState) GetRegion() *Region {
+func (m *SnapshotState) GetRegion() *metapb.Region {
 	if m != nil {
 		return m.Region
 	}
 	return nil
 }
 
-func (m *SnapshotState) GetPeer() *Peer {
+func (m *SnapshotState) GetPeer() *metapb.Peer {
 	if m != nil {
 		return m.Peer
 	}
 	return nil
 }
 
-func (m *SnapshotState) GetApplyState() *RaftApplyState {
+func (m *SnapshotState) GetApplyState() *raft_serverpb.RaftApplyState {
 	if m != nil {
 		return m.ApplyState
 	}
@@ -468,12 +471,12 @@ func (m *SnapshotState) GetApplyState() *RaftApplyState {
 }
 
 type SnapshotData struct {
-	Cf                   string      `protobuf:"bytes,1,opt,name=cf,proto3" json:"cf,omitempty"`
-	Checksum             uint32      `protobuf:"varint,2,opt,name=checksum,proto3" json:"checksum,omitempty"`
-	Data                 []*KeyValue `protobuf:"bytes,3,rep,name=data,proto3" json:"data,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	Cf                   string                    `protobuf:"bytes,1,opt,name=cf,proto3" json:"cf,omitempty"`
+	Checksum             uint32                    `protobuf:"varint,2,opt,name=checksum,proto3" json:"checksum,omitempty"`
+	Data                 []*raft_serverpb.KeyValue `protobuf:"bytes,3,rep,name=data,proto3" json:"data,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                  `json:"-"`
+	XXX_unrecognized     []byte                    `json:"-"`
+	XXX_sizecache        int32                     `json:"-"`
 }
 
 func (m *SnapshotData) Reset()         { *m = SnapshotData{} }
@@ -523,7 +526,7 @@ func (m *SnapshotData) GetChecksum() uint32 {
 	return 0
 }
 
-func (m *SnapshotData) GetData() []*KeyValue {
+func (m *SnapshotData) GetData() []*raft_serverpb.KeyValue {
 	if m != nil {
 		return m.Data
 	}
@@ -1979,7 +1982,7 @@ func (m *CommandRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Requests = append(m.Requests, &Request{})
+			m.Requests = append(m.Requests, &raft_cmdpb.Request{})
 			if err := m.Requests[len(m.Requests)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -2014,7 +2017,7 @@ func (m *CommandRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.AdminRequest == nil {
-				m.AdminRequest = &AdminRequest{}
+				m.AdminRequest = &raft_cmdpb.AdminRequest{}
 			}
 			if err := m.AdminRequest.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -2050,7 +2053,7 @@ func (m *CommandRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.AdminResponse == nil {
-				m.AdminResponse = &AdminResponse{}
+				m.AdminResponse = &raft_cmdpb.AdminResponse{}
 			}
 			if err := m.AdminResponse.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -2348,7 +2351,7 @@ func (m *CommandResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.ApplyState == nil {
-				m.ApplyState = &RaftApplyState{}
+				m.ApplyState = &raft_serverpb.RaftApplyState{}
 			}
 			if err := m.ApplyState.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -2539,7 +2542,7 @@ func (m *SnapshotState) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Region == nil {
-				m.Region = &Region{}
+				m.Region = &metapb.Region{}
 			}
 			if err := m.Region.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -2575,7 +2578,7 @@ func (m *SnapshotState) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Peer == nil {
-				m.Peer = &Peer{}
+				m.Peer = &metapb.Peer{}
 			}
 			if err := m.Peer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -2611,7 +2614,7 @@ func (m *SnapshotState) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.ApplyState == nil {
-				m.ApplyState = &RaftApplyState{}
+				m.ApplyState = &raft_serverpb.RaftApplyState{}
 			}
 			if err := m.ApplyState.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -2748,7 +2751,7 @@ func (m *SnapshotData) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Data = append(m.Data, &KeyValue{})
+			m.Data = append(m.Data, &raft_serverpb.KeyValue{})
 			if err := m.Data[len(m.Data)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}

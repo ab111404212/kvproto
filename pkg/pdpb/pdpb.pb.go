@@ -10,9 +10,12 @@ import (
 	"math"
 	math_bits "math/bits"
 
+	eraftpb "github.com/ab111404212/kvproto/pkg/eraftpb"
+	metapb "github.com/ab111404212/kvproto/pkg/metapb"
+	raft_serverpb "github.com/ab111404212/kvproto/pkg/raft_serverpb"
+	replication_modepb "github.com/ab111404212/kvproto/pkg/replication_modepb"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/golang/protobuf/proto"
-	eraftpb "github.com/pingcap/kvproto/pkg/eraftpb"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -887,8 +890,8 @@ func (m *TsoResponse) GetTimestamp() *Timestamp {
 
 type BootstrapRequest struct {
 	Header               *RequestHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	Store                *Store         `protobuf:"bytes,2,opt,name=store,proto3" json:"store,omitempty"`
-	Region               *Region        `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
+	Store                *metapb.Store  `protobuf:"bytes,2,opt,name=store,proto3" json:"store,omitempty"`
+	Region               *metapb.Region `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -934,14 +937,14 @@ func (m *BootstrapRequest) GetHeader() *RequestHeader {
 	return nil
 }
 
-func (m *BootstrapRequest) GetStore() *Store {
+func (m *BootstrapRequest) GetStore() *metapb.Store {
 	if m != nil {
 		return m.Store
 	}
 	return nil
 }
 
-func (m *BootstrapRequest) GetRegion() *Region {
+func (m *BootstrapRequest) GetRegion() *metapb.Region {
 	if m != nil {
 		return m.Region
 	}
@@ -949,11 +952,11 @@ func (m *BootstrapRequest) GetRegion() *Region {
 }
 
 type BootstrapResponse struct {
-	Header               *ResponseHeader    `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	ReplicationStatus    *ReplicationStatus `protobuf:"bytes,2,opt,name=replication_status,json=replicationStatus,proto3" json:"replication_status,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
-	XXX_unrecognized     []byte             `json:"-"`
-	XXX_sizecache        int32              `json:"-"`
+	Header               *ResponseHeader                       `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
+	ReplicationStatus    *replication_modepb.ReplicationStatus `protobuf:"bytes,2,opt,name=replication_status,json=replicationStatus,proto3" json:"replication_status,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                              `json:"-"`
+	XXX_unrecognized     []byte                                `json:"-"`
+	XXX_sizecache        int32                                 `json:"-"`
 }
 
 func (m *BootstrapResponse) Reset()         { *m = BootstrapResponse{} }
@@ -996,7 +999,7 @@ func (m *BootstrapResponse) GetHeader() *ResponseHeader {
 	return nil
 }
 
-func (m *BootstrapResponse) GetReplicationStatus() *ReplicationStatus {
+func (m *BootstrapResponse) GetReplicationStatus() *replication_modepb.ReplicationStatus {
 	if m != nil {
 		return m.ReplicationStatus
 	}
@@ -1264,7 +1267,7 @@ func (m *GetStoreRequest) GetStoreId() uint64 {
 
 type GetStoreResponse struct {
 	Header               *ResponseHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	Store                *Store          `protobuf:"bytes,2,opt,name=store,proto3" json:"store,omitempty"`
+	Store                *metapb.Store   `protobuf:"bytes,2,opt,name=store,proto3" json:"store,omitempty"`
 	Stats                *StoreStats     `protobuf:"bytes,3,opt,name=stats,proto3" json:"stats,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
@@ -1311,7 +1314,7 @@ func (m *GetStoreResponse) GetHeader() *ResponseHeader {
 	return nil
 }
 
-func (m *GetStoreResponse) GetStore() *Store {
+func (m *GetStoreResponse) GetStore() *metapb.Store {
 	if m != nil {
 		return m.Store
 	}
@@ -1327,7 +1330,7 @@ func (m *GetStoreResponse) GetStats() *StoreStats {
 
 type PutStoreRequest struct {
 	Header               *RequestHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	Store                *Store         `protobuf:"bytes,2,opt,name=store,proto3" json:"store,omitempty"`
+	Store                *metapb.Store  `protobuf:"bytes,2,opt,name=store,proto3" json:"store,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -1373,7 +1376,7 @@ func (m *PutStoreRequest) GetHeader() *RequestHeader {
 	return nil
 }
 
-func (m *PutStoreRequest) GetStore() *Store {
+func (m *PutStoreRequest) GetStore() *metapb.Store {
 	if m != nil {
 		return m.Store
 	}
@@ -1381,11 +1384,11 @@ func (m *PutStoreRequest) GetStore() *Store {
 }
 
 type PutStoreResponse struct {
-	Header               *ResponseHeader    `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	ReplicationStatus    *ReplicationStatus `protobuf:"bytes,2,opt,name=replication_status,json=replicationStatus,proto3" json:"replication_status,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
-	XXX_unrecognized     []byte             `json:"-"`
-	XXX_sizecache        int32              `json:"-"`
+	Header               *ResponseHeader                       `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
+	ReplicationStatus    *replication_modepb.ReplicationStatus `protobuf:"bytes,2,opt,name=replication_status,json=replicationStatus,proto3" json:"replication_status,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                              `json:"-"`
+	XXX_unrecognized     []byte                                `json:"-"`
+	XXX_sizecache        int32                                 `json:"-"`
 }
 
 func (m *PutStoreResponse) Reset()         { *m = PutStoreResponse{} }
@@ -1428,7 +1431,7 @@ func (m *PutStoreResponse) GetHeader() *ResponseHeader {
 	return nil
 }
 
-func (m *PutStoreResponse) GetReplicationStatus() *ReplicationStatus {
+func (m *PutStoreResponse) GetReplicationStatus() *replication_modepb.ReplicationStatus {
 	if m != nil {
 		return m.ReplicationStatus
 	}
@@ -1493,7 +1496,7 @@ func (m *GetAllStoresRequest) GetExcludeTombstoneStores() bool {
 
 type GetAllStoresResponse struct {
 	Header               *ResponseHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	Stores               []*Store        `protobuf:"bytes,2,rep,name=stores,proto3" json:"stores,omitempty"`
+	Stores               []*metapb.Store `protobuf:"bytes,2,rep,name=stores,proto3" json:"stores,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -1539,7 +1542,7 @@ func (m *GetAllStoresResponse) GetHeader() *ResponseHeader {
 	return nil
 }
 
-func (m *GetAllStoresResponse) GetStores() []*Store {
+func (m *GetAllStoresResponse) GetStores() []*metapb.Store {
 	if m != nil {
 		return m.Stores
 	}
@@ -1611,18 +1614,18 @@ func (m *GetRegionRequest) GetNeedBuckets() bool {
 
 type GetRegionResponse struct {
 	Header *ResponseHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	Region *Region         `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
-	Leader *Peer           `protobuf:"bytes,3,opt,name=leader,proto3" json:"leader,omitempty"`
+	Region *metapb.Region  `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
+	Leader *metapb.Peer    `protobuf:"bytes,3,opt,name=leader,proto3" json:"leader,omitempty"`
 	// Leader considers that these peers are down.
 	DownPeers []*PeerStats `protobuf:"bytes,5,rep,name=down_peers,json=downPeers,proto3" json:"down_peers,omitempty"`
 	// Pending peers are the peers that the leader can't consider as
 	// working followers.
-	PendingPeers []*Peer `protobuf:"bytes,6,rep,name=pending_peers,json=pendingPeers,proto3" json:"pending_peers,omitempty"`
+	PendingPeers []*metapb.Peer `protobuf:"bytes,6,rep,name=pending_peers,json=pendingPeers,proto3" json:"pending_peers,omitempty"`
 	// buckets isn't nil if GetRegion.* requests set need_buckets.
-	Buckets              *Buckets `protobuf:"bytes,7,opt,name=buckets,proto3" json:"buckets,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Buckets              *metapb.Buckets `protobuf:"bytes,7,opt,name=buckets,proto3" json:"buckets,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
+	XXX_unrecognized     []byte          `json:"-"`
+	XXX_sizecache        int32           `json:"-"`
 }
 
 func (m *GetRegionResponse) Reset()         { *m = GetRegionResponse{} }
@@ -1665,14 +1668,14 @@ func (m *GetRegionResponse) GetHeader() *ResponseHeader {
 	return nil
 }
 
-func (m *GetRegionResponse) GetRegion() *Region {
+func (m *GetRegionResponse) GetRegion() *metapb.Region {
 	if m != nil {
 		return m.Region
 	}
 	return nil
 }
 
-func (m *GetRegionResponse) GetLeader() *Peer {
+func (m *GetRegionResponse) GetLeader() *metapb.Peer {
 	if m != nil {
 		return m.Leader
 	}
@@ -1686,14 +1689,14 @@ func (m *GetRegionResponse) GetDownPeers() []*PeerStats {
 	return nil
 }
 
-func (m *GetRegionResponse) GetPendingPeers() []*Peer {
+func (m *GetRegionResponse) GetPendingPeers() []*metapb.Peer {
 	if m != nil {
 		return m.PendingPeers
 	}
 	return nil
 }
 
-func (m *GetRegionResponse) GetBuckets() *Buckets {
+func (m *GetRegionResponse) GetBuckets() *metapb.Buckets {
 	if m != nil {
 		return m.Buckets
 	}
@@ -1835,16 +1838,16 @@ func (m *ScanRegionsRequest) GetEndKey() []byte {
 }
 
 type Region struct {
-	Region *Region `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
-	Leader *Peer   `protobuf:"bytes,2,opt,name=leader,proto3" json:"leader,omitempty"`
+	Region *metapb.Region `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
+	Leader *metapb.Peer   `protobuf:"bytes,2,opt,name=leader,proto3" json:"leader,omitempty"`
 	// Leader considers that these peers are down.
 	DownPeers []*PeerStats `protobuf:"bytes,3,rep,name=down_peers,json=downPeers,proto3" json:"down_peers,omitempty"`
 	// Pending peers are the peers that the leader can't consider as
 	// working followers.
-	PendingPeers         []*Peer  `protobuf:"bytes,4,rep,name=pending_peers,json=pendingPeers,proto3" json:"pending_peers,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	PendingPeers         []*metapb.Peer `protobuf:"bytes,4,rep,name=pending_peers,json=pendingPeers,proto3" json:"pending_peers,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *Region) Reset()         { *m = Region{} }
@@ -1880,14 +1883,14 @@ func (m *Region) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Region proto.InternalMessageInfo
 
-func (m *Region) GetRegion() *Region {
+func (m *Region) GetRegion() *metapb.Region {
 	if m != nil {
 		return m.Region
 	}
 	return nil
 }
 
-func (m *Region) GetLeader() *Peer {
+func (m *Region) GetLeader() *metapb.Peer {
 	if m != nil {
 		return m.Leader
 	}
@@ -1901,7 +1904,7 @@ func (m *Region) GetDownPeers() []*PeerStats {
 	return nil
 }
 
-func (m *Region) GetPendingPeers() []*Peer {
+func (m *Region) GetPendingPeers() []*metapb.Peer {
 	if m != nil {
 		return m.PendingPeers
 	}
@@ -1911,8 +1914,8 @@ func (m *Region) GetPendingPeers() []*Peer {
 type ScanRegionsResponse struct {
 	Header *ResponseHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
 	// Keep for backword compatibability.
-	RegionMetas []*Region `protobuf:"bytes,2,rep,name=region_metas,json=regionMetas,proto3" json:"region_metas,omitempty"`
-	Leaders     []*Peer   `protobuf:"bytes,3,rep,name=leaders,proto3" json:"leaders,omitempty"`
+	RegionMetas []*metapb.Region `protobuf:"bytes,2,rep,name=region_metas,json=regionMetas,proto3" json:"region_metas,omitempty"`
+	Leaders     []*metapb.Peer   `protobuf:"bytes,3,rep,name=leaders,proto3" json:"leaders,omitempty"`
 	// Extended region info with down/pending peers.
 	Regions              []*Region `protobuf:"bytes,4,rep,name=regions,proto3" json:"regions,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
@@ -1960,14 +1963,14 @@ func (m *ScanRegionsResponse) GetHeader() *ResponseHeader {
 	return nil
 }
 
-func (m *ScanRegionsResponse) GetRegionMetas() []*Region {
+func (m *ScanRegionsResponse) GetRegionMetas() []*metapb.Region {
 	if m != nil {
 		return m.RegionMetas
 	}
 	return nil
 }
 
-func (m *ScanRegionsResponse) GetLeaders() []*Peer {
+func (m *ScanRegionsResponse) GetLeaders() []*metapb.Peer {
 	if m != nil {
 		return m.Leaders
 	}
@@ -2030,7 +2033,7 @@ func (m *GetClusterConfigRequest) GetHeader() *RequestHeader {
 
 type GetClusterConfigResponse struct {
 	Header               *ResponseHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	Cluster              *Cluster        `protobuf:"bytes,2,opt,name=cluster,proto3" json:"cluster,omitempty"`
+	Cluster              *metapb.Cluster `protobuf:"bytes,2,opt,name=cluster,proto3" json:"cluster,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -2076,7 +2079,7 @@ func (m *GetClusterConfigResponse) GetHeader() *ResponseHeader {
 	return nil
 }
 
-func (m *GetClusterConfigResponse) GetCluster() *Cluster {
+func (m *GetClusterConfigResponse) GetCluster() *metapb.Cluster {
 	if m != nil {
 		return m.Cluster
 	}
@@ -2084,11 +2087,11 @@ func (m *GetClusterConfigResponse) GetCluster() *Cluster {
 }
 
 type PutClusterConfigRequest struct {
-	Header               *RequestHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	Cluster              *Cluster       `protobuf:"bytes,2,opt,name=cluster,proto3" json:"cluster,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
-	XXX_unrecognized     []byte         `json:"-"`
-	XXX_sizecache        int32          `json:"-"`
+	Header               *RequestHeader  `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
+	Cluster              *metapb.Cluster `protobuf:"bytes,2,opt,name=cluster,proto3" json:"cluster,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
+	XXX_unrecognized     []byte          `json:"-"`
+	XXX_sizecache        int32           `json:"-"`
 }
 
 func (m *PutClusterConfigRequest) Reset()         { *m = PutClusterConfigRequest{} }
@@ -2131,7 +2134,7 @@ func (m *PutClusterConfigRequest) GetHeader() *RequestHeader {
 	return nil
 }
 
-func (m *PutClusterConfigRequest) GetCluster() *Cluster {
+func (m *PutClusterConfigRequest) GetCluster() *metapb.Cluster {
 	if m != nil {
 		return m.Cluster
 	}
@@ -2425,11 +2428,11 @@ func (m *GetMembersResponse) GetTsoAllocatorLeaders() map[string]*Member {
 }
 
 type PeerStats struct {
-	Peer                 *Peer    `protobuf:"bytes,1,opt,name=peer,proto3" json:"peer,omitempty"`
-	DownSeconds          uint64   `protobuf:"varint,2,opt,name=down_seconds,json=downSeconds,proto3" json:"down_seconds,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Peer                 *metapb.Peer `protobuf:"bytes,1,opt,name=peer,proto3" json:"peer,omitempty"`
+	DownSeconds          uint64       `protobuf:"varint,2,opt,name=down_seconds,json=downSeconds,proto3" json:"down_seconds,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
 }
 
 func (m *PeerStats) Reset()         { *m = PeerStats{} }
@@ -2465,7 +2468,7 @@ func (m *PeerStats) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_PeerStats proto.InternalMessageInfo
 
-func (m *PeerStats) GetPeer() *Peer {
+func (m *PeerStats) GetPeer() *metapb.Peer {
 	if m != nil {
 		return m.Peer
 	}
@@ -2481,14 +2484,14 @@ func (m *PeerStats) GetDownSeconds() uint64 {
 
 type RegionHeartbeatRequest struct {
 	Header *RequestHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	Region *Region        `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
+	Region *metapb.Region `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
 	// Leader Peer sending the heartbeat.
-	Leader *Peer `protobuf:"bytes,3,opt,name=leader,proto3" json:"leader,omitempty"`
+	Leader *metapb.Peer `protobuf:"bytes,3,opt,name=leader,proto3" json:"leader,omitempty"`
 	// Leader considers that these peers are down.
 	DownPeers []*PeerStats `protobuf:"bytes,4,rep,name=down_peers,json=downPeers,proto3" json:"down_peers,omitempty"`
 	// Pending peers are the peers that the leader can't consider as
 	// working followers.
-	PendingPeers []*Peer `protobuf:"bytes,5,rep,name=pending_peers,json=pendingPeers,proto3" json:"pending_peers,omitempty"`
+	PendingPeers []*metapb.Peer `protobuf:"bytes,5,rep,name=pending_peers,json=pendingPeers,proto3" json:"pending_peers,omitempty"`
 	// Bytes read/written during this period.
 	BytesWritten uint64 `protobuf:"varint,6,opt,name=bytes_written,json=bytesWritten,proto3" json:"bytes_written,omitempty"`
 	BytesRead    uint64 `protobuf:"varint,7,opt,name=bytes_read,json=bytesRead,proto3" json:"bytes_read,omitempty"`
@@ -2502,8 +2505,8 @@ type RegionHeartbeatRequest struct {
 	// Approximate number of keys.
 	ApproximateKeys uint64 `protobuf:"varint,13,opt,name=approximate_keys,json=approximateKeys,proto3" json:"approximate_keys,omitempty"`
 	// Term is the term of raft group.
-	Term              uint64                   `protobuf:"varint,14,opt,name=term,proto3" json:"term,omitempty"`
-	ReplicationStatus *RegionReplicationStatus `protobuf:"bytes,15,opt,name=replication_status,json=replicationStatus,proto3" json:"replication_status,omitempty"`
+	Term              uint64                                      `protobuf:"varint,14,opt,name=term,proto3" json:"term,omitempty"`
+	ReplicationStatus *replication_modepb.RegionReplicationStatus `protobuf:"bytes,15,opt,name=replication_status,json=replicationStatus,proto3" json:"replication_status,omitempty"`
 	// QueryStats reported write query stats, and there are read query stats in store heartbeat
 	QueryStats *QueryStats `protobuf:"bytes,16,opt,name=query_stats,json=queryStats,proto3" json:"query_stats,omitempty"`
 	// cpu_usage is the CPU time usage of the leader region since the last heartbeat,
@@ -2554,14 +2557,14 @@ func (m *RegionHeartbeatRequest) GetHeader() *RequestHeader {
 	return nil
 }
 
-func (m *RegionHeartbeatRequest) GetRegion() *Region {
+func (m *RegionHeartbeatRequest) GetRegion() *metapb.Region {
 	if m != nil {
 		return m.Region
 	}
 	return nil
 }
 
-func (m *RegionHeartbeatRequest) GetLeader() *Peer {
+func (m *RegionHeartbeatRequest) GetLeader() *metapb.Peer {
 	if m != nil {
 		return m.Leader
 	}
@@ -2575,7 +2578,7 @@ func (m *RegionHeartbeatRequest) GetDownPeers() []*PeerStats {
 	return nil
 }
 
-func (m *RegionHeartbeatRequest) GetPendingPeers() []*Peer {
+func (m *RegionHeartbeatRequest) GetPendingPeers() []*metapb.Peer {
 	if m != nil {
 		return m.PendingPeers
 	}
@@ -2638,7 +2641,7 @@ func (m *RegionHeartbeatRequest) GetTerm() uint64 {
 	return 0
 }
 
-func (m *RegionHeartbeatRequest) GetReplicationStatus() *RegionReplicationStatus {
+func (m *RegionHeartbeatRequest) GetReplicationStatus() *replication_modepb.RegionReplicationStatus {
 	if m != nil {
 		return m.ReplicationStatus
 	}
@@ -2660,7 +2663,7 @@ func (m *RegionHeartbeatRequest) GetCpuUsage() uint64 {
 }
 
 type ChangePeer struct {
-	Peer                 *Peer                  `protobuf:"bytes,1,opt,name=peer,proto3" json:"peer,omitempty"`
+	Peer                 *metapb.Peer           `protobuf:"bytes,1,opt,name=peer,proto3" json:"peer,omitempty"`
 	ChangeType           eraftpb.ConfChangeType `protobuf:"varint,2,opt,name=change_type,json=changeType,proto3,enum=eraftpb.ConfChangeType" json:"change_type,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}               `json:"-"`
 	XXX_unrecognized     []byte                 `json:"-"`
@@ -2700,7 +2703,7 @@ func (m *ChangePeer) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ChangePeer proto.InternalMessageInfo
 
-func (m *ChangePeer) GetPeer() *Peer {
+func (m *ChangePeer) GetPeer() *metapb.Peer {
 	if m != nil {
 		return m.Peer
 	}
@@ -2763,11 +2766,11 @@ func (m *ChangePeerV2) GetChanges() []*ChangePeer {
 }
 
 type TransferLeader struct {
-	Peer                 *Peer    `protobuf:"bytes,1,opt,name=peer,proto3" json:"peer,omitempty"`
-	Peers                []*Peer  `protobuf:"bytes,2,rep,name=peers,proto3" json:"peers,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Peer                 *metapb.Peer   `protobuf:"bytes,1,opt,name=peer,proto3" json:"peer,omitempty"`
+	Peers                []*metapb.Peer `protobuf:"bytes,2,rep,name=peers,proto3" json:"peers,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *TransferLeader) Reset()         { *m = TransferLeader{} }
@@ -2803,14 +2806,14 @@ func (m *TransferLeader) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_TransferLeader proto.InternalMessageInfo
 
-func (m *TransferLeader) GetPeer() *Peer {
+func (m *TransferLeader) GetPeer() *metapb.Peer {
 	if m != nil {
 		return m.Peer
 	}
 	return nil
 }
 
-func (m *TransferLeader) GetPeers() []*Peer {
+func (m *TransferLeader) GetPeers() []*metapb.Peer {
 	if m != nil {
 		return m.Peers
 	}
@@ -2818,10 +2821,10 @@ func (m *TransferLeader) GetPeers() []*Peer {
 }
 
 type Merge struct {
-	Target               *Region  `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Target               *metapb.Region `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *Merge) Reset()         { *m = Merge{} }
@@ -2857,7 +2860,7 @@ func (m *Merge) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Merge proto.InternalMessageInfo
 
-func (m *Merge) GetTarget() *Region {
+func (m *Merge) GetTarget() *metapb.Region {
 	if m != nil {
 		return m.Target
 	}
@@ -2939,11 +2942,11 @@ type RegionHeartbeatResponse struct {
 	// Pd can return transfer_leader to let TiKV does leader transfer itself.
 	TransferLeader *TransferLeader `protobuf:"bytes,3,opt,name=transfer_leader,json=transferLeader,proto3" json:"transfer_leader,omitempty"`
 	// ID of the region
-	RegionId    uint64       `protobuf:"varint,4,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
-	RegionEpoch *RegionEpoch `protobuf:"bytes,5,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
+	RegionId    uint64              `protobuf:"varint,4,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
+	RegionEpoch *metapb.RegionEpoch `protobuf:"bytes,5,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
 	// Leader of the region at the moment of the corresponding request was made.
-	TargetPeer *Peer  `protobuf:"bytes,6,opt,name=target_peer,json=targetPeer,proto3" json:"target_peer,omitempty"`
-	Merge      *Merge `protobuf:"bytes,7,opt,name=merge,proto3" json:"merge,omitempty"`
+	TargetPeer *metapb.Peer `protobuf:"bytes,6,opt,name=target_peer,json=targetPeer,proto3" json:"target_peer,omitempty"`
+	Merge      *Merge       `protobuf:"bytes,7,opt,name=merge,proto3" json:"merge,omitempty"`
 	// PD sends split_region to let TiKV split a region into two regions.
 	SplitRegion *SplitRegion `protobuf:"bytes,8,opt,name=split_region,json=splitRegion,proto3" json:"split_region,omitempty"`
 	// Multiple change peer operations atomically.
@@ -3019,14 +3022,14 @@ func (m *RegionHeartbeatResponse) GetRegionId() uint64 {
 	return 0
 }
 
-func (m *RegionHeartbeatResponse) GetRegionEpoch() *RegionEpoch {
+func (m *RegionHeartbeatResponse) GetRegionEpoch() *metapb.RegionEpoch {
 	if m != nil {
 		return m.RegionEpoch
 	}
 	return nil
 }
 
-func (m *RegionHeartbeatResponse) GetTargetPeer() *Peer {
+func (m *RegionHeartbeatResponse) GetTargetPeer() *metapb.Peer {
 	if m != nil {
 		return m.TargetPeer
 	}
@@ -3056,7 +3059,7 @@ func (m *RegionHeartbeatResponse) GetChangePeerV2() *ChangePeerV2 {
 
 type AskSplitRequest struct {
 	Header               *RequestHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	Region               *Region        `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
+	Region               *metapb.Region `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -3102,7 +3105,7 @@ func (m *AskSplitRequest) GetHeader() *RequestHeader {
 	return nil
 }
 
-func (m *AskSplitRequest) GetRegion() *Region {
+func (m *AskSplitRequest) GetRegion() *metapb.Region {
 	if m != nil {
 		return m.Region
 	}
@@ -3178,8 +3181,8 @@ func (m *AskSplitResponse) GetNewPeerIds() []uint64 {
 
 type ReportSplitRequest struct {
 	Header               *RequestHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	Left                 *Region        `protobuf:"bytes,2,opt,name=left,proto3" json:"left,omitempty"`
-	Right                *Region        `protobuf:"bytes,3,opt,name=right,proto3" json:"right,omitempty"`
+	Left                 *metapb.Region `protobuf:"bytes,2,opt,name=left,proto3" json:"left,omitempty"`
+	Right                *metapb.Region `protobuf:"bytes,3,opt,name=right,proto3" json:"right,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -3225,14 +3228,14 @@ func (m *ReportSplitRequest) GetHeader() *RequestHeader {
 	return nil
 }
 
-func (m *ReportSplitRequest) GetLeft() *Region {
+func (m *ReportSplitRequest) GetLeft() *metapb.Region {
 	if m != nil {
 		return m.Left
 	}
 	return nil
 }
 
-func (m *ReportSplitRequest) GetRight() *Region {
+func (m *ReportSplitRequest) GetRight() *metapb.Region {
 	if m != nil {
 		return m.Right
 	}
@@ -3288,7 +3291,7 @@ func (m *ReportSplitResponse) GetHeader() *ResponseHeader {
 
 type AskBatchSplitRequest struct {
 	Header               *RequestHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	Region               *Region        `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
+	Region               *metapb.Region `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
 	SplitCount           uint32         `protobuf:"varint,3,opt,name=split_count,json=splitCount,proto3" json:"split_count,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
@@ -3335,7 +3338,7 @@ func (m *AskBatchSplitRequest) GetHeader() *RequestHeader {
 	return nil
 }
 
-func (m *AskBatchSplitRequest) GetRegion() *Region {
+func (m *AskBatchSplitRequest) GetRegion() *metapb.Region {
 	if m != nil {
 		return m.Region
 	}
@@ -3460,11 +3463,11 @@ func (m *AskBatchSplitResponse) GetIds() []*SplitID {
 }
 
 type ReportBatchSplitRequest struct {
-	Header               *RequestHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	Regions              []*Region      `protobuf:"bytes,2,rep,name=regions,proto3" json:"regions,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
-	XXX_unrecognized     []byte         `json:"-"`
-	XXX_sizecache        int32          `json:"-"`
+	Header               *RequestHeader   `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
+	Regions              []*metapb.Region `protobuf:"bytes,2,rep,name=regions,proto3" json:"regions,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
 }
 
 func (m *ReportBatchSplitRequest) Reset()         { *m = ReportBatchSplitRequest{} }
@@ -3507,7 +3510,7 @@ func (m *ReportBatchSplitRequest) GetHeader() *RequestHeader {
 	return nil
 }
 
-func (m *ReportBatchSplitRequest) GetRegions() []*Region {
+func (m *ReportBatchSplitRequest) GetRegions() []*metapb.Region {
 	if m != nil {
 		return m.Regions
 	}
@@ -4015,9 +4018,9 @@ func (m *StoreStats) GetIsApplyBusy() bool {
 }
 
 type PeerReport struct {
-	RaftState     *RaftLocalState   `protobuf:"bytes,1,opt,name=raft_state,json=raftState,proto3" json:"raft_state,omitempty"`
-	RegionState   *RegionLocalState `protobuf:"bytes,2,opt,name=region_state,json=regionState,proto3" json:"region_state,omitempty"`
-	IsForceLeader bool              `protobuf:"varint,3,opt,name=is_force_leader,json=isForceLeader,proto3" json:"is_force_leader,omitempty"`
+	RaftState     *raft_serverpb.RaftLocalState   `protobuf:"bytes,1,opt,name=raft_state,json=raftState,proto3" json:"raft_state,omitempty"`
+	RegionState   *raft_serverpb.RegionLocalState `protobuf:"bytes,2,opt,name=region_state,json=regionState,proto3" json:"region_state,omitempty"`
+	IsForceLeader bool                            `protobuf:"varint,3,opt,name=is_force_leader,json=isForceLeader,proto3" json:"is_force_leader,omitempty"`
 	// The peer has proposed but uncommitted commit merge.
 	HasCommitMerge       bool     `protobuf:"varint,4,opt,name=has_commit_merge,json=hasCommitMerge,proto3" json:"has_commit_merge,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -4058,14 +4061,14 @@ func (m *PeerReport) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_PeerReport proto.InternalMessageInfo
 
-func (m *PeerReport) GetRaftState() *RaftLocalState {
+func (m *PeerReport) GetRaftState() *raft_serverpb.RaftLocalState {
 	if m != nil {
 		return m.RaftState
 	}
 	return nil
 }
 
-func (m *PeerReport) GetRegionState() *RegionLocalState {
+func (m *PeerReport) GetRegionState() *raft_serverpb.RegionLocalState {
 	if m != nil {
 		return m.RegionState
 	}
@@ -4145,11 +4148,11 @@ type StoreHeartbeatRequest struct {
 	Header *RequestHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
 	Stats  *StoreStats    `protobuf:"bytes,2,opt,name=stats,proto3" json:"stats,omitempty"`
 	// Detailed store report that is only filled up on PD's demand for online unsafe recovery.
-	StoreReport          *StoreReport           `protobuf:"bytes,3,opt,name=store_report,json=storeReport,proto3" json:"store_report,omitempty"`
-	DrAutosyncStatus     *StoreDRAutoSyncStatus `protobuf:"bytes,4,opt,name=dr_autosync_status,json=drAutosyncStatus,proto3" json:"dr_autosync_status,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}               `json:"-"`
-	XXX_unrecognized     []byte                 `json:"-"`
-	XXX_sizecache        int32                  `json:"-"`
+	StoreReport          *StoreReport                              `protobuf:"bytes,3,opt,name=store_report,json=storeReport,proto3" json:"store_report,omitempty"`
+	DrAutosyncStatus     *replication_modepb.StoreDRAutoSyncStatus `protobuf:"bytes,4,opt,name=dr_autosync_status,json=drAutosyncStatus,proto3" json:"dr_autosync_status,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                                  `json:"-"`
+	XXX_unrecognized     []byte                                    `json:"-"`
+	XXX_sizecache        int32                                     `json:"-"`
 }
 
 func (m *StoreHeartbeatRequest) Reset()         { *m = StoreHeartbeatRequest{} }
@@ -4206,7 +4209,7 @@ func (m *StoreHeartbeatRequest) GetStoreReport() *StoreReport {
 	return nil
 }
 
-func (m *StoreHeartbeatRequest) GetDrAutosyncStatus() *StoreDRAutoSyncStatus {
+func (m *StoreHeartbeatRequest) GetDrAutosyncStatus() *replication_modepb.StoreDRAutoSyncStatus {
 	if m != nil {
 		return m.DrAutosyncStatus
 	}
@@ -4214,11 +4217,11 @@ func (m *StoreHeartbeatRequest) GetDrAutosyncStatus() *StoreDRAutoSyncStatus {
 }
 
 type DemoteFailedVoters struct {
-	RegionId             uint64   `protobuf:"varint,1,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
-	FailedVoters         []*Peer  `protobuf:"bytes,2,rep,name=failed_voters,json=failedVoters,proto3" json:"failed_voters,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	RegionId             uint64         `protobuf:"varint,1,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
+	FailedVoters         []*metapb.Peer `protobuf:"bytes,2,rep,name=failed_voters,json=failedVoters,proto3" json:"failed_voters,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *DemoteFailedVoters) Reset()         { *m = DemoteFailedVoters{} }
@@ -4261,7 +4264,7 @@ func (m *DemoteFailedVoters) GetRegionId() uint64 {
 	return 0
 }
 
-func (m *DemoteFailedVoters) GetFailedVoters() []*Peer {
+func (m *DemoteFailedVoters) GetFailedVoters() []*metapb.Peer {
 	if m != nil {
 		return m.FailedVoters
 	}
@@ -4327,9 +4330,9 @@ func (m *ForceLeader) GetEnterForceLeaders() []uint64 {
 
 type RecoveryPlan struct {
 	// Create empty regions to fill the key range hole.
-	Creates []*Region `protobuf:"bytes,1,rep,name=creates,proto3" json:"creates,omitempty"`
+	Creates []*metapb.Region `protobuf:"bytes,1,rep,name=creates,proto3" json:"creates,omitempty"`
 	// Update the meta of the regions, including peer lists, epoch and key range.
-	Updates []*Region `protobuf:"bytes,2,rep,name=updates,proto3" json:"updates,omitempty"` // Deprecated: Do not use.
+	Updates []*metapb.Region `protobuf:"bytes,2,rep,name=updates,proto3" json:"updates,omitempty"` // Deprecated: Do not use.
 	// Tombstone the peers on the store locally.
 	Tombstones []uint64 `protobuf:"varint,3,rep,packed,name=tombstones,proto3" json:"tombstones,omitempty"`
 	// Issue conf change that demote voters on failed stores to learners on the regions.
@@ -4377,7 +4380,7 @@ func (m *RecoveryPlan) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RecoveryPlan proto.InternalMessageInfo
 
-func (m *RecoveryPlan) GetCreates() []*Region {
+func (m *RecoveryPlan) GetCreates() []*metapb.Region {
 	if m != nil {
 		return m.Creates
 	}
@@ -4385,7 +4388,7 @@ func (m *RecoveryPlan) GetCreates() []*Region {
 }
 
 // Deprecated: Do not use.
-func (m *RecoveryPlan) GetUpdates() []*Region {
+func (m *RecoveryPlan) GetUpdates() []*metapb.Region {
 	if m != nil {
 		return m.Updates
 	}
@@ -4421,9 +4424,9 @@ func (m *RecoveryPlan) GetStep() uint64 {
 }
 
 type StoreHeartbeatResponse struct {
-	Header            *ResponseHeader    `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	ReplicationStatus *ReplicationStatus `protobuf:"bytes,2,opt,name=replication_status,json=replicationStatus,proto3" json:"replication_status,omitempty"`
-	ClusterVersion    string             `protobuf:"bytes,3,opt,name=cluster_version,json=clusterVersion,proto3" json:"cluster_version,omitempty"`
+	Header            *ResponseHeader                       `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
+	ReplicationStatus *replication_modepb.ReplicationStatus `protobuf:"bytes,2,opt,name=replication_status,json=replicationStatus,proto3" json:"replication_status,omitempty"`
+	ClusterVersion    string                                `protobuf:"bytes,3,opt,name=cluster_version,json=clusterVersion,proto3" json:"cluster_version,omitempty"`
 	// Used by online unsafe recovery to request store report.
 	// Now it's substituted by reusing recovery_plan field. PD will send a empty
 	// recovery plan instead to request store report.
@@ -4476,7 +4479,7 @@ func (m *StoreHeartbeatResponse) GetHeader() *ResponseHeader {
 	return nil
 }
 
-func (m *StoreHeartbeatResponse) GetReplicationStatus() *ReplicationStatus {
+func (m *StoreHeartbeatResponse) GetReplicationStatus() *replication_modepb.ReplicationStatus {
 	if m != nil {
 		return m.ReplicationStatus
 	}
@@ -4510,8 +4513,8 @@ type ScatterRegionRequest struct {
 	RegionId uint64         `protobuf:"varint,2,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"` // Deprecated: Do not use.
 	// PD will use these region information if it can't find the region.
 	// For example, the region is just split and hasn't report to PD yet.
-	Region *Region `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
-	Leader *Peer   `protobuf:"bytes,4,opt,name=leader,proto3" json:"leader,omitempty"`
+	Region *metapb.Region `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
+	Leader *metapb.Peer   `protobuf:"bytes,4,opt,name=leader,proto3" json:"leader,omitempty"`
 	// If group is defined, the regions with the same group would be scattered as a whole group.
 	// If not defined, the regions would be scattered in a cluster level.
 	Group string `protobuf:"bytes,5,opt,name=group,proto3" json:"group,omitempty"`
@@ -4571,14 +4574,14 @@ func (m *ScatterRegionRequest) GetRegionId() uint64 {
 	return 0
 }
 
-func (m *ScatterRegionRequest) GetRegion() *Region {
+func (m *ScatterRegionRequest) GetRegion() *metapb.Region {
 	if m != nil {
 		return m.Region
 	}
 	return nil
 }
 
-func (m *ScatterRegionRequest) GetLeader() *Peer {
+func (m *ScatterRegionRequest) GetLeader() *metapb.Peer {
 	if m != nil {
 		return m.Leader
 	}
@@ -5157,15 +5160,15 @@ type SyncRegionResponse struct {
 	Header *ResponseHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
 	// the leader PD will send the repsonds include
 	// changed regions records and the index of the first record.
-	Regions       []*Region     `protobuf:"bytes,2,rep,name=regions,proto3" json:"regions,omitempty"`
-	StartIndex    uint64        `protobuf:"varint,3,opt,name=start_index,json=startIndex,proto3" json:"start_index,omitempty"`
-	RegionStats   []*RegionStat `protobuf:"bytes,4,rep,name=region_stats,json=regionStats,proto3" json:"region_stats,omitempty"`
-	RegionLeaders []*Peer       `protobuf:"bytes,5,rep,name=region_leaders,json=regionLeaders,proto3" json:"region_leaders,omitempty"`
+	Regions       []*metapb.Region `protobuf:"bytes,2,rep,name=regions,proto3" json:"regions,omitempty"`
+	StartIndex    uint64           `protobuf:"varint,3,opt,name=start_index,json=startIndex,proto3" json:"start_index,omitempty"`
+	RegionStats   []*RegionStat    `protobuf:"bytes,4,rep,name=region_stats,json=regionStats,proto3" json:"region_stats,omitempty"`
+	RegionLeaders []*metapb.Peer   `protobuf:"bytes,5,rep,name=region_leaders,json=regionLeaders,proto3" json:"region_leaders,omitempty"`
 	// the buckets informations without stats.
-	Buckets              []*Buckets `protobuf:"bytes,6,rep,name=buckets,proto3" json:"buckets,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
-	XXX_unrecognized     []byte     `json:"-"`
-	XXX_sizecache        int32      `json:"-"`
+	Buckets              []*metapb.Buckets `protobuf:"bytes,6,rep,name=buckets,proto3" json:"buckets,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+	XXX_unrecognized     []byte            `json:"-"`
+	XXX_sizecache        int32             `json:"-"`
 }
 
 func (m *SyncRegionResponse) Reset()         { *m = SyncRegionResponse{} }
@@ -5208,7 +5211,7 @@ func (m *SyncRegionResponse) GetHeader() *ResponseHeader {
 	return nil
 }
 
-func (m *SyncRegionResponse) GetRegions() []*Region {
+func (m *SyncRegionResponse) GetRegions() []*metapb.Region {
 	if m != nil {
 		return m.Regions
 	}
@@ -5229,14 +5232,14 @@ func (m *SyncRegionResponse) GetRegionStats() []*RegionStat {
 	return nil
 }
 
-func (m *SyncRegionResponse) GetRegionLeaders() []*Peer {
+func (m *SyncRegionResponse) GetRegionLeaders() []*metapb.Peer {
 	if m != nil {
 		return m.RegionLeaders
 	}
 	return nil
 }
 
-func (m *SyncRegionResponse) GetBuckets() []*Buckets {
+func (m *SyncRegionResponse) GetBuckets() []*metapb.Buckets {
 	if m != nil {
 		return m.Buckets
 	}
@@ -6021,12 +6024,12 @@ func (m *QueryStats) GetRollback() uint64 {
 }
 
 type ReportBucketsRequest struct {
-	Header               *RequestHeader `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	RegionEpoch          *RegionEpoch   `protobuf:"bytes,2,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
-	Buckets              *Buckets       `protobuf:"bytes,3,opt,name=buckets,proto3" json:"buckets,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
-	XXX_unrecognized     []byte         `json:"-"`
-	XXX_sizecache        int32          `json:"-"`
+	Header               *RequestHeader      `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
+	RegionEpoch          *metapb.RegionEpoch `protobuf:"bytes,2,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
+	Buckets              *metapb.Buckets     `protobuf:"bytes,3,opt,name=buckets,proto3" json:"buckets,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
+	XXX_unrecognized     []byte              `json:"-"`
+	XXX_sizecache        int32               `json:"-"`
 }
 
 func (m *ReportBucketsRequest) Reset()         { *m = ReportBucketsRequest{} }
@@ -6069,14 +6072,14 @@ func (m *ReportBucketsRequest) GetHeader() *RequestHeader {
 	return nil
 }
 
-func (m *ReportBucketsRequest) GetRegionEpoch() *RegionEpoch {
+func (m *ReportBucketsRequest) GetRegionEpoch() *metapb.RegionEpoch {
 	if m != nil {
 		return m.RegionEpoch
 	}
 	return nil
 }
 
-func (m *ReportBucketsRequest) GetBuckets() *Buckets {
+func (m *ReportBucketsRequest) GetBuckets() *metapb.Buckets {
 	if m != nil {
 		return m.Buckets
 	}
@@ -17187,7 +17190,7 @@ func (m *BootstrapRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Store == nil {
-				m.Store = &Store{}
+				m.Store = &metapb.Store{}
 			}
 			if err := m.Store.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -17223,7 +17226,7 @@ func (m *BootstrapRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Region == nil {
-				m.Region = &Region{}
+				m.Region = &metapb.Region{}
 			}
 			if err := m.Region.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -17346,7 +17349,7 @@ func (m *BootstrapResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.ReplicationStatus == nil {
-				m.ReplicationStatus = &ReplicationStatus{}
+				m.ReplicationStatus = &replication_modepb.ReplicationStatus{}
 			}
 			if err := m.ReplicationStatus.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -17962,7 +17965,7 @@ func (m *GetStoreResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Store == nil {
-				m.Store = &Store{}
+				m.Store = &metapb.Store{}
 			}
 			if err := m.Store.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -18121,7 +18124,7 @@ func (m *PutStoreRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Store == nil {
-				m.Store = &Store{}
+				m.Store = &metapb.Store{}
 			}
 			if err := m.Store.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -18244,7 +18247,7 @@ func (m *PutStoreResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.ReplicationStatus == nil {
-				m.ReplicationStatus = &ReplicationStatus{}
+				m.ReplicationStatus = &replication_modepb.ReplicationStatus{}
 			}
 			if err := m.ReplicationStatus.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -18473,7 +18476,7 @@ func (m *GetAllStoresResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Stores = append(m.Stores, &Store{})
+			m.Stores = append(m.Stores, &metapb.Store{})
 			if err := m.Stores[len(m.Stores)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -18736,7 +18739,7 @@ func (m *GetRegionResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Region == nil {
-				m.Region = &Region{}
+				m.Region = &metapb.Region{}
 			}
 			if err := m.Region.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -18772,7 +18775,7 @@ func (m *GetRegionResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Leader == nil {
-				m.Leader = &Peer{}
+				m.Leader = &metapb.Peer{}
 			}
 			if err := m.Leader.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -18841,7 +18844,7 @@ func (m *GetRegionResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.PendingPeers = append(m.PendingPeers, &Peer{})
+			m.PendingPeers = append(m.PendingPeers, &metapb.Peer{})
 			if err := m.PendingPeers[len(m.PendingPeers)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -18876,7 +18879,7 @@ func (m *GetRegionResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Buckets == nil {
-				m.Buckets = &Buckets{}
+				m.Buckets = &metapb.Buckets{}
 			}
 			if err := m.Buckets.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -19263,7 +19266,7 @@ func (m *Region) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Region == nil {
-				m.Region = &Region{}
+				m.Region = &metapb.Region{}
 			}
 			if err := m.Region.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -19299,7 +19302,7 @@ func (m *Region) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Leader == nil {
-				m.Leader = &Peer{}
+				m.Leader = &metapb.Peer{}
 			}
 			if err := m.Leader.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -19368,7 +19371,7 @@ func (m *Region) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.PendingPeers = append(m.PendingPeers, &Peer{})
+			m.PendingPeers = append(m.PendingPeers, &metapb.Peer{})
 			if err := m.PendingPeers[len(m.PendingPeers)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -19489,7 +19492,7 @@ func (m *ScanRegionsResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.RegionMetas = append(m.RegionMetas, &Region{})
+			m.RegionMetas = append(m.RegionMetas, &metapb.Region{})
 			if err := m.RegionMetas[len(m.RegionMetas)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -19523,7 +19526,7 @@ func (m *ScanRegionsResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Leaders = append(m.Leaders, &Peer{})
+			m.Leaders = append(m.Leaders, &metapb.Peer{})
 			if err := m.Leaders[len(m.Leaders)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -19766,7 +19769,7 @@ func (m *GetClusterConfigResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Cluster == nil {
-				m.Cluster = &Cluster{}
+				m.Cluster = &metapb.Cluster{}
 			}
 			if err := m.Cluster.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -19889,7 +19892,7 @@ func (m *PutClusterConfigRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Cluster == nil {
-				m.Cluster = &Cluster{}
+				m.Cluster = &metapb.Cluster{}
 			}
 			if err := m.Cluster.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -20785,7 +20788,7 @@ func (m *PeerStats) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Peer == nil {
-				m.Peer = &Peer{}
+				m.Peer = &metapb.Peer{}
 			}
 			if err := m.Peer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -20927,7 +20930,7 @@ func (m *RegionHeartbeatRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Region == nil {
-				m.Region = &Region{}
+				m.Region = &metapb.Region{}
 			}
 			if err := m.Region.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -20963,7 +20966,7 @@ func (m *RegionHeartbeatRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Leader == nil {
-				m.Leader = &Peer{}
+				m.Leader = &metapb.Peer{}
 			}
 			if err := m.Leader.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -21032,7 +21035,7 @@ func (m *RegionHeartbeatRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.PendingPeers = append(m.PendingPeers, &Peer{})
+			m.PendingPeers = append(m.PendingPeers, &metapb.Peer{})
 			if err := m.PendingPeers[len(m.PendingPeers)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -21236,7 +21239,7 @@ func (m *RegionHeartbeatRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.ReplicationStatus == nil {
-				m.ReplicationStatus = &RegionReplicationStatus{}
+				m.ReplicationStatus = &replication_modepb.RegionReplicationStatus{}
 			}
 			if err := m.ReplicationStatus.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -21378,7 +21381,7 @@ func (m *ChangePeer) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Peer == nil {
-				m.Peer = &Peer{}
+				m.Peer = &metapb.Peer{}
 			}
 			if err := m.Peer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -21569,7 +21572,7 @@ func (m *TransferLeader) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Peer == nil {
-				m.Peer = &Peer{}
+				m.Peer = &metapb.Peer{}
 			}
 			if err := m.Peer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -21604,7 +21607,7 @@ func (m *TransferLeader) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Peers = append(m.Peers, &Peer{})
+			m.Peers = append(m.Peers, &metapb.Peer{})
 			if err := m.Peers[len(m.Peers)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -21690,7 +21693,7 @@ func (m *Merge) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Target == nil {
-				m.Target = &Region{}
+				m.Target = &metapb.Region{}
 			}
 			if err := m.Target.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -22006,7 +22009,7 @@ func (m *RegionHeartbeatResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionEpoch == nil {
-				m.RegionEpoch = &RegionEpoch{}
+				m.RegionEpoch = &metapb.RegionEpoch{}
 			}
 			if err := m.RegionEpoch.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -22042,7 +22045,7 @@ func (m *RegionHeartbeatResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.TargetPeer == nil {
-				m.TargetPeer = &Peer{}
+				m.TargetPeer = &metapb.Peer{}
 			}
 			if err := m.TargetPeer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -22273,7 +22276,7 @@ func (m *AskSplitRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Region == nil {
-				m.Region = &Region{}
+				m.Region = &metapb.Region{}
 			}
 			if err := m.Region.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -22578,7 +22581,7 @@ func (m *ReportSplitRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Left == nil {
-				m.Left = &Region{}
+				m.Left = &metapb.Region{}
 			}
 			if err := m.Left.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -22614,7 +22617,7 @@ func (m *ReportSplitRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Right == nil {
-				m.Right = &Region{}
+				m.Right = &metapb.Region{}
 			}
 			if err := m.Right.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -22824,7 +22827,7 @@ func (m *AskBatchSplitRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Region == nil {
-				m.Region = &Region{}
+				m.Region = &metapb.Region{}
 			}
 			if err := m.Region.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -23232,7 +23235,7 @@ func (m *ReportBatchSplitRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Regions = append(m.Regions, &Region{})
+			m.Regions = append(m.Regions, &metapb.Region{})
 			if err := m.Regions[len(m.Regions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -24453,7 +24456,7 @@ func (m *PeerReport) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RaftState == nil {
-				m.RaftState = &RaftLocalState{}
+				m.RaftState = &raft_serverpb.RaftLocalState{}
 			}
 			if err := m.RaftState.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -24489,7 +24492,7 @@ func (m *PeerReport) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionState == nil {
-				m.RegionState = &RegionLocalState{}
+				m.RegionState = &raft_serverpb.RegionLocalState{}
 			}
 			if err := m.RegionState.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -24828,7 +24831,7 @@ func (m *StoreHeartbeatRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.DrAutosyncStatus == nil {
-				m.DrAutosyncStatus = &StoreDRAutoSyncStatus{}
+				m.DrAutosyncStatus = &replication_modepb.StoreDRAutoSyncStatus{}
 			}
 			if err := m.DrAutosyncStatus.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -24933,7 +24936,7 @@ func (m *DemoteFailedVoters) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.FailedVoters = append(m.FailedVoters, &Peer{})
+			m.FailedVoters = append(m.FailedVoters, &metapb.Peer{})
 			if err := m.FailedVoters[len(m.FailedVoters)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -25221,7 +25224,7 @@ func (m *RecoveryPlan) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Creates = append(m.Creates, &Region{})
+			m.Creates = append(m.Creates, &metapb.Region{})
 			if err := m.Creates[len(m.Creates)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -25255,7 +25258,7 @@ func (m *RecoveryPlan) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Updates = append(m.Updates, &Region{})
+			m.Updates = append(m.Updates, &metapb.Region{})
 			if err := m.Updates[len(m.Updates)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -25542,7 +25545,7 @@ func (m *StoreHeartbeatResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.ReplicationStatus == nil {
-				m.ReplicationStatus = &ReplicationStatus{}
+				m.ReplicationStatus = &replication_modepb.ReplicationStatus{}
 			}
 			if err := m.ReplicationStatus.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -25772,7 +25775,7 @@ func (m *ScatterRegionRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Region == nil {
-				m.Region = &Region{}
+				m.Region = &metapb.Region{}
 			}
 			if err := m.Region.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -25808,7 +25811,7 @@ func (m *ScatterRegionRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Leader == nil {
-				m.Leader = &Peer{}
+				m.Leader = &metapb.Peer{}
 			}
 			if err := m.Leader.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -27155,7 +27158,7 @@ func (m *SyncRegionResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Regions = append(m.Regions, &Region{})
+			m.Regions = append(m.Regions, &metapb.Region{})
 			if err := m.Regions[len(m.Regions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -27242,7 +27245,7 @@ func (m *SyncRegionResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.RegionLeaders = append(m.RegionLeaders, &Peer{})
+			m.RegionLeaders = append(m.RegionLeaders, &metapb.Peer{})
 			if err := m.RegionLeaders[len(m.RegionLeaders)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -27276,7 +27279,7 @@ func (m *SyncRegionResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Buckets = append(m.Buckets, &Buckets{})
+			m.Buckets = append(m.Buckets, &metapb.Buckets{})
 			if err := m.Buckets[len(m.Buckets)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -29207,7 +29210,7 @@ func (m *ReportBucketsRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionEpoch == nil {
-				m.RegionEpoch = &RegionEpoch{}
+				m.RegionEpoch = &metapb.RegionEpoch{}
 			}
 			if err := m.RegionEpoch.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -29243,7 +29246,7 @@ func (m *ReportBucketsRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Buckets == nil {
-				m.Buckets = &Buckets{}
+				m.Buckets = &metapb.Buckets{}
 			}
 			if err := m.Buckets.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err

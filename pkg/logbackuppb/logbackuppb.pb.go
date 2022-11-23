@@ -10,6 +10,7 @@ import (
 	"math"
 	math_bits "math/bits"
 
+	errorpb "github.com/ab111404212/kvproto/pkg/errorpb"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
@@ -86,7 +87,7 @@ func (m *RegionIdentity) GetEpochVersion() uint64 {
 
 // The last flush ts with region information.
 type RegionCheckpoint struct {
-	Err                  *Error          `protobuf:"bytes,1,opt,name=err,proto3" json:"err,omitempty"`
+	Err                  *errorpb.Error  `protobuf:"bytes,1,opt,name=err,proto3" json:"err,omitempty"`
 	Region               *RegionIdentity `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
 	Checkpoint           uint64          `protobuf:"varint,3,opt,name=checkpoint,proto3" json:"checkpoint,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
@@ -127,7 +128,7 @@ func (m *RegionCheckpoint) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RegionCheckpoint proto.InternalMessageInfo
 
-func (m *RegionCheckpoint) GetErr() *Error {
+func (m *RegionCheckpoint) GetErr() *errorpb.Error {
 	if m != nil {
 		return m.Err
 	}
@@ -775,7 +776,7 @@ func (m *RegionCheckpoint) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Err == nil {
-				m.Err = &Error{}
+				m.Err = &errorpb.Error{}
 			}
 			if err := m.Err.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err

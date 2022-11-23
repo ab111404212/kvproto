@@ -9,6 +9,10 @@ import (
 	"math"
 	math_bits "math/bits"
 
+	deadlock "github.com/ab111404212/kvproto/pkg/deadlock"
+	errorpb "github.com/ab111404212/kvproto/pkg/errorpb"
+	metapb "github.com/ab111404212/kvproto/pkg/metapb"
+	tracepb "github.com/ab111404212/kvproto/pkg/tracepb"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/golang/protobuf/proto"
 )
@@ -433,7 +437,7 @@ func (m *GetRequest) GetVersion() uint64 {
 type GetResponse struct {
 	// A region error indicates that the request was sent to the wrong TiKV node
 	// (or other, similar errors).
-	RegionError *Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
 	// A value could not be retrieved due to the state of the database for the requested key.
 	Error *KeyError `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
 	// A successful result.
@@ -480,7 +484,7 @@ func (m *GetResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GetResponse proto.InternalMessageInfo
 
-func (m *GetResponse) GetRegionError() *Error {
+func (m *GetResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -627,7 +631,7 @@ func (m *ScanRequest) GetSampleStep() uint32 {
 }
 
 type ScanResponse struct {
-	RegionError *Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
 	// Each KvPair may contain a key error.
 	Pairs []*KvPair `protobuf:"bytes,2,rep,name=pairs,proto3" json:"pairs,omitempty"`
 	// This KeyError exists when some key is locked but we cannot check locks of all keys.
@@ -672,7 +676,7 @@ func (m *ScanResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ScanResponse proto.InternalMessageInfo
 
-func (m *ScanResponse) GetRegionError() *Error {
+func (m *ScanResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -874,8 +878,8 @@ func (m *PrewriteRequest) GetAssertionLevel() AssertionLevel {
 }
 
 type PrewriteResponse struct {
-	RegionError *Error      `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Errors      []*KeyError `protobuf:"bytes,2,rep,name=errors,proto3" json:"errors,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Errors      []*KeyError    `protobuf:"bytes,2,rep,name=errors,proto3" json:"errors,omitempty"`
 	// 0 if the min_commit_ts is not ready or any other reason that async
 	// commit cannot proceed. The client can then fallback to normal way to
 	// continue committing the transaction if prewrite are all finished.
@@ -924,7 +928,7 @@ func (m *PrewriteResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_PrewriteResponse proto.InternalMessageInfo
 
-func (m *PrewriteResponse) GetRegionError() *Error {
+func (m *PrewriteResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -1117,8 +1121,8 @@ func (m *PessimisticLockRequest) GetCheckExistence() bool {
 }
 
 type PessimisticLockResponse struct {
-	RegionError *Error      `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Errors      []*KeyError `protobuf:"bytes,2,rep,name=errors,proto3" json:"errors,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Errors      []*KeyError    `protobuf:"bytes,2,rep,name=errors,proto3" json:"errors,omitempty"`
 	// It carries the latest value and its commit ts if force in PessimisticLockRequest is true.
 	CommitTs uint64 `protobuf:"varint,3,opt,name=commit_ts,json=commitTs,proto3" json:"commit_ts,omitempty"` // Deprecated: Do not use.
 	Value    []byte `protobuf:"bytes,4,opt,name=value,proto3" json:"value,omitempty"`                        // Deprecated: Do not use.
@@ -1169,7 +1173,7 @@ func (m *PessimisticLockResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_PessimisticLockResponse proto.InternalMessageInfo
 
-func (m *PessimisticLockResponse) GetRegionError() *Error {
+func (m *PessimisticLockResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -1293,8 +1297,8 @@ func (m *PessimisticRollbackRequest) GetKeys() [][]byte {
 }
 
 type PessimisticRollbackResponse struct {
-	RegionError *Error      `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Errors      []*KeyError `protobuf:"bytes,2,rep,name=errors,proto3" json:"errors,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Errors      []*KeyError    `protobuf:"bytes,2,rep,name=errors,proto3" json:"errors,omitempty"`
 	// Execution details about the request processing.
 	ExecDetailsV2        *ExecDetailsV2 `protobuf:"bytes,3,opt,name=exec_details_v2,json=execDetailsV2,proto3" json:"exec_details_v2,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
@@ -1335,7 +1339,7 @@ func (m *PessimisticRollbackResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_PessimisticRollbackResponse proto.InternalMessageInfo
 
-func (m *PessimisticRollbackResponse) GetRegionError() *Error {
+func (m *PessimisticRollbackResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -1432,8 +1436,8 @@ func (m *TxnHeartBeatRequest) GetAdviseLockTtl() uint64 {
 }
 
 type TxnHeartBeatResponse struct {
-	RegionError *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error       *KeyError `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error       *KeyError      `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
 	// The TTL actually set on the requested lock.
 	LockTtl uint64 `protobuf:"varint,3,opt,name=lock_ttl,json=lockTtl,proto3" json:"lock_ttl,omitempty"`
 	// Execution details about the request processing.
@@ -1476,7 +1480,7 @@ func (m *TxnHeartBeatResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_TxnHeartBeatResponse proto.InternalMessageInfo
 
-func (m *TxnHeartBeatResponse) GetRegionError() *Error {
+func (m *TxnHeartBeatResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -1626,8 +1630,8 @@ func (m *CheckTxnStatusRequest) GetResolvingPessimisticLock() bool {
 }
 
 type CheckTxnStatusResponse struct {
-	RegionError *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error       *KeyError `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error       *KeyError      `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
 	// Three kinds of transaction status:
 	//   locked: lock_ttl > 0
 	//   committed: commit_version > 0
@@ -1677,7 +1681,7 @@ func (m *CheckTxnStatusResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CheckTxnStatusResponse proto.InternalMessageInfo
 
-func (m *CheckTxnStatusResponse) GetRegionError() *Error {
+func (m *CheckTxnStatusResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -1794,8 +1798,8 @@ func (m *CheckSecondaryLocksRequest) GetStartVersion() uint64 {
 }
 
 type CheckSecondaryLocksResponse struct {
-	RegionError *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error       *KeyError `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error       *KeyError      `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
 	// For each key in `keys` in `CheckSecondaryLocks`, there will be a lock in
 	// this list if there is a lock present and belonging to the correct transaction,
 	// nil otherwise.
@@ -1843,7 +1847,7 @@ func (m *CheckSecondaryLocksResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CheckSecondaryLocksResponse proto.InternalMessageInfo
 
-func (m *CheckSecondaryLocksResponse) GetRegionError() *Error {
+func (m *CheckSecondaryLocksResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -1955,8 +1959,8 @@ func (m *CommitRequest) GetCommitVersion() uint64 {
 }
 
 type CommitResponse struct {
-	RegionError *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error       *KeyError `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error       *KeyError      `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
 	// If the commit ts is derived from min_commit_ts, this field should be set.
 	CommitVersion uint64 `protobuf:"varint,3,opt,name=commit_version,json=commitVersion,proto3" json:"commit_version,omitempty"`
 	// Execution details about the request processing.
@@ -1999,7 +2003,7 @@ func (m *CommitResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CommitResponse proto.InternalMessageInfo
 
-func (m *CommitResponse) GetRegionError() *Error {
+func (m *CommitResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -2084,11 +2088,11 @@ func (m *ImportRequest) GetCommitVersion() uint64 {
 }
 
 type ImportResponse struct {
-	RegionError          *Error   `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error                string         `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *ImportResponse) Reset()         { *m = ImportResponse{} }
@@ -2124,7 +2128,7 @@ func (m *ImportResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ImportResponse proto.InternalMessageInfo
 
-func (m *ImportResponse) GetRegionError() *Error {
+func (m *ImportResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -2215,8 +2219,8 @@ func (m *CleanupRequest) GetCurrentTs() uint64 {
 }
 
 type CleanupResponse struct {
-	RegionError *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error       *KeyError `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error       *KeyError      `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
 	// Set if the key is already committed.
 	CommitVersion        uint64   `protobuf:"varint,3,opt,name=commit_version,json=commitVersion,proto3" json:"commit_version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -2257,7 +2261,7 @@ func (m *CleanupResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CleanupResponse proto.InternalMessageInfo
 
-func (m *CleanupResponse) GetRegionError() *Error {
+func (m *CleanupResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -2343,8 +2347,8 @@ func (m *BatchGetRequest) GetVersion() uint64 {
 }
 
 type BatchGetResponse struct {
-	RegionError *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Pairs       []*KvPair `protobuf:"bytes,2,rep,name=pairs,proto3" json:"pairs,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Pairs       []*KvPair      `protobuf:"bytes,2,rep,name=pairs,proto3" json:"pairs,omitempty"`
 	// Time and scan details when processing the request.
 	ExecDetailsV2 *ExecDetailsV2 `protobuf:"bytes,4,opt,name=exec_details_v2,json=execDetailsV2,proto3" json:"exec_details_v2,omitempty"`
 	// This KeyError exists when some key is locked but we cannot check locks of all keys.
@@ -2389,7 +2393,7 @@ func (m *BatchGetResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_BatchGetResponse proto.InternalMessageInfo
 
-func (m *BatchGetResponse) GetRegionError() *Error {
+func (m *BatchGetResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -2485,8 +2489,8 @@ func (m *BatchRollbackRequest) GetKeys() [][]byte {
 }
 
 type BatchRollbackResponse struct {
-	RegionError *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error       *KeyError `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error       *KeyError      `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
 	// Execution details about the request processing.
 	ExecDetailsV2        *ExecDetailsV2 `protobuf:"bytes,3,opt,name=exec_details_v2,json=execDetailsV2,proto3" json:"exec_details_v2,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
@@ -2527,7 +2531,7 @@ func (m *BatchRollbackResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_BatchRollbackResponse proto.InternalMessageInfo
 
-func (m *BatchRollbackResponse) GetRegionError() *Error {
+func (m *BatchRollbackResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -2634,8 +2638,8 @@ func (m *ScanLockRequest) GetEndKey() []byte {
 }
 
 type ScanLockResponse struct {
-	RegionError *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error       *KeyError `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error       *KeyError      `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
 	// Info on all locks found by the scan.
 	Locks []*LockInfo `protobuf:"bytes,3,rep,name=locks,proto3" json:"locks,omitempty"`
 	// Execution details about the request processing.
@@ -2678,7 +2682,7 @@ func (m *ScanLockResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ScanLockResponse proto.InternalMessageInfo
 
-func (m *ScanLockResponse) GetRegionError() *Error {
+func (m *ScanLockResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -2791,8 +2795,8 @@ func (m *ResolveLockRequest) GetKeys() [][]byte {
 }
 
 type ResolveLockResponse struct {
-	RegionError *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error       *KeyError `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error       *KeyError      `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
 	// Execution details about the request processing.
 	ExecDetailsV2        *ExecDetailsV2 `protobuf:"bytes,3,opt,name=exec_details_v2,json=execDetailsV2,proto3" json:"exec_details_v2,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
@@ -2833,7 +2837,7 @@ func (m *ResolveLockResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ResolveLockResponse proto.InternalMessageInfo
 
-func (m *ResolveLockResponse) GetRegionError() *Error {
+func (m *ResolveLockResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -2911,11 +2915,11 @@ func (m *GCRequest) GetSafePoint() uint64 {
 }
 
 type GCResponse struct {
-	RegionError          *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error                *KeyError `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
-	XXX_unrecognized     []byte    `json:"-"`
-	XXX_sizecache        int32     `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error                *KeyError      `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *GCResponse) Reset()         { *m = GCResponse{} }
@@ -2951,7 +2955,7 @@ func (m *GCResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GCResponse proto.InternalMessageInfo
 
-func (m *GCResponse) GetRegionError() *Error {
+func (m *GCResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -3042,11 +3046,11 @@ func (m *DeleteRangeRequest) GetNotifyOnly() bool {
 }
 
 type DeleteRangeResponse struct {
-	RegionError          *Error   `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error                string         `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *DeleteRangeResponse) Reset()         { *m = DeleteRangeResponse{} }
@@ -3082,7 +3086,7 @@ func (m *DeleteRangeResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_DeleteRangeResponse proto.InternalMessageInfo
 
-func (m *DeleteRangeResponse) GetRegionError() *Error {
+func (m *DeleteRangeResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -3160,13 +3164,13 @@ func (m *RawGetRequest) GetCf() string {
 }
 
 type RawGetResponse struct {
-	RegionError          *Error   `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	Value                []byte   `protobuf:"bytes,3,opt,name=value,proto3" json:"value,omitempty"`
-	NotFound             bool     `protobuf:"varint,4,opt,name=not_found,json=notFound,proto3" json:"not_found,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error                string         `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	Value                []byte         `protobuf:"bytes,3,opt,name=value,proto3" json:"value,omitempty"`
+	NotFound             bool           `protobuf:"varint,4,opt,name=not_found,json=notFound,proto3" json:"not_found,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *RawGetResponse) Reset()         { *m = RawGetResponse{} }
@@ -3202,7 +3206,7 @@ func (m *RawGetResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RawGetResponse proto.InternalMessageInfo
 
-func (m *RawGetResponse) GetRegionError() *Error {
+func (m *RawGetResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -3294,11 +3298,11 @@ func (m *RawBatchGetRequest) GetCf() string {
 }
 
 type RawBatchGetResponse struct {
-	RegionError          *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Pairs                []*KvPair `protobuf:"bytes,2,rep,name=pairs,proto3" json:"pairs,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
-	XXX_unrecognized     []byte    `json:"-"`
-	XXX_sizecache        int32     `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Pairs                []*KvPair      `protobuf:"bytes,2,rep,name=pairs,proto3" json:"pairs,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *RawBatchGetResponse) Reset()         { *m = RawBatchGetResponse{} }
@@ -3334,7 +3338,7 @@ func (m *RawBatchGetResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RawBatchGetResponse proto.InternalMessageInfo
 
-func (m *RawBatchGetResponse) GetRegionError() *Error {
+func (m *RawBatchGetResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -3436,11 +3440,11 @@ func (m *RawPutRequest) GetForCas() bool {
 }
 
 type RawPutResponse struct {
-	RegionError          *Error   `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error                string         `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *RawPutResponse) Reset()         { *m = RawPutResponse{} }
@@ -3476,7 +3480,7 @@ func (m *RawPutResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RawPutResponse proto.InternalMessageInfo
 
-func (m *RawPutResponse) GetRegionError() *Error {
+func (m *RawPutResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -3582,11 +3586,11 @@ func (m *RawBatchPutRequest) GetTtls() []uint64 {
 }
 
 type RawBatchPutResponse struct {
-	RegionError          *Error   `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error                string         `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *RawBatchPutResponse) Reset()         { *m = RawBatchPutResponse{} }
@@ -3622,7 +3626,7 @@ func (m *RawBatchPutResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RawBatchPutResponse proto.InternalMessageInfo
 
-func (m *RawBatchPutResponse) GetRegionError() *Error {
+func (m *RawBatchPutResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -3708,11 +3712,11 @@ func (m *RawDeleteRequest) GetForCas() bool {
 }
 
 type RawDeleteResponse struct {
-	RegionError          *Error   `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error                string         `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *RawDeleteResponse) Reset()         { *m = RawDeleteResponse{} }
@@ -3748,7 +3752,7 @@ func (m *RawDeleteResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RawDeleteResponse proto.InternalMessageInfo
 
-func (m *RawDeleteResponse) GetRegionError() *Error {
+func (m *RawDeleteResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -3834,11 +3838,11 @@ func (m *RawBatchDeleteRequest) GetForCas() bool {
 }
 
 type RawBatchDeleteResponse struct {
-	RegionError          *Error   `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error                string         `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *RawBatchDeleteResponse) Reset()         { *m = RawBatchDeleteResponse{} }
@@ -3874,7 +3878,7 @@ func (m *RawBatchDeleteResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RawBatchDeleteResponse proto.InternalMessageInfo
 
-func (m *RawBatchDeleteResponse) GetRegionError() *Error {
+func (m *RawBatchDeleteResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -3986,11 +3990,11 @@ func (m *RawScanRequest) GetEndKey() []byte {
 }
 
 type RawScanResponse struct {
-	RegionError          *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Kvs                  []*KvPair `protobuf:"bytes,2,rep,name=kvs,proto3" json:"kvs,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
-	XXX_unrecognized     []byte    `json:"-"`
-	XXX_sizecache        int32     `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Kvs                  []*KvPair      `protobuf:"bytes,2,rep,name=kvs,proto3" json:"kvs,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *RawScanResponse) Reset()         { *m = RawScanResponse{} }
@@ -4026,7 +4030,7 @@ func (m *RawScanResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RawScanResponse proto.InternalMessageInfo
 
-func (m *RawScanResponse) GetRegionError() *Error {
+func (m *RawScanResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -4112,11 +4116,11 @@ func (m *RawDeleteRangeRequest) GetCf() string {
 }
 
 type RawDeleteRangeResponse struct {
-	RegionError          *Error   `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error                string         `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *RawDeleteRangeResponse) Reset()         { *m = RawDeleteRangeResponse{} }
@@ -4152,7 +4156,7 @@ func (m *RawDeleteRangeResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RawDeleteRangeResponse proto.InternalMessageInfo
 
-func (m *RawDeleteRangeResponse) GetRegionError() *Error {
+func (m *RawDeleteRangeResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -4254,11 +4258,11 @@ func (m *RawBatchScanRequest) GetReverse() bool {
 }
 
 type RawBatchScanResponse struct {
-	RegionError          *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Kvs                  []*KvPair `protobuf:"bytes,2,rep,name=kvs,proto3" json:"kvs,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
-	XXX_unrecognized     []byte    `json:"-"`
-	XXX_sizecache        int32     `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Kvs                  []*KvPair      `protobuf:"bytes,2,rep,name=kvs,proto3" json:"kvs,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *RawBatchScanResponse) Reset()         { *m = RawBatchScanResponse{} }
@@ -4294,7 +4298,7 @@ func (m *RawBatchScanResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RawBatchScanResponse proto.InternalMessageInfo
 
-func (m *RawBatchScanResponse) GetRegionError() *Error {
+func (m *RawBatchScanResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -4372,11 +4376,11 @@ func (m *UnsafeDestroyRangeRequest) GetEndKey() []byte {
 }
 
 type UnsafeDestroyRangeResponse struct {
-	RegionError          *Error   `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error                string         `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *UnsafeDestroyRangeResponse) Reset()         { *m = UnsafeDestroyRangeResponse{} }
@@ -4412,7 +4416,7 @@ func (m *UnsafeDestroyRangeResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_UnsafeDestroyRangeResponse proto.InternalMessageInfo
 
-func (m *UnsafeDestroyRangeResponse) GetRegionError() *Error {
+func (m *UnsafeDestroyRangeResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -4949,13 +4953,13 @@ func (m *SplitRegionRequest) GetIsRawKv() bool {
 }
 
 type SplitRegionResponse struct {
-	RegionError          *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Left                 *Region   `protobuf:"bytes,2,opt,name=left,proto3" json:"left,omitempty"`   // Deprecated: Do not use.
-	Right                *Region   `protobuf:"bytes,3,opt,name=right,proto3" json:"right,omitempty"` // Deprecated: Do not use.
-	Regions              []*Region `protobuf:"bytes,4,rep,name=regions,proto3" json:"regions,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
-	XXX_unrecognized     []byte    `json:"-"`
-	XXX_sizecache        int32     `json:"-"`
+	RegionError          *errorpb.Error   `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Left                 *metapb.Region   `protobuf:"bytes,2,opt,name=left,proto3" json:"left,omitempty"`   // Deprecated: Do not use.
+	Right                *metapb.Region   `protobuf:"bytes,3,opt,name=right,proto3" json:"right,omitempty"` // Deprecated: Do not use.
+	Regions              []*metapb.Region `protobuf:"bytes,4,rep,name=regions,proto3" json:"regions,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
 }
 
 func (m *SplitRegionResponse) Reset()         { *m = SplitRegionResponse{} }
@@ -4991,7 +4995,7 @@ func (m *SplitRegionResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_SplitRegionResponse proto.InternalMessageInfo
 
-func (m *SplitRegionResponse) GetRegionError() *Error {
+func (m *SplitRegionResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -4999,7 +5003,7 @@ func (m *SplitRegionResponse) GetRegionError() *Error {
 }
 
 // Deprecated: Do not use.
-func (m *SplitRegionResponse) GetLeft() *Region {
+func (m *SplitRegionResponse) GetLeft() *metapb.Region {
 	if m != nil {
 		return m.Left
 	}
@@ -5007,14 +5011,14 @@ func (m *SplitRegionResponse) GetLeft() *Region {
 }
 
 // Deprecated: Do not use.
-func (m *SplitRegionResponse) GetRight() *Region {
+func (m *SplitRegionResponse) GetRight() *metapb.Region {
 	if m != nil {
 		return m.Right
 	}
 	return nil
 }
 
-func (m *SplitRegionResponse) GetRegions() []*Region {
+func (m *SplitRegionResponse) GetRegions() []*metapb.Region {
 	if m != nil {
 		return m.Regions
 	}
@@ -5088,8 +5092,8 @@ func (m *ReadIndexRequest) GetRanges() []*KeyRange {
 }
 
 type ReadIndexResponse struct {
-	RegionError *Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	ReadIndex   uint64 `protobuf:"varint,2,opt,name=read_index,json=readIndex,proto3" json:"read_index,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	ReadIndex   uint64         `protobuf:"varint,2,opt,name=read_index,json=readIndex,proto3" json:"read_index,omitempty"`
 	// If `locked` is set, this read request is blocked by a lock.
 	// The lock should be returned to the client.
 	Locked               *LockInfo `protobuf:"bytes,3,opt,name=locked,proto3" json:"locked,omitempty"`
@@ -5131,7 +5135,7 @@ func (m *ReadIndexResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ReadIndexResponse proto.InternalMessageInfo
 
-func (m *ReadIndexResponse) GetRegionError() *Error {
+func (m *ReadIndexResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -5208,12 +5212,12 @@ func (m *MvccGetByKeyRequest) GetKey() []byte {
 }
 
 type MvccGetByKeyResponse struct {
-	RegionError          *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error                string    `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	Info                 *MvccInfo `protobuf:"bytes,3,opt,name=info,proto3" json:"info,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
-	XXX_unrecognized     []byte    `json:"-"`
-	XXX_sizecache        int32     `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error                string         `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	Info                 *MvccInfo      `protobuf:"bytes,3,opt,name=info,proto3" json:"info,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *MvccGetByKeyResponse) Reset()         { *m = MvccGetByKeyResponse{} }
@@ -5249,7 +5253,7 @@ func (m *MvccGetByKeyResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MvccGetByKeyResponse proto.InternalMessageInfo
 
-func (m *MvccGetByKeyResponse) GetRegionError() *Error {
+func (m *MvccGetByKeyResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -5326,13 +5330,13 @@ func (m *MvccGetByStartTsRequest) GetStartTs() uint64 {
 }
 
 type MvccGetByStartTsResponse struct {
-	RegionError          *Error    `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error                string    `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	Key                  []byte    `protobuf:"bytes,3,opt,name=key,proto3" json:"key,omitempty"`
-	Info                 *MvccInfo `protobuf:"bytes,4,opt,name=info,proto3" json:"info,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
-	XXX_unrecognized     []byte    `json:"-"`
-	XXX_sizecache        int32     `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error                string         `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	Key                  []byte         `protobuf:"bytes,3,opt,name=key,proto3" json:"key,omitempty"`
+	Info                 *MvccInfo      `protobuf:"bytes,4,opt,name=info,proto3" json:"info,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *MvccGetByStartTsResponse) Reset()         { *m = MvccGetByStartTsResponse{} }
@@ -5368,7 +5372,7 @@ func (m *MvccGetByStartTsResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MvccGetByStartTsResponse proto.InternalMessageInfo
 
-func (m *MvccGetByStartTsResponse) GetRegionError() *Error {
+func (m *MvccGetByStartTsResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -5398,14 +5402,14 @@ func (m *MvccGetByStartTsResponse) GetInfo() *MvccInfo {
 
 // Miscellaneous metadata attached to most requests.
 type Context struct {
-	RegionId       uint64         `protobuf:"varint,1,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
-	RegionEpoch    *RegionEpoch   `protobuf:"bytes,2,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
-	Peer           *Peer          `protobuf:"bytes,3,opt,name=peer,proto3" json:"peer,omitempty"`
-	Term           uint64         `protobuf:"varint,5,opt,name=term,proto3" json:"term,omitempty"`
-	Priority       CommandPri     `protobuf:"varint,6,opt,name=priority,proto3,enum=kvrpcpb.CommandPri" json:"priority,omitempty"`
-	IsolationLevel IsolationLevel `protobuf:"varint,7,opt,name=isolation_level,json=isolationLevel,proto3,enum=kvrpcpb.IsolationLevel" json:"isolation_level,omitempty"`
-	NotFillCache   bool           `protobuf:"varint,8,opt,name=not_fill_cache,json=notFillCache,proto3" json:"not_fill_cache,omitempty"`
-	SyncLog        bool           `protobuf:"varint,9,opt,name=sync_log,json=syncLog,proto3" json:"sync_log,omitempty"`
+	RegionId       uint64              `protobuf:"varint,1,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
+	RegionEpoch    *metapb.RegionEpoch `protobuf:"bytes,2,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
+	Peer           *metapb.Peer        `protobuf:"bytes,3,opt,name=peer,proto3" json:"peer,omitempty"`
+	Term           uint64              `protobuf:"varint,5,opt,name=term,proto3" json:"term,omitempty"`
+	Priority       CommandPri          `protobuf:"varint,6,opt,name=priority,proto3,enum=kvrpcpb.CommandPri" json:"priority,omitempty"`
+	IsolationLevel IsolationLevel      `protobuf:"varint,7,opt,name=isolation_level,json=isolationLevel,proto3,enum=kvrpcpb.IsolationLevel" json:"isolation_level,omitempty"`
+	NotFillCache   bool                `protobuf:"varint,8,opt,name=not_fill_cache,json=notFillCache,proto3" json:"not_fill_cache,omitempty"`
+	SyncLog        bool                `protobuf:"varint,9,opt,name=sync_log,json=syncLog,proto3" json:"sync_log,omitempty"`
 	// True means execution time statistics should be recorded and returned.
 	RecordTimeStat bool `protobuf:"varint,10,opt,name=record_time_stat,json=recordTimeStat,proto3" json:"record_time_stat,omitempty"`
 	// True means RocksDB scan statistics should be recorded and returned.
@@ -5436,7 +5440,7 @@ type Context struct {
 	// transactions are committed and theirs commit_ts <= read request's start_ts.
 	CommittedLocks []uint64 `protobuf:"varint,22,rep,packed,name=committed_locks,json=committedLocks,proto3" json:"committed_locks,omitempty"`
 	// The informantion to trace a request sent to TiKV.
-	TraceContext *TraceContext `protobuf:"bytes,23,opt,name=trace_context,json=traceContext,proto3" json:"trace_context,omitempty"`
+	TraceContext *tracepb.TraceContext `protobuf:"bytes,23,opt,name=trace_context,json=traceContext,proto3" json:"trace_context,omitempty"`
 	// The source of the request, will be used as the tag of the metrics reporting.
 	// This field can be set for any requests that require to report metrics with any extra labels.
 	RequestSource        string   `protobuf:"bytes,24,opt,name=request_source,json=requestSource,proto3" json:"request_source,omitempty"`
@@ -5485,14 +5489,14 @@ func (m *Context) GetRegionId() uint64 {
 	return 0
 }
 
-func (m *Context) GetRegionEpoch() *RegionEpoch {
+func (m *Context) GetRegionEpoch() *metapb.RegionEpoch {
 	if m != nil {
 		return m.RegionEpoch
 	}
 	return nil
 }
 
-func (m *Context) GetPeer() *Peer {
+func (m *Context) GetPeer() *metapb.Peer {
 	if m != nil {
 		return m.Peer
 	}
@@ -5625,7 +5629,7 @@ func (m *Context) GetCommittedLocks() []uint64 {
 	return nil
 }
 
-func (m *Context) GetTraceContext() *TraceContext {
+func (m *Context) GetTraceContext() *tracepb.TraceContext {
 	if m != nil {
 		return m.TraceContext
 	}
@@ -6006,13 +6010,13 @@ func (m *AlreadyExist) GetKey() []byte {
 }
 
 type Deadlock struct {
-	LockTs               uint64          `protobuf:"varint,1,opt,name=lock_ts,json=lockTs,proto3" json:"lock_ts,omitempty"`
-	LockKey              []byte          `protobuf:"bytes,2,opt,name=lock_key,json=lockKey,proto3" json:"lock_key,omitempty"`
-	DeadlockKeyHash      uint64          `protobuf:"varint,3,opt,name=deadlock_key_hash,json=deadlockKeyHash,proto3" json:"deadlock_key_hash,omitempty"`
-	WaitChain            []*WaitForEntry `protobuf:"bytes,4,rep,name=wait_chain,json=waitChain,proto3" json:"wait_chain,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
-	XXX_unrecognized     []byte          `json:"-"`
-	XXX_sizecache        int32           `json:"-"`
+	LockTs               uint64                   `protobuf:"varint,1,opt,name=lock_ts,json=lockTs,proto3" json:"lock_ts,omitempty"`
+	LockKey              []byte                   `protobuf:"bytes,2,opt,name=lock_key,json=lockKey,proto3" json:"lock_key,omitempty"`
+	DeadlockKeyHash      uint64                   `protobuf:"varint,3,opt,name=deadlock_key_hash,json=deadlockKeyHash,proto3" json:"deadlock_key_hash,omitempty"`
+	WaitChain            []*deadlock.WaitForEntry `protobuf:"bytes,4,rep,name=wait_chain,json=waitChain,proto3" json:"wait_chain,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                 `json:"-"`
+	XXX_unrecognized     []byte                   `json:"-"`
+	XXX_sizecache        int32                    `json:"-"`
 }
 
 func (m *Deadlock) Reset()         { *m = Deadlock{} }
@@ -6069,7 +6073,7 @@ func (m *Deadlock) GetDeadlockKeyHash() uint64 {
 	return 0
 }
 
-func (m *Deadlock) GetWaitChain() []*WaitForEntry {
+func (m *Deadlock) GetWaitChain() []*deadlock.WaitForEntry {
 	if m != nil {
 		return m.WaitChain
 	}
@@ -7530,14 +7534,14 @@ func (m *KeyRange) GetEndKey() []byte {
 }
 
 type LeaderInfo struct {
-	RegionId             uint64       `protobuf:"varint,1,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
-	PeerId               uint64       `protobuf:"varint,2,opt,name=peer_id,json=peerId,proto3" json:"peer_id,omitempty"`
-	Term                 uint64       `protobuf:"varint,3,opt,name=term,proto3" json:"term,omitempty"`
-	RegionEpoch          *RegionEpoch `protobuf:"bytes,4,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
-	ReadState            *ReadState   `protobuf:"bytes,5,opt,name=read_state,json=readState,proto3" json:"read_state,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
+	RegionId             uint64              `protobuf:"varint,1,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
+	PeerId               uint64              `protobuf:"varint,2,opt,name=peer_id,json=peerId,proto3" json:"peer_id,omitempty"`
+	Term                 uint64              `protobuf:"varint,3,opt,name=term,proto3" json:"term,omitempty"`
+	RegionEpoch          *metapb.RegionEpoch `protobuf:"bytes,4,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
+	ReadState            *ReadState          `protobuf:"bytes,5,opt,name=read_state,json=readState,proto3" json:"read_state,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
+	XXX_unrecognized     []byte              `json:"-"`
+	XXX_sizecache        int32               `json:"-"`
 }
 
 func (m *LeaderInfo) Reset()         { *m = LeaderInfo{} }
@@ -7594,7 +7598,7 @@ func (m *LeaderInfo) GetTerm() uint64 {
 	return 0
 }
 
-func (m *LeaderInfo) GetRegionEpoch() *RegionEpoch {
+func (m *LeaderInfo) GetRegionEpoch() *metapb.RegionEpoch {
 	if m != nil {
 		return m.RegionEpoch
 	}
@@ -7933,13 +7937,13 @@ func (m *RawGetKeyTTLRequest) GetCf() string {
 }
 
 type RawGetKeyTTLResponse struct {
-	RegionError          *Error   `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	Ttl                  uint64   `protobuf:"varint,3,opt,name=ttl,proto3" json:"ttl,omitempty"`
-	NotFound             bool     `protobuf:"varint,4,opt,name=not_found,json=notFound,proto3" json:"not_found,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error                string         `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	Ttl                  uint64         `protobuf:"varint,3,opt,name=ttl,proto3" json:"ttl,omitempty"`
+	NotFound             bool           `protobuf:"varint,4,opt,name=not_found,json=notFound,proto3" json:"not_found,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *RawGetKeyTTLResponse) Reset()         { *m = RawGetKeyTTLResponse{} }
@@ -7975,7 +7979,7 @@ func (m *RawGetKeyTTLResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RawGetKeyTTLResponse proto.InternalMessageInfo
 
-func (m *RawGetKeyTTLResponse) GetRegionError() *Error {
+func (m *RawGetKeyTTLResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -8099,9 +8103,9 @@ func (m *RawCASRequest) GetTtl() uint64 {
 }
 
 type RawCASResponse struct {
-	RegionError *Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error       string `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	Succeed     bool   `protobuf:"varint,3,opt,name=succeed,proto3" json:"succeed,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error       string         `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	Succeed     bool           `protobuf:"varint,3,opt,name=succeed,proto3" json:"succeed,omitempty"`
 	// The previous value regardless of whether the comparison is succeed.
 	PreviousNotExist     bool     `protobuf:"varint,4,opt,name=previous_not_exist,json=previousNotExist,proto3" json:"previous_not_exist,omitempty"`
 	PreviousValue        []byte   `protobuf:"bytes,5,opt,name=previous_value,json=previousValue,proto3" json:"previous_value,omitempty"`
@@ -8143,7 +8147,7 @@ func (m *RawCASResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RawCASResponse proto.InternalMessageInfo
 
-func (m *RawCASResponse) GetRegionError() *Error {
+func (m *RawCASResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -8226,12 +8230,12 @@ func (m *GetLockWaitInfoRequest) GetContext() *Context {
 }
 
 type GetLockWaitInfoResponse struct {
-	RegionError          *Error          `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error                string          `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	Entries              []*WaitForEntry `protobuf:"bytes,3,rep,name=entries,proto3" json:"entries,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
-	XXX_unrecognized     []byte          `json:"-"`
-	XXX_sizecache        int32           `json:"-"`
+	RegionError          *errorpb.Error           `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error                string                   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	Entries              []*deadlock.WaitForEntry `protobuf:"bytes,3,rep,name=entries,proto3" json:"entries,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                 `json:"-"`
+	XXX_unrecognized     []byte                   `json:"-"`
+	XXX_sizecache        int32                    `json:"-"`
 }
 
 func (m *GetLockWaitInfoResponse) Reset()         { *m = GetLockWaitInfoResponse{} }
@@ -8267,7 +8271,7 @@ func (m *GetLockWaitInfoResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GetLockWaitInfoResponse proto.InternalMessageInfo
 
-func (m *GetLockWaitInfoResponse) GetRegionError() *Error {
+func (m *GetLockWaitInfoResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -8281,7 +8285,7 @@ func (m *GetLockWaitInfoResponse) GetError() string {
 	return ""
 }
 
-func (m *GetLockWaitInfoResponse) GetEntries() []*WaitForEntry {
+func (m *GetLockWaitInfoResponse) GetEntries() []*deadlock.WaitForEntry {
 	if m != nil {
 		return m.Entries
 	}
@@ -8369,7 +8373,7 @@ func (m *RawCoprocessorRequest) GetData() []byte {
 }
 
 type RawCoprocessorResponse struct {
-	RegionError *Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
 	// Error message for cases like if no coprocessor with a matching name is found
 	// or on a version mismatch between plugin_api and the coprocessor.
 	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
@@ -8412,7 +8416,7 @@ func (m *RawCoprocessorResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RawCoprocessorResponse proto.InternalMessageInfo
 
-func (m *RawCoprocessorResponse) GetRegionError() *Error {
+func (m *RawCoprocessorResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -8497,14 +8501,14 @@ func (m *RawChecksumRequest) GetRanges() []*KeyRange {
 }
 
 type RawChecksumResponse struct {
-	RegionError          *Error   `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
-	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	Checksum             uint64   `protobuf:"varint,3,opt,name=checksum,proto3" json:"checksum,omitempty"`
-	TotalKvs             uint64   `protobuf:"varint,4,opt,name=total_kvs,json=totalKvs,proto3" json:"total_kvs,omitempty"`
-	TotalBytes           uint64   `protobuf:"varint,5,opt,name=total_bytes,json=totalBytes,proto3" json:"total_bytes,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	RegionError          *errorpb.Error `protobuf:"bytes,1,opt,name=region_error,json=regionError,proto3" json:"region_error,omitempty"`
+	Error                string         `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	Checksum             uint64         `protobuf:"varint,3,opt,name=checksum,proto3" json:"checksum,omitempty"`
+	TotalKvs             uint64         `protobuf:"varint,4,opt,name=total_kvs,json=totalKvs,proto3" json:"total_kvs,omitempty"`
+	TotalBytes           uint64         `protobuf:"varint,5,opt,name=total_bytes,json=totalBytes,proto3" json:"total_bytes,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *RawChecksumResponse) Reset()         { *m = RawChecksumResponse{} }
@@ -8540,7 +8544,7 @@ func (m *RawChecksumResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RawChecksumResponse proto.InternalMessageInfo
 
-func (m *RawChecksumResponse) GetRegionError() *Error {
+func (m *RawChecksumResponse) GetRegionError() *errorpb.Error {
 	if m != nil {
 		return m.RegionError
 	}
@@ -8855,13 +8859,13 @@ type CompactRequest struct {
 	// The physical table that will be compacted.
 	//
 	// TODO: this is information that TiKV doesn't need to know.
-	// See https://github.com/pingcap/kvproto/issues/912
+	// See https://github.com/ab111404212/kvproto/issues/912
 	PhysicalTableId int64 `protobuf:"varint,2,opt,name=physical_table_id,json=physicalTableId,proto3" json:"physical_table_id,omitempty"`
 	// The logical table id of the compaction. When receiving parallel requests with the same
 	// logical table id, err_compact_in_progress will be returned.
 	//
 	// TODO: this is information that TiKV doesn't need to know.
-	// See https://github.com/pingcap/kvproto/issues/912
+	// See https://github.com/ab111404212/kvproto/issues/912
 	LogicalTableId       int64    `protobuf:"varint,3,opt,name=logical_table_id,json=logicalTableId,proto3" json:"logical_table_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -20191,7 +20195,7 @@ func (m *GetResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -20656,7 +20660,7 @@ func (m *ScanResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -21263,7 +21267,7 @@ func (m *PrewriteResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -21788,7 +21792,7 @@ func (m *PessimisticLockResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -22257,7 +22261,7 @@ func (m *PessimisticRollbackResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -22573,7 +22577,7 @@ func (m *TxnHeartBeatResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -22989,7 +22993,7 @@ func (m *CheckTxnStatusResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -23379,7 +23383,7 @@ func (m *CheckSecondaryLocksResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -23748,7 +23752,7 @@ func (m *CommitResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -24030,7 +24034,7 @@ func (m *ImportResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -24308,7 +24312,7 @@ func (m *CleanupResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -24588,7 +24592,7 @@ func (m *BatchGetResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -24919,7 +24923,7 @@ func (m *BatchRollbackResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -25271,7 +25275,7 @@ func (m *ScanLockResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -25655,7 +25659,7 @@ func (m *ResolveLockResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -25920,7 +25924,7 @@ func (m *GCResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -26218,7 +26222,7 @@ func (m *DeleteRangeResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -26490,7 +26494,7 @@ func (m *RawGetResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -26814,7 +26818,7 @@ func (m *RawBatchGetResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -27161,7 +27165,7 @@ func (m *RawPutResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -27548,7 +27552,7 @@ func (m *RawBatchPutResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -27840,7 +27844,7 @@ func (m *RawDeleteResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -28130,7 +28134,7 @@ func (m *RawBatchDeleteResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -28495,7 +28499,7 @@ func (m *RawScanResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -28803,7 +28807,7 @@ func (m *RawDeleteRangeResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -29134,7 +29138,7 @@ func (m *RawBatchScanResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -29410,7 +29414,7 @@ func (m *UnsafeDestroyRangeResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -30599,7 +30603,7 @@ func (m *SplitRegionResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -30635,7 +30639,7 @@ func (m *SplitRegionResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Left == nil {
-				m.Left = &Region{}
+				m.Left = &metapb.Region{}
 			}
 			if err := m.Left.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -30671,7 +30675,7 @@ func (m *SplitRegionResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Right == nil {
-				m.Right = &Region{}
+				m.Right = &metapb.Region{}
 			}
 			if err := m.Right.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -30706,7 +30710,7 @@ func (m *SplitRegionResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Regions = append(m.Regions, &Region{})
+			m.Regions = append(m.Regions, &metapb.Region{})
 			if err := m.Regions[len(m.Regions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -30932,7 +30936,7 @@ func (m *ReadIndexResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -31195,7 +31199,7 @@ func (m *MvccGetByKeyResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -31456,7 +31460,7 @@ func (m *MvccGetByStartTsResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -31664,7 +31668,7 @@ func (m *Context) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionEpoch == nil {
-				m.RegionEpoch = &RegionEpoch{}
+				m.RegionEpoch = &metapb.RegionEpoch{}
 			}
 			if err := m.RegionEpoch.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -31700,7 +31704,7 @@ func (m *Context) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Peer == nil {
-				m.Peer = &Peer{}
+				m.Peer = &metapb.Peer{}
 			}
 			if err := m.Peer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -32214,7 +32218,7 @@ func (m *Context) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.TraceContext == nil {
-				m.TraceContext = &TraceContext{}
+				m.TraceContext = &tracepb.TraceContext{}
 			}
 			if err := m.TraceContext.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -33353,7 +33357,7 @@ func (m *Deadlock) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.WaitChain = append(m.WaitChain, &WaitForEntry{})
+			m.WaitChain = append(m.WaitChain, &deadlock.WaitForEntry{})
 			if err := m.WaitChain[len(m.WaitChain)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -36510,7 +36514,7 @@ func (m *LeaderInfo) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionEpoch == nil {
-				m.RegionEpoch = &RegionEpoch{}
+				m.RegionEpoch = &metapb.RegionEpoch{}
 			}
 			if err := m.RegionEpoch.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -37282,7 +37286,7 @@ func (m *RawGetKeyTTLResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -37700,7 +37704,7 @@ func (m *RawCASResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -37980,7 +37984,7 @@ func (m *GetLockWaitInfoResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -38047,7 +38051,7 @@ func (m *GetLockWaitInfoResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Entries = append(m.Entries, &WaitForEntry{})
+			m.Entries = append(m.Entries, &deadlock.WaitForEntry{})
 			if err := m.Entries[len(m.Entries)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -38352,7 +38356,7 @@ func (m *RawCoprocessorResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -38645,7 +38649,7 @@ func (m *RawChecksumResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionError == nil {
-				m.RegionError = &Error{}
+				m.RegionError = &errorpb.Error{}
 			}
 			if err := m.RegionError.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err

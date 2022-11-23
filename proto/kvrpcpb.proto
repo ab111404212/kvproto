@@ -959,7 +959,7 @@ message ExecDetails {
     // Available when ctx.record_scan_stat = true or meet slow query.
     ScanDetail scan_detail = 2;
 
-    // See https://github.com/pingcap/kvproto/pull/689
+    // See https://github.com/ab111404212/kvproto/pull/689
     reserved 3;
     reserved 4;
 }
@@ -1256,14 +1256,14 @@ message CompactRequest {
     // The physical table that will be compacted.
     //
     // TODO: this is information that TiKV doesn't need to know.
-    // See https://github.com/pingcap/kvproto/issues/912
+    // See https://github.com/ab111404212/kvproto/issues/912
     int64 physical_table_id = 2;
 
     // The logical table id of the compaction. When receiving parallel requests with the same
     // logical table id, err_compact_in_progress will be returned.
     //
     // TODO: this is information that TiKV doesn't need to know.
-    // See https://github.com/pingcap/kvproto/issues/912
+    // See https://github.com/ab111404212/kvproto/issues/912
     int64 logical_table_id = 3;
 }
 

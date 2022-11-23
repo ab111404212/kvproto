@@ -10,6 +10,9 @@ import (
 	"math"
 	math_bits "math/bits"
 
+	encryptionpb "github.com/ab111404212/kvproto/pkg/encryptionpb"
+	errorpb "github.com/ab111404212/kvproto/pkg/errorpb"
+	kvrpcpb "github.com/ab111404212/kvproto/pkg/kvrpcpb"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
@@ -131,7 +134,7 @@ type BackupMeta struct {
 	// the backup result into `backupmeta` file
 	BackupResult string `protobuf:"bytes,17,opt,name=backup_result,json=backupResult,proto3" json:"backup_result,omitempty"`
 	// API version implies the encode of the key and value.
-	ApiVersion APIVersion `protobuf:"varint,18,opt,name=api_version,json=apiVersion,proto3,enum=kvrpcpb.APIVersion" json:"api_version,omitempty"`
+	ApiVersion kvrpcpb.APIVersion `protobuf:"varint,18,opt,name=api_version,json=apiVersion,proto3,enum=kvrpcpb.APIVersion" json:"api_version,omitempty"`
 	// the placement policy info in backup cluster. we assume the policy won't be too much for one cluster.
 	Policies []*PlacementPolicy `protobuf:"bytes,19,rep,name=policies,proto3" json:"policies,omitempty"`
 	// new_collations_enabled specifies the config `new_collations_enabled_on_first_bootstrap` in tidb.
@@ -286,11 +289,11 @@ func (m *BackupMeta) GetBackupResult() string {
 	return ""
 }
 
-func (m *BackupMeta) GetApiVersion() APIVersion {
+func (m *BackupMeta) GetApiVersion() kvrpcpb.APIVersion {
 	if m != nil {
 		return m.ApiVersion
 	}
-	return APIVersion_V1
+	return kvrpcpb.APIVersion_V1
 }
 
 func (m *BackupMeta) GetPolicies() []*PlacementPolicy {
@@ -846,10 +849,10 @@ type Error_ClusterIdError struct {
 	ClusterIdError *ClusterIDError `protobuf:"bytes,3,opt,name=cluster_id_error,json=clusterIdError,proto3,oneof" json:"cluster_id_error,omitempty"`
 }
 type Error_KvError struct {
-	KvError *KeyError `protobuf:"bytes,4,opt,name=kv_error,json=kvError,proto3,oneof" json:"kv_error,omitempty"`
+	KvError *kvrpcpb.KeyError `protobuf:"bytes,4,opt,name=kv_error,json=kvError,proto3,oneof" json:"kv_error,omitempty"`
 }
 type Error_RegionError struct {
-	RegionError *Error `protobuf:"bytes,5,opt,name=region_error,json=regionError,proto3,oneof" json:"region_error,omitempty"`
+	RegionError *errorpb.Error `protobuf:"bytes,5,opt,name=region_error,json=regionError,proto3,oneof" json:"region_error,omitempty"`
 }
 
 func (*Error_ClusterIdError) isError_Detail() {}
@@ -877,14 +880,14 @@ func (m *Error) GetClusterIdError() *ClusterIDError {
 	return nil
 }
 
-func (m *Error) GetKvError() *KeyError {
+func (m *Error) GetKvError() *kvrpcpb.KeyError {
 	if x, ok := m.GetDetail().(*Error_KvError); ok {
 		return x.KvError
 	}
 	return nil
 }
 
-func (m *Error) GetRegionError() *Error {
+func (m *Error) GetRegionError() *errorpb.Error {
 	if x, ok := m.GetDetail().(*Error_RegionError); ok {
 		return x.RegionError
 	}
@@ -901,11 +904,11 @@ func (*Error) XXX_OneofWrappers() []interface{} {
 }
 
 type CipherInfo struct {
-	CipherType           EncryptionMethod `protobuf:"varint,1,opt,name=cipher_type,json=cipherType,proto3,enum=encryptionpb.EncryptionMethod" json:"cipher_type,omitempty"`
-	CipherKey            []byte           `protobuf:"bytes,2,opt,name=cipher_key,json=cipherKey,proto3" json:"cipher_key,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
-	XXX_unrecognized     []byte           `json:"-"`
-	XXX_sizecache        int32            `json:"-"`
+	CipherType           encryptionpb.EncryptionMethod `protobuf:"varint,1,opt,name=cipher_type,json=cipherType,proto3,enum=encryptionpb.EncryptionMethod" json:"cipher_type,omitempty"`
+	CipherKey            []byte                        `protobuf:"bytes,2,opt,name=cipher_key,json=cipherKey,proto3" json:"cipher_key,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                      `json:"-"`
+	XXX_unrecognized     []byte                        `json:"-"`
+	XXX_sizecache        int32                         `json:"-"`
 }
 
 func (m *CipherInfo) Reset()         { *m = CipherInfo{} }
@@ -941,11 +944,11 @@ func (m *CipherInfo) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CipherInfo proto.InternalMessageInfo
 
-func (m *CipherInfo) GetCipherType() EncryptionMethod {
+func (m *CipherInfo) GetCipherType() encryptionpb.EncryptionMethod {
 	if m != nil {
 		return m.CipherType
 	}
-	return EncryptionMethod_UNKNOWN
+	return encryptionpb.EncryptionMethod_UNKNOWN
 }
 
 func (m *CipherInfo) GetCipherKey() []byte {
@@ -982,10 +985,10 @@ type BackupRequest struct {
 	//    to TiKV clusters whose api version is set to v1.
 	// 2. "v2": the generated SST files are encoded with api-v2, can be restored
 	//    to TiKV clusters whose api version is set to v2.
-	DstApiVersion        APIVersion `protobuf:"varint,15,opt,name=dst_api_version,json=dstApiVersion,proto3,enum=kvrpcpb.APIVersion" json:"dst_api_version,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
-	XXX_unrecognized     []byte     `json:"-"`
-	XXX_sizecache        int32      `json:"-"`
+	DstApiVersion        kvrpcpb.APIVersion `protobuf:"varint,15,opt,name=dst_api_version,json=dstApiVersion,proto3,enum=kvrpcpb.APIVersion" json:"dst_api_version,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
+	XXX_unrecognized     []byte             `json:"-"`
+	XXX_sizecache        int32              `json:"-"`
 }
 
 func (m *BackupRequest) Reset()         { *m = BackupRequest{} }
@@ -1112,11 +1115,11 @@ func (m *BackupRequest) GetCipherInfo() *CipherInfo {
 	return nil
 }
 
-func (m *BackupRequest) GetDstApiVersion() APIVersion {
+func (m *BackupRequest) GetDstApiVersion() kvrpcpb.APIVersion {
 	if m != nil {
 		return m.DstApiVersion
 	}
-	return APIVersion_V1
+	return kvrpcpb.APIVersion_V1
 }
 
 type StreamBackupTaskInfo struct {
@@ -1967,10 +1970,10 @@ type BackupResponse struct {
 	EndKey   []byte  `protobuf:"bytes,3,opt,name=end_key,json=endKey,proto3" json:"end_key,omitempty"`
 	Files    []*File `protobuf:"bytes,4,rep,name=files,proto3" json:"files,omitempty"`
 	// API version implies the encode of the key and value.
-	ApiVersion           APIVersion `protobuf:"varint,5,opt,name=api_version,json=apiVersion,proto3,enum=kvrpcpb.APIVersion" json:"api_version,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
-	XXX_unrecognized     []byte     `json:"-"`
-	XXX_sizecache        int32      `json:"-"`
+	ApiVersion           kvrpcpb.APIVersion `protobuf:"varint,5,opt,name=api_version,json=apiVersion,proto3,enum=kvrpcpb.APIVersion" json:"api_version,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
+	XXX_unrecognized     []byte             `json:"-"`
+	XXX_sizecache        int32              `json:"-"`
 }
 
 func (m *BackupResponse) Reset()         { *m = BackupResponse{} }
@@ -2034,11 +2037,11 @@ func (m *BackupResponse) GetFiles() []*File {
 	return nil
 }
 
-func (m *BackupResponse) GetApiVersion() APIVersion {
+func (m *BackupResponse) GetApiVersion() kvrpcpb.APIVersion {
 	if m != nil {
 		return m.ApiVersion
 	}
-	return APIVersion_V1
+	return kvrpcpb.APIVersion_V1
 }
 
 type ExternalStorageRestoreRequest struct {
@@ -6563,7 +6566,7 @@ func (m *BackupMeta) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.ApiVersion |= APIVersion(b&0x7F) << shift
+				m.ApiVersion |= kvrpcpb.APIVersion(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -7919,7 +7922,7 @@ func (m *Error) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &KeyError{}
+			v := &kvrpcpb.KeyError{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7954,7 +7957,7 @@ func (m *Error) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &Error{}
+			v := &errorpb.Error{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8025,7 +8028,7 @@ func (m *CipherInfo) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.CipherType |= EncryptionMethod(b&0x7F) << shift
+				m.CipherType |= encryptionpb.EncryptionMethod(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -8454,7 +8457,7 @@ func (m *BackupRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.DstApiVersion |= APIVersion(b&0x7F) << shift
+				m.DstApiVersion |= kvrpcpb.APIVersion(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -10698,7 +10701,7 @@ func (m *BackupResponse) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.ApiVersion |= APIVersion(b&0x7F) << shift
+				m.ApiVersion |= kvrpcpb.APIVersion(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

@@ -10,6 +10,10 @@ import (
 	"math"
 	math_bits "math/bits"
 
+	errorpb "github.com/ab111404212/kvproto/pkg/errorpb"
+	kvrpcpb "github.com/ab111404212/kvproto/pkg/kvrpcpb"
+	metapb "github.com/ab111404212/kvproto/pkg/metapb"
+	raft_cmdpb "github.com/ab111404212/kvproto/pkg/raft_cmdpb"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
@@ -332,15 +336,15 @@ func (m *ClusterIDMismatch) GetRequest() uint64 {
 }
 
 type Error struct {
-	NotLeader            *NotLeader         `protobuf:"bytes,1,opt,name=not_leader,json=notLeader,proto3" json:"not_leader,omitempty"`
-	RegionNotFound       *RegionNotFound    `protobuf:"bytes,2,opt,name=region_not_found,json=regionNotFound,proto3" json:"region_not_found,omitempty"`
-	EpochNotMatch        *EpochNotMatch     `protobuf:"bytes,3,opt,name=epoch_not_match,json=epochNotMatch,proto3" json:"epoch_not_match,omitempty"`
-	DuplicateRequest     *DuplicateRequest  `protobuf:"bytes,4,opt,name=duplicate_request,json=duplicateRequest,proto3" json:"duplicate_request,omitempty"`
-	Compatibility        *Compatibility     `protobuf:"bytes,5,opt,name=compatibility,proto3" json:"compatibility,omitempty"`
-	ClusterIdMismatch    *ClusterIDMismatch `protobuf:"bytes,6,opt,name=cluster_id_mismatch,json=clusterIdMismatch,proto3" json:"cluster_id_mismatch,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
-	XXX_unrecognized     []byte             `json:"-"`
-	XXX_sizecache        int32              `json:"-"`
+	NotLeader            *errorpb.NotLeader      `protobuf:"bytes,1,opt,name=not_leader,json=notLeader,proto3" json:"not_leader,omitempty"`
+	RegionNotFound       *errorpb.RegionNotFound `protobuf:"bytes,2,opt,name=region_not_found,json=regionNotFound,proto3" json:"region_not_found,omitempty"`
+	EpochNotMatch        *errorpb.EpochNotMatch  `protobuf:"bytes,3,opt,name=epoch_not_match,json=epochNotMatch,proto3" json:"epoch_not_match,omitempty"`
+	DuplicateRequest     *DuplicateRequest       `protobuf:"bytes,4,opt,name=duplicate_request,json=duplicateRequest,proto3" json:"duplicate_request,omitempty"`
+	Compatibility        *Compatibility          `protobuf:"bytes,5,opt,name=compatibility,proto3" json:"compatibility,omitempty"`
+	ClusterIdMismatch    *ClusterIDMismatch      `protobuf:"bytes,6,opt,name=cluster_id_mismatch,json=clusterIdMismatch,proto3" json:"cluster_id_mismatch,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                `json:"-"`
+	XXX_unrecognized     []byte                  `json:"-"`
+	XXX_sizecache        int32                   `json:"-"`
 }
 
 func (m *Error) Reset()         { *m = Error{} }
@@ -376,21 +380,21 @@ func (m *Error) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Error proto.InternalMessageInfo
 
-func (m *Error) GetNotLeader() *NotLeader {
+func (m *Error) GetNotLeader() *errorpb.NotLeader {
 	if m != nil {
 		return m.NotLeader
 	}
 	return nil
 }
 
-func (m *Error) GetRegionNotFound() *RegionNotFound {
+func (m *Error) GetRegionNotFound() *errorpb.RegionNotFound {
 	if m != nil {
 		return m.RegionNotFound
 	}
 	return nil
 }
 
-func (m *Error) GetEpochNotMatch() *EpochNotMatch {
+func (m *Error) GetEpochNotMatch() *errorpb.EpochNotMatch {
 	if m != nil {
 		return m.EpochNotMatch
 	}
@@ -850,11 +854,11 @@ func (m *Event_Entries) GetEntries() []*Event_Row {
 }
 
 type Event_Admin struct {
-	AdminRequest         *AdminRequest  `protobuf:"bytes,1,opt,name=admin_request,json=adminRequest,proto3" json:"admin_request,omitempty"`
-	AdminResponse        *AdminResponse `protobuf:"bytes,2,opt,name=admin_response,json=adminResponse,proto3" json:"admin_response,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
-	XXX_unrecognized     []byte         `json:"-"`
-	XXX_sizecache        int32          `json:"-"`
+	AdminRequest         *raft_cmdpb.AdminRequest  `protobuf:"bytes,1,opt,name=admin_request,json=adminRequest,proto3" json:"admin_request,omitempty"`
+	AdminResponse        *raft_cmdpb.AdminResponse `protobuf:"bytes,2,opt,name=admin_response,json=adminResponse,proto3" json:"admin_response,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                  `json:"-"`
+	XXX_unrecognized     []byte                    `json:"-"`
+	XXX_sizecache        int32                     `json:"-"`
 }
 
 func (m *Event_Admin) Reset()         { *m = Event_Admin{} }
@@ -890,14 +894,14 @@ func (m *Event_Admin) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Event_Admin proto.InternalMessageInfo
 
-func (m *Event_Admin) GetAdminRequest() *AdminRequest {
+func (m *Event_Admin) GetAdminRequest() *raft_cmdpb.AdminRequest {
 	if m != nil {
 		return m.AdminRequest
 	}
 	return nil
 }
 
-func (m *Event_Admin) GetAdminResponse() *AdminResponse {
+func (m *Event_Admin) GetAdminResponse() *raft_cmdpb.AdminResponse {
 	if m != nil {
 		return m.AdminResponse
 	}
@@ -1062,15 +1066,15 @@ func (m *ResolvedTs) GetTs() uint64 {
 }
 
 type ChangeDataRequest struct {
-	Header       *Header      `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
-	RegionId     uint64       `protobuf:"varint,2,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
-	RegionEpoch  *RegionEpoch `protobuf:"bytes,3,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
-	CheckpointTs uint64       `protobuf:"varint,4,opt,name=checkpoint_ts,json=checkpointTs,proto3" json:"checkpoint_ts,omitempty"`
-	StartKey     []byte       `protobuf:"bytes,5,opt,name=start_key,json=startKey,proto3" json:"start_key,omitempty"`
-	EndKey       []byte       `protobuf:"bytes,6,opt,name=end_key,json=endKey,proto3" json:"end_key,omitempty"`
+	Header       *Header             `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`
+	RegionId     uint64              `protobuf:"varint,2,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
+	RegionEpoch  *metapb.RegionEpoch `protobuf:"bytes,3,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
+	CheckpointTs uint64              `protobuf:"varint,4,opt,name=checkpoint_ts,json=checkpointTs,proto3" json:"checkpoint_ts,omitempty"`
+	StartKey     []byte              `protobuf:"bytes,5,opt,name=start_key,json=startKey,proto3" json:"start_key,omitempty"`
+	EndKey       []byte              `protobuf:"bytes,6,opt,name=end_key,json=endKey,proto3" json:"end_key,omitempty"`
 	// Used for CDC to identify events corresponding to different requests.
-	RequestId uint64  `protobuf:"varint,7,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	ExtraOp   ExtraOp `protobuf:"varint,8,opt,name=extra_op,json=extraOp,proto3,enum=kvrpcpb.ExtraOp" json:"extra_op,omitempty"`
+	RequestId uint64          `protobuf:"varint,7,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	ExtraOp   kvrpcpb.ExtraOp `protobuf:"varint,8,opt,name=extra_op,json=extraOp,proto3,enum=kvrpcpb.ExtraOp" json:"extra_op,omitempty"`
 	// Types that are valid to be assigned to Request:
 	//	*ChangeDataRequest_Register_
 	//	*ChangeDataRequest_NotifyTxnStatus_
@@ -1151,7 +1155,7 @@ func (m *ChangeDataRequest) GetRegionId() uint64 {
 	return 0
 }
 
-func (m *ChangeDataRequest) GetRegionEpoch() *RegionEpoch {
+func (m *ChangeDataRequest) GetRegionEpoch() *metapb.RegionEpoch {
 	if m != nil {
 		return m.RegionEpoch
 	}
@@ -1186,11 +1190,11 @@ func (m *ChangeDataRequest) GetRequestId() uint64 {
 	return 0
 }
 
-func (m *ChangeDataRequest) GetExtraOp() ExtraOp {
+func (m *ChangeDataRequest) GetExtraOp() kvrpcpb.ExtraOp {
 	if m != nil {
 		return m.ExtraOp
 	}
-	return ExtraOp_Noop
+	return kvrpcpb.ExtraOp_Noop
 }
 
 func (m *ChangeDataRequest) GetRegister() *ChangeDataRequest_Register {
@@ -3420,7 +3424,7 @@ func (m *Error) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.NotLeader == nil {
-				m.NotLeader = &NotLeader{}
+				m.NotLeader = &errorpb.NotLeader{}
 			}
 			if err := m.NotLeader.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -3456,7 +3460,7 @@ func (m *Error) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionNotFound == nil {
-				m.RegionNotFound = &RegionNotFound{}
+				m.RegionNotFound = &errorpb.RegionNotFound{}
 			}
 			if err := m.RegionNotFound.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -3492,7 +3496,7 @@ func (m *Error) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.EpochNotMatch == nil {
-				m.EpochNotMatch = &EpochNotMatch{}
+				m.EpochNotMatch = &errorpb.EpochNotMatch{}
 			}
 			if err := m.EpochNotMatch.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -4520,7 +4524,7 @@ func (m *Event_Admin) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.AdminRequest == nil {
-				m.AdminRequest = &AdminRequest{}
+				m.AdminRequest = &raft_cmdpb.AdminRequest{}
 			}
 			if err := m.AdminRequest.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -4556,7 +4560,7 @@ func (m *Event_Admin) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.AdminResponse == nil {
-				m.AdminResponse = &AdminResponse{}
+				m.AdminResponse = &raft_cmdpb.AdminResponse{}
 			}
 			if err := m.AdminResponse.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -5050,7 +5054,7 @@ func (m *ChangeDataRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionEpoch == nil {
-				m.RegionEpoch = &RegionEpoch{}
+				m.RegionEpoch = &metapb.RegionEpoch{}
 			}
 			if err := m.RegionEpoch.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -5176,7 +5180,7 @@ func (m *ChangeDataRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.ExtraOp |= ExtraOp(b&0x7F) << shift
+				m.ExtraOp |= kvrpcpb.ExtraOp(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

@@ -9,6 +9,7 @@ import (
 	"math"
 	math_bits "math/bits"
 
+	encryptionpb "github.com/ab111404212/kvproto/pkg/encryptionpb"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/golang/protobuf/proto"
 )
@@ -630,10 +631,10 @@ type Region struct {
 	// IV for end_key is calculated from (encryption_meta.iv + len(start_key)).
 	// The field is only used by PD and should be ignored otherwise.
 	// If encryption_meta is empty (i.e. nil), it means start_key and end_key are unencrypted.
-	EncryptionMeta       *EncryptionMeta `protobuf:"bytes,6,opt,name=encryption_meta,json=encryptionMeta,proto3" json:"encryption_meta,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
-	XXX_unrecognized     []byte          `json:"-"`
-	XXX_sizecache        int32           `json:"-"`
+	EncryptionMeta       *encryptionpb.EncryptionMeta `protobuf:"bytes,6,opt,name=encryption_meta,json=encryptionMeta,proto3" json:"encryption_meta,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                     `json:"-"`
+	XXX_unrecognized     []byte                       `json:"-"`
+	XXX_sizecache        int32                        `json:"-"`
 }
 
 func (m *Region) Reset()         { *m = Region{} }
@@ -704,7 +705,7 @@ func (m *Region) GetPeers() []*Peer {
 	return nil
 }
 
-func (m *Region) GetEncryptionMeta() *EncryptionMeta {
+func (m *Region) GetEncryptionMeta() *encryptionpb.EncryptionMeta {
 	if m != nil {
 		return m.EncryptionMeta
 	}
@@ -3269,7 +3270,7 @@ func (m *Region) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.EncryptionMeta == nil {
-				m.EncryptionMeta = &EncryptionMeta{}
+				m.EncryptionMeta = &encryptionpb.EncryptionMeta{}
 			}
 			if err := m.EncryptionMeta.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err

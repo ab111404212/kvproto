@@ -9,6 +9,7 @@ import (
 	"math"
 	math_bits "math/bits"
 
+	metapb "github.com/ab111404212/kvproto/pkg/metapb"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/golang/protobuf/proto"
 )
@@ -30,10 +31,10 @@ type NotLeader struct {
 	// The requested region ID
 	RegionId uint64 `protobuf:"varint,1,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
 	// Region leader of the requested region
-	Leader               *Peer    `protobuf:"bytes,2,opt,name=leader,proto3" json:"leader,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Leader               *metapb.Peer `protobuf:"bytes,2,opt,name=leader,proto3" json:"leader,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
 }
 
 func (m *NotLeader) Reset()         { *m = NotLeader{} }
@@ -76,7 +77,7 @@ func (m *NotLeader) GetRegionId() uint64 {
 	return 0
 }
 
-func (m *NotLeader) GetLeader() *Peer {
+func (m *NotLeader) GetLeader() *metapb.Peer {
 	if m != nil {
 		return m.Leader
 	}
@@ -381,10 +382,10 @@ func (m *KeyNotInRegion) GetEndKey() []byte {
 // Hence, a command is based on a stale version of a region.
 type EpochNotMatch struct {
 	// Available regions that may be siblings of the requested one.
-	CurrentRegions       []*Region `protobuf:"bytes,1,rep,name=current_regions,json=currentRegions,proto3" json:"current_regions,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
-	XXX_unrecognized     []byte    `json:"-"`
-	XXX_sizecache        int32     `json:"-"`
+	CurrentRegions       []*metapb.Region `protobuf:"bytes,1,rep,name=current_regions,json=currentRegions,proto3" json:"current_regions,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
 }
 
 func (m *EpochNotMatch) Reset()         { *m = EpochNotMatch{} }
@@ -420,7 +421,7 @@ func (m *EpochNotMatch) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_EpochNotMatch proto.InternalMessageInfo
 
-func (m *EpochNotMatch) GetCurrentRegions() []*Region {
+func (m *EpochNotMatch) GetCurrentRegions() []*metapb.Region {
 	if m != nil {
 		return m.CurrentRegions
 	}
@@ -2328,7 +2329,7 @@ func (m *NotLeader) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Leader == nil {
-				m.Leader = &Peer{}
+				m.Leader = &metapb.Peer{}
 			}
 			if err := m.Leader.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -2974,7 +2975,7 @@ func (m *EpochNotMatch) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CurrentRegions = append(m.CurrentRegions, &Region{})
+			m.CurrentRegions = append(m.CurrentRegions, &metapb.Region{})
 			if err := m.CurrentRegions[len(m.CurrentRegions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}

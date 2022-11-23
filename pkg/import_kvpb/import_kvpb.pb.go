@@ -10,6 +10,7 @@ import (
 	"math"
 	math_bits "math/bits"
 
+	import_sstpb "github.com/ab111404212/kvproto/pkg/import_sstpb"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
@@ -51,11 +52,11 @@ func (Mutation_OP) EnumDescriptor() ([]byte, []int) {
 }
 
 type SwitchModeRequest struct {
-	PdAddr               string             `protobuf:"bytes,1,opt,name=pd_addr,json=pdAddr,proto3" json:"pd_addr,omitempty"`
-	Request              *SwitchModeRequest `protobuf:"bytes,2,opt,name=request,proto3" json:"request,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
-	XXX_unrecognized     []byte             `json:"-"`
-	XXX_sizecache        int32              `json:"-"`
+	PdAddr               string                          `protobuf:"bytes,1,opt,name=pd_addr,json=pdAddr,proto3" json:"pd_addr,omitempty"`
+	Request              *import_sstpb.SwitchModeRequest `protobuf:"bytes,2,opt,name=request,proto3" json:"request,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                        `json:"-"`
+	XXX_unrecognized     []byte                          `json:"-"`
+	XXX_sizecache        int32                           `json:"-"`
 }
 
 func (m *SwitchModeRequest) Reset()         { *m = SwitchModeRequest{} }
@@ -98,7 +99,7 @@ func (m *SwitchModeRequest) GetPdAddr() string {
 	return ""
 }
 
-func (m *SwitchModeRequest) GetRequest() *SwitchModeRequest {
+func (m *SwitchModeRequest) GetRequest() *import_sstpb.SwitchModeRequest {
 	if m != nil {
 		return m.Request
 	}
@@ -931,11 +932,11 @@ func (m *CleanupEngineResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_CleanupEngineResponse proto.InternalMessageInfo
 
 type CompactClusterRequest struct {
-	PdAddr               string          `protobuf:"bytes,1,opt,name=pd_addr,json=pdAddr,proto3" json:"pd_addr,omitempty"`
-	Request              *CompactRequest `protobuf:"bytes,2,opt,name=request,proto3" json:"request,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
-	XXX_unrecognized     []byte          `json:"-"`
-	XXX_sizecache        int32           `json:"-"`
+	PdAddr               string                       `protobuf:"bytes,1,opt,name=pd_addr,json=pdAddr,proto3" json:"pd_addr,omitempty"`
+	Request              *import_sstpb.CompactRequest `protobuf:"bytes,2,opt,name=request,proto3" json:"request,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                     `json:"-"`
+	XXX_unrecognized     []byte                       `json:"-"`
+	XXX_sizecache        int32                        `json:"-"`
 }
 
 func (m *CompactClusterRequest) Reset()         { *m = CompactClusterRequest{} }
@@ -978,7 +979,7 @@ func (m *CompactClusterRequest) GetPdAddr() string {
 	return ""
 }
 
-func (m *CompactClusterRequest) GetRequest() *CompactRequest {
+func (m *CompactClusterRequest) GetRequest() *import_sstpb.CompactRequest {
 	if m != nil {
 		return m.Request
 	}
@@ -3355,7 +3356,7 @@ func (m *SwitchModeRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Request == nil {
-				m.Request = &SwitchModeRequest{}
+				m.Request = &import_sstpb.SwitchModeRequest{}
 			}
 			if err := m.Request.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -4963,7 +4964,7 @@ func (m *CompactClusterRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Request == nil {
-				m.Request = &CompactRequest{}
+				m.Request = &import_sstpb.CompactRequest{}
 			}
 			if err := m.Request.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err

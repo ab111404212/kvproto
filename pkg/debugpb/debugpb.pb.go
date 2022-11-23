@@ -10,9 +10,11 @@ import (
 	"math"
 	math_bits "math/bits"
 
+	eraftpb "github.com/ab111404212/kvproto/pkg/eraftpb"
+	kvrpcpb "github.com/ab111404212/kvproto/pkg/kvrpcpb"
+	raft_serverpb "github.com/ab111404212/kvproto/pkg/raft_serverpb"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/golang/protobuf/proto"
-	eraftpb "github.com/pingcap/kvproto/pkg/eraftpb"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -400,12 +402,12 @@ func (m *RegionInfoRequest) GetRegionId() uint64 {
 }
 
 type RegionInfoResponse struct {
-	RaftLocalState       *RaftLocalState   `protobuf:"bytes,1,opt,name=raft_local_state,json=raftLocalState,proto3" json:"raft_local_state,omitempty"`
-	RaftApplyState       *RaftApplyState   `protobuf:"bytes,2,opt,name=raft_apply_state,json=raftApplyState,proto3" json:"raft_apply_state,omitempty"`
-	RegionLocalState     *RegionLocalState `protobuf:"bytes,3,opt,name=region_local_state,json=regionLocalState,proto3" json:"region_local_state,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
-	XXX_unrecognized     []byte            `json:"-"`
-	XXX_sizecache        int32             `json:"-"`
+	RaftLocalState       *raft_serverpb.RaftLocalState   `protobuf:"bytes,1,opt,name=raft_local_state,json=raftLocalState,proto3" json:"raft_local_state,omitempty"`
+	RaftApplyState       *raft_serverpb.RaftApplyState   `protobuf:"bytes,2,opt,name=raft_apply_state,json=raftApplyState,proto3" json:"raft_apply_state,omitempty"`
+	RegionLocalState     *raft_serverpb.RegionLocalState `protobuf:"bytes,3,opt,name=region_local_state,json=regionLocalState,proto3" json:"region_local_state,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                        `json:"-"`
+	XXX_unrecognized     []byte                          `json:"-"`
+	XXX_sizecache        int32                           `json:"-"`
 }
 
 func (m *RegionInfoResponse) Reset()         { *m = RegionInfoResponse{} }
@@ -441,21 +443,21 @@ func (m *RegionInfoResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RegionInfoResponse proto.InternalMessageInfo
 
-func (m *RegionInfoResponse) GetRaftLocalState() *RaftLocalState {
+func (m *RegionInfoResponse) GetRaftLocalState() *raft_serverpb.RaftLocalState {
 	if m != nil {
 		return m.RaftLocalState
 	}
 	return nil
 }
 
-func (m *RegionInfoResponse) GetRaftApplyState() *RaftApplyState {
+func (m *RegionInfoResponse) GetRaftApplyState() *raft_serverpb.RaftApplyState {
 	if m != nil {
 		return m.RaftApplyState
 	}
 	return nil
 }
 
-func (m *RegionInfoResponse) GetRegionLocalState() *RegionLocalState {
+func (m *RegionInfoResponse) GetRegionLocalState() *raft_serverpb.RegionLocalState {
 	if m != nil {
 		return m.RegionLocalState
 	}
@@ -683,11 +685,11 @@ func (m *ScanMvccRequest) GetLimit() uint64 {
 }
 
 type ScanMvccResponse struct {
-	Key                  []byte    `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
-	Info                 *MvccInfo `protobuf:"bytes,2,opt,name=info,proto3" json:"info,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
-	XXX_unrecognized     []byte    `json:"-"`
-	XXX_sizecache        int32     `json:"-"`
+	Key                  []byte            `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Info                 *kvrpcpb.MvccInfo `protobuf:"bytes,2,opt,name=info,proto3" json:"info,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+	XXX_unrecognized     []byte            `json:"-"`
+	XXX_sizecache        int32             `json:"-"`
 }
 
 func (m *ScanMvccResponse) Reset()         { *m = ScanMvccResponse{} }
@@ -730,7 +732,7 @@ func (m *ScanMvccResponse) GetKey() []byte {
 	return nil
 }
 
-func (m *ScanMvccResponse) GetInfo() *MvccInfo {
+func (m *ScanMvccResponse) GetInfo() *kvrpcpb.MvccInfo {
 	if m != nil {
 		return m.Info
 	}
@@ -1687,11 +1689,11 @@ func (m *GetStoreInfoRequest) XXX_DiscardUnknown() {
 var xxx_messageInfo_GetStoreInfoRequest proto.InternalMessageInfo
 
 type GetStoreInfoResponse struct {
-	StoreId              uint64     `protobuf:"varint,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
-	ApiVersion           APIVersion `protobuf:"varint,2,opt,name=api_version,json=apiVersion,proto3,enum=kvrpcpb.APIVersion" json:"api_version,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
-	XXX_unrecognized     []byte     `json:"-"`
-	XXX_sizecache        int32      `json:"-"`
+	StoreId              uint64             `protobuf:"varint,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	ApiVersion           kvrpcpb.APIVersion `protobuf:"varint,2,opt,name=api_version,json=apiVersion,proto3,enum=kvrpcpb.APIVersion" json:"api_version,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
+	XXX_unrecognized     []byte             `json:"-"`
+	XXX_sizecache        int32              `json:"-"`
 }
 
 func (m *GetStoreInfoResponse) Reset()         { *m = GetStoreInfoResponse{} }
@@ -1734,11 +1736,11 @@ func (m *GetStoreInfoResponse) GetStoreId() uint64 {
 	return 0
 }
 
-func (m *GetStoreInfoResponse) GetApiVersion() APIVersion {
+func (m *GetStoreInfoResponse) GetApiVersion() kvrpcpb.APIVersion {
 	if m != nil {
 		return m.ApiVersion
 	}
-	return APIVersion_V1
+	return kvrpcpb.APIVersion_V1
 }
 
 type GetClusterInfoRequest struct {
@@ -5454,7 +5456,7 @@ func (m *RegionInfoResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RaftLocalState == nil {
-				m.RaftLocalState = &RaftLocalState{}
+				m.RaftLocalState = &raft_serverpb.RaftLocalState{}
 			}
 			if err := m.RaftLocalState.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -5490,7 +5492,7 @@ func (m *RegionInfoResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RaftApplyState == nil {
-				m.RaftApplyState = &RaftApplyState{}
+				m.RaftApplyState = &raft_serverpb.RaftApplyState{}
 			}
 			if err := m.RaftApplyState.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -5526,7 +5528,7 @@ func (m *RegionInfoResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionLocalState == nil {
-				m.RegionLocalState = &RegionLocalState{}
+				m.RegionLocalState = &raft_serverpb.RegionLocalState{}
 			}
 			if err := m.RegionLocalState.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -6074,7 +6076,7 @@ func (m *ScanMvccResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Info == nil {
-				m.Info = &MvccInfo{}
+				m.Info = &kvrpcpb.MvccInfo{}
 			}
 			if err := m.Info.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -7870,7 +7872,7 @@ func (m *GetStoreInfoResponse) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.ApiVersion |= APIVersion(b&0x7F) << shift
+				m.ApiVersion |= kvrpcpb.APIVersion(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

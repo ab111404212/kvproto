@@ -9,6 +9,8 @@ import (
 	"math"
 	math_bits "math/bits"
 
+	coprocessor "github.com/ab111404212/kvproto/pkg/coprocessor"
+	metapb "github.com/ab111404212/kvproto/pkg/metapb"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/golang/protobuf/proto"
 )
@@ -184,17 +186,17 @@ func (m *IsAliveResponse) GetAvailable() bool {
 
 // Dipsatch the task request to different tiflash servers.
 type DispatchTaskRequest struct {
-	Meta        *TaskMeta     `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
-	EncodedPlan []byte        `protobuf:"bytes,2,opt,name=encoded_plan,json=encodedPlan,proto3" json:"encoded_plan,omitempty"`
-	Timeout     int64         `protobuf:"varint,3,opt,name=timeout,proto3" json:"timeout,omitempty"`
-	Regions     []*RegionInfo `protobuf:"bytes,4,rep,name=regions,proto3" json:"regions,omitempty"`
+	Meta        *TaskMeta                 `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
+	EncodedPlan []byte                    `protobuf:"bytes,2,opt,name=encoded_plan,json=encodedPlan,proto3" json:"encoded_plan,omitempty"`
+	Timeout     int64                     `protobuf:"varint,3,opt,name=timeout,proto3" json:"timeout,omitempty"`
+	Regions     []*coprocessor.RegionInfo `protobuf:"bytes,4,rep,name=regions,proto3" json:"regions,omitempty"`
 	// If this task contains table scan, we still need their region info.
 	SchemaVer int64 `protobuf:"varint,5,opt,name=schema_ver,json=schemaVer,proto3" json:"schema_ver,omitempty"`
 	// Used for partition table scan
-	TableRegions         []*TableRegions `protobuf:"bytes,6,rep,name=table_regions,json=tableRegions,proto3" json:"table_regions,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
-	XXX_unrecognized     []byte          `json:"-"`
-	XXX_sizecache        int32           `json:"-"`
+	TableRegions         []*coprocessor.TableRegions `protobuf:"bytes,6,rep,name=table_regions,json=tableRegions,proto3" json:"table_regions,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                    `json:"-"`
+	XXX_unrecognized     []byte                      `json:"-"`
+	XXX_sizecache        int32                       `json:"-"`
 }
 
 func (m *DispatchTaskRequest) Reset()         { *m = DispatchTaskRequest{} }
@@ -251,7 +253,7 @@ func (m *DispatchTaskRequest) GetTimeout() int64 {
 	return 0
 }
 
-func (m *DispatchTaskRequest) GetRegions() []*RegionInfo {
+func (m *DispatchTaskRequest) GetRegions() []*coprocessor.RegionInfo {
 	if m != nil {
 		return m.Regions
 	}
@@ -265,7 +267,7 @@ func (m *DispatchTaskRequest) GetSchemaVer() int64 {
 	return 0
 }
 
-func (m *DispatchTaskRequest) GetTableRegions() []*TableRegions {
+func (m *DispatchTaskRequest) GetTableRegions() []*coprocessor.TableRegions {
 	if m != nil {
 		return m.TableRegions
 	}
@@ -274,11 +276,11 @@ func (m *DispatchTaskRequest) GetTableRegions() []*TableRegions {
 
 // Get response of DispatchTaskRequest.
 type DispatchTaskResponse struct {
-	Error                *Error    `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
-	RetryRegions         []*Region `protobuf:"bytes,2,rep,name=retry_regions,json=retryRegions,proto3" json:"retry_regions,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
-	XXX_unrecognized     []byte    `json:"-"`
-	XXX_sizecache        int32     `json:"-"`
+	Error                *Error           `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
+	RetryRegions         []*metapb.Region `protobuf:"bytes,2,rep,name=retry_regions,json=retryRegions,proto3" json:"retry_regions,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
 }
 
 func (m *DispatchTaskResponse) Reset()         { *m = DispatchTaskResponse{} }
@@ -321,7 +323,7 @@ func (m *DispatchTaskResponse) GetError() *Error {
 	return nil
 }
 
-func (m *DispatchTaskResponse) GetRetryRegions() []*Region {
+func (m *DispatchTaskResponse) GetRetryRegions() []*metapb.Region {
 	if m != nil {
 		return m.RetryRegions
 	}
@@ -2101,7 +2103,7 @@ func (m *DispatchTaskRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Regions = append(m.Regions, &RegionInfo{})
+			m.Regions = append(m.Regions, &coprocessor.RegionInfo{})
 			if err := m.Regions[len(m.Regions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -2154,7 +2156,7 @@ func (m *DispatchTaskRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.TableRegions = append(m.TableRegions, &TableRegions{})
+			m.TableRegions = append(m.TableRegions, &coprocessor.TableRegions{})
 			if err := m.TableRegions[len(m.TableRegions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -2275,7 +2277,7 @@ func (m *DispatchTaskResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.RetryRegions = append(m.RetryRegions, &Region{})
+			m.RetryRegions = append(m.RetryRegions, &metapb.Region{})
 			if err := m.RetryRegions[len(m.RetryRegions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}

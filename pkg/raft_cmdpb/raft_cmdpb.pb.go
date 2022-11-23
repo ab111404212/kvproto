@@ -9,8 +9,12 @@ import (
 	"math"
 	math_bits "math/bits"
 
+	eraftpb "github.com/ab111404212/kvproto/pkg/eraftpb"
+	errorpb "github.com/ab111404212/kvproto/pkg/errorpb"
+	import_sstpb "github.com/ab111404212/kvproto/pkg/import_sstpb"
+	kvrpcpb "github.com/ab111404212/kvproto/pkg/kvrpcpb"
+	metapb "github.com/ab111404212/kvproto/pkg/metapb"
 	proto "github.com/golang/protobuf/proto"
-	eraftpb "github.com/pingcap/kvproto/pkg/eraftpb"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -602,10 +606,10 @@ func (m *SnapRequest) XXX_DiscardUnknown() {
 var xxx_messageInfo_SnapRequest proto.InternalMessageInfo
 
 type SnapResponse struct {
-	Region               *Region  `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Region               *metapb.Region `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *SnapResponse) Reset()         { *m = SnapResponse{} }
@@ -641,7 +645,7 @@ func (m *SnapResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_SnapResponse proto.InternalMessageInfo
 
-func (m *SnapResponse) GetRegion() *Region {
+func (m *SnapResponse) GetRegion() *metapb.Region {
 	if m != nil {
 		return m.Region
 	}
@@ -751,10 +755,10 @@ func (m *PrewriteResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_PrewriteResponse proto.InternalMessageInfo
 
 type IngestSSTRequest struct {
-	Sst                  *SSTMeta `protobuf:"bytes,1,opt,name=sst,proto3" json:"sst,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Sst                  *import_sstpb.SSTMeta `protobuf:"bytes,1,opt,name=sst,proto3" json:"sst,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
+	XXX_unrecognized     []byte                `json:"-"`
+	XXX_sizecache        int32                 `json:"-"`
 }
 
 func (m *IngestSSTRequest) Reset()         { *m = IngestSSTRequest{} }
@@ -790,7 +794,7 @@ func (m *IngestSSTRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_IngestSSTRequest proto.InternalMessageInfo
 
-func (m *IngestSSTRequest) GetSst() *SSTMeta {
+func (m *IngestSSTRequest) GetSst() *import_sstpb.SSTMeta {
 	if m != nil {
 		return m.Sst
 	}
@@ -838,11 +842,11 @@ var xxx_messageInfo_IngestSSTResponse proto.InternalMessageInfo
 
 type ReadIndexRequest struct {
 	// In replica read, leader uses start_ts and key_ranges to check memory locks.
-	StartTs              uint64      `protobuf:"varint,1,opt,name=start_ts,json=startTs,proto3" json:"start_ts,omitempty"`
-	KeyRanges            []*KeyRange `protobuf:"bytes,2,rep,name=key_ranges,json=keyRanges,proto3" json:"key_ranges,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	StartTs              uint64              `protobuf:"varint,1,opt,name=start_ts,json=startTs,proto3" json:"start_ts,omitempty"`
+	KeyRanges            []*kvrpcpb.KeyRange `protobuf:"bytes,2,rep,name=key_ranges,json=keyRanges,proto3" json:"key_ranges,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
+	XXX_unrecognized     []byte              `json:"-"`
+	XXX_sizecache        int32               `json:"-"`
 }
 
 func (m *ReadIndexRequest) Reset()         { *m = ReadIndexRequest{} }
@@ -885,7 +889,7 @@ func (m *ReadIndexRequest) GetStartTs() uint64 {
 	return 0
 }
 
-func (m *ReadIndexRequest) GetKeyRanges() []*KeyRange {
+func (m *ReadIndexRequest) GetKeyRanges() []*kvrpcpb.KeyRange {
 	if m != nil {
 		return m.KeyRanges
 	}
@@ -895,10 +899,10 @@ func (m *ReadIndexRequest) GetKeyRanges() []*KeyRange {
 type ReadIndexResponse struct {
 	ReadIndex uint64 `protobuf:"varint,1,opt,name=read_index,json=readIndex,proto3" json:"read_index,omitempty"`
 	// The memory lock blocking this read at the leader
-	Locked               *LockInfo `protobuf:"bytes,2,opt,name=locked,proto3" json:"locked,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
-	XXX_unrecognized     []byte    `json:"-"`
-	XXX_sizecache        int32     `json:"-"`
+	Locked               *kvrpcpb.LockInfo `protobuf:"bytes,2,opt,name=locked,proto3" json:"locked,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+	XXX_unrecognized     []byte            `json:"-"`
+	XXX_sizecache        int32             `json:"-"`
 }
 
 func (m *ReadIndexResponse) Reset()         { *m = ReadIndexResponse{} }
@@ -941,7 +945,7 @@ func (m *ReadIndexResponse) GetReadIndex() uint64 {
 	return 0
 }
 
-func (m *ReadIndexResponse) GetLocked() *LockInfo {
+func (m *ReadIndexResponse) GetLocked() *kvrpcpb.LockInfo {
 	if m != nil {
 		return m.Locked
 	}
@@ -1173,7 +1177,7 @@ func (m *Response) GetReadIndex() *ReadIndexResponse {
 type ChangePeerRequest struct {
 	// This can be only called in internal RaftStore now.
 	ChangeType           eraftpb.ConfChangeType `protobuf:"varint,1,opt,name=change_type,json=changeType,proto3,enum=eraftpb.ConfChangeType" json:"change_type,omitempty"`
-	Peer                 *Peer                  `protobuf:"bytes,2,opt,name=peer,proto3" json:"peer,omitempty"`
+	Peer                 *metapb.Peer           `protobuf:"bytes,2,opt,name=peer,proto3" json:"peer,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}               `json:"-"`
 	XXX_unrecognized     []byte                 `json:"-"`
 	XXX_sizecache        int32                  `json:"-"`
@@ -1219,7 +1223,7 @@ func (m *ChangePeerRequest) GetChangeType() eraftpb.ConfChangeType {
 	return eraftpb.ConfChangeType_AddNode
 }
 
-func (m *ChangePeerRequest) GetPeer() *Peer {
+func (m *ChangePeerRequest) GetPeer() *metapb.Peer {
 	if m != nil {
 		return m.Peer
 	}
@@ -1227,10 +1231,10 @@ func (m *ChangePeerRequest) GetPeer() *Peer {
 }
 
 type ChangePeerResponse struct {
-	Region               *Region  `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Region               *metapb.Region `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *ChangePeerResponse) Reset()         { *m = ChangePeerResponse{} }
@@ -1266,7 +1270,7 @@ func (m *ChangePeerResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ChangePeerResponse proto.InternalMessageInfo
 
-func (m *ChangePeerResponse) GetRegion() *Region {
+func (m *ChangePeerResponse) GetRegion() *metapb.Region {
 	if m != nil {
 		return m.Region
 	}
@@ -1321,10 +1325,10 @@ func (m *ChangePeerV2Request) GetChanges() []*ChangePeerRequest {
 }
 
 type ChangePeerV2Response struct {
-	Region               *Region  `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Region               *metapb.Region `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *ChangePeerV2Response) Reset()         { *m = ChangePeerV2Response{} }
@@ -1360,7 +1364,7 @@ func (m *ChangePeerV2Response) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ChangePeerV2Response proto.InternalMessageInfo
 
-func (m *ChangePeerV2Response) GetRegion() *Region {
+func (m *ChangePeerV2Response) GetRegion() *metapb.Region {
 	if m != nil {
 		return m.Region
 	}
@@ -1449,11 +1453,11 @@ func (m *SplitRequest) GetRightDerive() bool {
 }
 
 type SplitResponse struct {
-	Left                 *Region  `protobuf:"bytes,1,opt,name=left,proto3" json:"left,omitempty"`
-	Right                *Region  `protobuf:"bytes,2,opt,name=right,proto3" json:"right,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Left                 *metapb.Region `protobuf:"bytes,1,opt,name=left,proto3" json:"left,omitempty"`
+	Right                *metapb.Region `protobuf:"bytes,2,opt,name=right,proto3" json:"right,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *SplitResponse) Reset()         { *m = SplitResponse{} }
@@ -1489,14 +1493,14 @@ func (m *SplitResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_SplitResponse proto.InternalMessageInfo
 
-func (m *SplitResponse) GetLeft() *Region {
+func (m *SplitResponse) GetLeft() *metapb.Region {
 	if m != nil {
 		return m.Left
 	}
 	return nil
 }
 
-func (m *SplitResponse) GetRight() *Region {
+func (m *SplitResponse) GetRight() *metapb.Region {
 	if m != nil {
 		return m.Right
 	}
@@ -1561,10 +1565,10 @@ func (m *BatchSplitRequest) GetRightDerive() bool {
 }
 
 type BatchSplitResponse struct {
-	Regions              []*Region `protobuf:"bytes,1,rep,name=regions,proto3" json:"regions,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
-	XXX_unrecognized     []byte    `json:"-"`
-	XXX_sizecache        int32     `json:"-"`
+	Regions              []*metapb.Region `protobuf:"bytes,1,rep,name=regions,proto3" json:"regions,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
 }
 
 func (m *BatchSplitResponse) Reset()         { *m = BatchSplitResponse{} }
@@ -1600,7 +1604,7 @@ func (m *BatchSplitResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_BatchSplitResponse proto.InternalMessageInfo
 
-func (m *BatchSplitResponse) GetRegions() []*Region {
+func (m *BatchSplitResponse) GetRegions() []*metapb.Region {
 	if m != nil {
 		return m.Regions
 	}
@@ -1702,11 +1706,11 @@ func (m *CompactLogResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_CompactLogResponse proto.InternalMessageInfo
 
 type TransferLeaderRequest struct {
-	Peer                 *Peer    `protobuf:"bytes,1,opt,name=peer,proto3" json:"peer,omitempty"`
-	Peers                []*Peer  `protobuf:"bytes,2,rep,name=peers,proto3" json:"peers,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Peer                 *metapb.Peer   `protobuf:"bytes,1,opt,name=peer,proto3" json:"peer,omitempty"`
+	Peers                []*metapb.Peer `protobuf:"bytes,2,rep,name=peers,proto3" json:"peers,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *TransferLeaderRequest) Reset()         { *m = TransferLeaderRequest{} }
@@ -1742,14 +1746,14 @@ func (m *TransferLeaderRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_TransferLeaderRequest proto.InternalMessageInfo
 
-func (m *TransferLeaderRequest) GetPeer() *Peer {
+func (m *TransferLeaderRequest) GetPeer() *metapb.Peer {
 	if m != nil {
 		return m.Peer
 	}
 	return nil
 }
 
-func (m *TransferLeaderRequest) GetPeers() []*Peer {
+func (m *TransferLeaderRequest) GetPeers() []*metapb.Peer {
 	if m != nil {
 		return m.Peers
 	}
@@ -1945,11 +1949,11 @@ func (m *VerifyHashResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_VerifyHashResponse proto.InternalMessageInfo
 
 type PrepareMergeRequest struct {
-	MinIndex             uint64   `protobuf:"varint,1,opt,name=min_index,json=minIndex,proto3" json:"min_index,omitempty"`
-	Target               *Region  `protobuf:"bytes,2,opt,name=target,proto3" json:"target,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	MinIndex             uint64         `protobuf:"varint,1,opt,name=min_index,json=minIndex,proto3" json:"min_index,omitempty"`
+	Target               *metapb.Region `protobuf:"bytes,2,opt,name=target,proto3" json:"target,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *PrepareMergeRequest) Reset()         { *m = PrepareMergeRequest{} }
@@ -1992,7 +1996,7 @@ func (m *PrepareMergeRequest) GetMinIndex() uint64 {
 	return 0
 }
 
-func (m *PrepareMergeRequest) GetTarget() *Region {
+func (m *PrepareMergeRequest) GetTarget() *metapb.Region {
 	if m != nil {
 		return m.Target
 	}
@@ -2039,7 +2043,7 @@ func (m *PrepareMergeResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_PrepareMergeResponse proto.InternalMessageInfo
 
 type CommitMergeRequest struct {
-	Source               *Region          `protobuf:"bytes,1,opt,name=source,proto3" json:"source,omitempty"`
+	Source               *metapb.Region   `protobuf:"bytes,1,opt,name=source,proto3" json:"source,omitempty"`
 	Commit               uint64           `protobuf:"varint,2,opt,name=commit,proto3" json:"commit,omitempty"`
 	Entries              []*eraftpb.Entry `protobuf:"bytes,3,rep,name=entries,proto3" json:"entries,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
@@ -2080,7 +2084,7 @@ func (m *CommitMergeRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CommitMergeRequest proto.InternalMessageInfo
 
-func (m *CommitMergeRequest) GetSource() *Region {
+func (m *CommitMergeRequest) GetSource() *metapb.Region {
 	if m != nil {
 		return m.Source
 	}
@@ -2531,10 +2535,10 @@ func (m *RegionLeaderRequest) XXX_DiscardUnknown() {
 var xxx_messageInfo_RegionLeaderRequest proto.InternalMessageInfo
 
 type RegionLeaderResponse struct {
-	Leader               *Peer    `protobuf:"bytes,1,opt,name=leader,proto3" json:"leader,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Leader               *metapb.Peer `protobuf:"bytes,1,opt,name=leader,proto3" json:"leader,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
 }
 
 func (m *RegionLeaderResponse) Reset()         { *m = RegionLeaderResponse{} }
@@ -2570,7 +2574,7 @@ func (m *RegionLeaderResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RegionLeaderResponse proto.InternalMessageInfo
 
-func (m *RegionLeaderResponse) GetLeader() *Peer {
+func (m *RegionLeaderResponse) GetLeader() *metapb.Peer {
 	if m != nil {
 		return m.Leader
 	}
@@ -2626,11 +2630,11 @@ func (m *RegionDetailRequest) XXX_DiscardUnknown() {
 var xxx_messageInfo_RegionDetailRequest proto.InternalMessageInfo
 
 type RegionDetailResponse struct {
-	Region               *Region  `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
-	Leader               *Peer    `protobuf:"bytes,2,opt,name=leader,proto3" json:"leader,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Region               *metapb.Region `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
+	Leader               *metapb.Peer   `protobuf:"bytes,2,opt,name=leader,proto3" json:"leader,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *RegionDetailResponse) Reset()         { *m = RegionDetailResponse{} }
@@ -2666,14 +2670,14 @@ func (m *RegionDetailResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RegionDetailResponse proto.InternalMessageInfo
 
-func (m *RegionDetailResponse) GetRegion() *Region {
+func (m *RegionDetailResponse) GetRegion() *metapb.Region {
 	if m != nil {
 		return m.Region
 	}
 	return nil
 }
 
-func (m *RegionDetailResponse) GetLeader() *Peer {
+func (m *RegionDetailResponse) GetLeader() *metapb.Peer {
 	if m != nil {
 		return m.Leader
 	}
@@ -2807,16 +2811,16 @@ func (m *StatusResponse) GetRegionDetail() *RegionDetailResponse {
 }
 
 type RaftRequestHeader struct {
-	RegionId uint64 `protobuf:"varint,1,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
-	Peer     *Peer  `protobuf:"bytes,2,opt,name=peer,proto3" json:"peer,omitempty"`
+	RegionId uint64       `protobuf:"varint,1,opt,name=region_id,json=regionId,proto3" json:"region_id,omitempty"`
+	Peer     *metapb.Peer `protobuf:"bytes,2,opt,name=peer,proto3" json:"peer,omitempty"`
 	// true for read linearization
 	ReadQuorum bool `protobuf:"varint,3,opt,name=read_quorum,json=readQuorum,proto3" json:"read_quorum,omitempty"`
 	// 16 bytes, to distinguish request.
-	Uuid        []byte       `protobuf:"bytes,4,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	RegionEpoch *RegionEpoch `protobuf:"bytes,5,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
-	Term        uint64       `protobuf:"varint,6,opt,name=term,proto3" json:"term,omitempty"`
-	SyncLog     bool         `protobuf:"varint,7,opt,name=sync_log,json=syncLog,proto3" json:"sync_log,omitempty"`
-	ReplicaRead bool         `protobuf:"varint,8,opt,name=replica_read,json=replicaRead,proto3" json:"replica_read,omitempty"`
+	Uuid        []byte              `protobuf:"bytes,4,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	RegionEpoch *metapb.RegionEpoch `protobuf:"bytes,5,opt,name=region_epoch,json=regionEpoch,proto3" json:"region_epoch,omitempty"`
+	Term        uint64              `protobuf:"varint,6,opt,name=term,proto3" json:"term,omitempty"`
+	SyncLog     bool                `protobuf:"varint,7,opt,name=sync_log,json=syncLog,proto3" json:"sync_log,omitempty"`
+	ReplicaRead bool                `protobuf:"varint,8,opt,name=replica_read,json=replicaRead,proto3" json:"replica_read,omitempty"`
 	// Read requests can be responsed directly after the Raft applys to `applied_index`.
 	AppliedIndex uint64 `protobuf:"varint,9,opt,name=applied_index,json=appliedIndex,proto3" json:"applied_index,omitempty"`
 	// Custom flags for this raft request.
@@ -2867,7 +2871,7 @@ func (m *RaftRequestHeader) GetRegionId() uint64 {
 	return 0
 }
 
-func (m *RaftRequestHeader) GetPeer() *Peer {
+func (m *RaftRequestHeader) GetPeer() *metapb.Peer {
 	if m != nil {
 		return m.Peer
 	}
@@ -2888,7 +2892,7 @@ func (m *RaftRequestHeader) GetUuid() []byte {
 	return nil
 }
 
-func (m *RaftRequestHeader) GetRegionEpoch() *RegionEpoch {
+func (m *RaftRequestHeader) GetRegionEpoch() *metapb.RegionEpoch {
 	if m != nil {
 		return m.RegionEpoch
 	}
@@ -2938,12 +2942,12 @@ func (m *RaftRequestHeader) GetFlagData() []byte {
 }
 
 type RaftResponseHeader struct {
-	Error                *Error   `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
-	Uuid                 []byte   `protobuf:"bytes,2,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	CurrentTerm          uint64   `protobuf:"varint,3,opt,name=current_term,json=currentTerm,proto3" json:"current_term,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Error                *errorpb.Error `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
+	Uuid                 []byte         `protobuf:"bytes,2,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	CurrentTerm          uint64         `protobuf:"varint,3,opt,name=current_term,json=currentTerm,proto3" json:"current_term,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
 func (m *RaftResponseHeader) Reset()         { *m = RaftResponseHeader{} }
@@ -2979,7 +2983,7 @@ func (m *RaftResponseHeader) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RaftResponseHeader proto.InternalMessageInfo
 
-func (m *RaftResponseHeader) GetError() *Error {
+func (m *RaftResponseHeader) GetError() *errorpb.Error {
 	if m != nil {
 		return m.Error
 	}
@@ -7949,7 +7953,7 @@ func (m *SnapResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Region == nil {
-				m.Region = &Region{}
+				m.Region = &metapb.Region{}
 			}
 			if err := m.Region.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -8240,7 +8244,7 @@ func (m *IngestSSTRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Sst == nil {
-				m.Sst = &SSTMeta{}
+				m.Sst = &import_sstpb.SSTMeta{}
 			}
 			if err := m.Sst.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -8396,7 +8400,7 @@ func (m *ReadIndexRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.KeyRanges = append(m.KeyRanges, &KeyRange{})
+			m.KeyRanges = append(m.KeyRanges, &kvrpcpb.KeyRange{})
 			if err := m.KeyRanges[len(m.KeyRanges)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8501,7 +8505,7 @@ func (m *ReadIndexResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Locked == nil {
-				m.Locked = &LockInfo{}
+				m.Locked = &kvrpcpb.LockInfo{}
 			}
 			if err := m.Locked.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -9323,7 +9327,7 @@ func (m *ChangePeerRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Peer == nil {
-				m.Peer = &Peer{}
+				m.Peer = &metapb.Peer{}
 			}
 			if err := m.Peer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -9410,7 +9414,7 @@ func (m *ChangePeerResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Region == nil {
-				m.Region = &Region{}
+				m.Region = &metapb.Region{}
 			}
 			if err := m.Region.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -9582,7 +9586,7 @@ func (m *ChangePeerV2Response) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Region == nil {
-				m.Region = &Region{}
+				m.Region = &metapb.Region{}
 			}
 			if err := m.Region.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -9869,7 +9873,7 @@ func (m *SplitResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Left == nil {
-				m.Left = &Region{}
+				m.Left = &metapb.Region{}
 			}
 			if err := m.Left.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -9905,7 +9909,7 @@ func (m *SplitResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Right == nil {
-				m.Right = &Region{}
+				m.Right = &metapb.Region{}
 			}
 			if err := m.Right.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -10096,7 +10100,7 @@ func (m *BatchSplitResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Regions = append(m.Regions, &Region{})
+			m.Regions = append(m.Regions, &metapb.Region{})
 			if err := m.Regions[len(m.Regions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -10322,7 +10326,7 @@ func (m *TransferLeaderRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Peer == nil {
-				m.Peer = &Peer{}
+				m.Peer = &metapb.Peer{}
 			}
 			if err := m.Peer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -10357,7 +10361,7 @@ func (m *TransferLeaderRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Peers = append(m.Peers, &Peer{})
+			m.Peers = append(m.Peers, &metapb.Peer{})
 			if err := m.Peers[len(m.Peers)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -10787,7 +10791,7 @@ func (m *PrepareMergeRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Target == nil {
-				m.Target = &Region{}
+				m.Target = &metapb.Region{}
 			}
 			if err := m.Target.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -10925,7 +10929,7 @@ func (m *CommitMergeRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Source == nil {
-				m.Source = &Region{}
+				m.Source = &metapb.Region{}
 			}
 			if err := m.Source.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -12184,7 +12188,7 @@ func (m *RegionLeaderResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Leader == nil {
-				m.Leader = &Peer{}
+				m.Leader = &metapb.Peer{}
 			}
 			if err := m.Leader.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -12322,7 +12326,7 @@ func (m *RegionDetailResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Region == nil {
-				m.Region = &Region{}
+				m.Region = &metapb.Region{}
 			}
 			if err := m.Region.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -12358,7 +12362,7 @@ func (m *RegionDetailResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Leader == nil {
-				m.Leader = &Peer{}
+				m.Leader = &metapb.Peer{}
 			}
 			if err := m.Leader.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -12748,7 +12752,7 @@ func (m *RaftRequestHeader) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Peer == nil {
-				m.Peer = &Peer{}
+				m.Peer = &metapb.Peer{}
 			}
 			if err := m.Peer.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -12838,7 +12842,7 @@ func (m *RaftRequestHeader) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.RegionEpoch == nil {
-				m.RegionEpoch = &RegionEpoch{}
+				m.RegionEpoch = &metapb.RegionEpoch{}
 			}
 			if err := m.RegionEpoch.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -13056,7 +13060,7 @@ func (m *RaftResponseHeader) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Error == nil {
-				m.Error = &Error{}
+				m.Error = &errorpb.Error{}
 			}
 			if err := m.Error.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err

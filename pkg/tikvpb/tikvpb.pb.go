@@ -10,6 +10,10 @@ import (
 	"math"
 	math_bits "math/bits"
 
+	coprocessor "github.com/ab111404212/kvproto/pkg/coprocessor"
+	kvrpcpb "github.com/ab111404212/kvproto/pkg/kvrpcpb"
+	mpp "github.com/ab111404212/kvproto/pkg/mpp"
+	raft_serverpb "github.com/ab111404212/kvproto/pkg/raft_serverpb"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
@@ -160,88 +164,88 @@ type isBatchCommandsRequest_Request_Cmd interface {
 }
 
 type BatchCommandsRequest_Request_Get struct {
-	Get *GetRequest `protobuf:"bytes,1,opt,name=Get,proto3,oneof" json:"Get,omitempty"`
+	Get *kvrpcpb.GetRequest `protobuf:"bytes,1,opt,name=Get,proto3,oneof" json:"Get,omitempty"`
 }
 type BatchCommandsRequest_Request_Scan struct {
-	Scan *ScanRequest `protobuf:"bytes,2,opt,name=Scan,proto3,oneof" json:"Scan,omitempty"`
+	Scan *kvrpcpb.ScanRequest `protobuf:"bytes,2,opt,name=Scan,proto3,oneof" json:"Scan,omitempty"`
 }
 type BatchCommandsRequest_Request_Prewrite struct {
-	Prewrite *PrewriteRequest `protobuf:"bytes,3,opt,name=Prewrite,proto3,oneof" json:"Prewrite,omitempty"`
+	Prewrite *kvrpcpb.PrewriteRequest `protobuf:"bytes,3,opt,name=Prewrite,proto3,oneof" json:"Prewrite,omitempty"`
 }
 type BatchCommandsRequest_Request_Commit struct {
-	Commit *CommitRequest `protobuf:"bytes,4,opt,name=Commit,proto3,oneof" json:"Commit,omitempty"`
+	Commit *kvrpcpb.CommitRequest `protobuf:"bytes,4,opt,name=Commit,proto3,oneof" json:"Commit,omitempty"`
 }
 type BatchCommandsRequest_Request_Import struct {
-	Import *ImportRequest `protobuf:"bytes,5,opt,name=Import,proto3,oneof" json:"Import,omitempty"`
+	Import *kvrpcpb.ImportRequest `protobuf:"bytes,5,opt,name=Import,proto3,oneof" json:"Import,omitempty"`
 }
 type BatchCommandsRequest_Request_Cleanup struct {
-	Cleanup *CleanupRequest `protobuf:"bytes,6,opt,name=Cleanup,proto3,oneof" json:"Cleanup,omitempty"`
+	Cleanup *kvrpcpb.CleanupRequest `protobuf:"bytes,6,opt,name=Cleanup,proto3,oneof" json:"Cleanup,omitempty"`
 }
 type BatchCommandsRequest_Request_BatchGet struct {
-	BatchGet *BatchGetRequest `protobuf:"bytes,7,opt,name=BatchGet,proto3,oneof" json:"BatchGet,omitempty"`
+	BatchGet *kvrpcpb.BatchGetRequest `protobuf:"bytes,7,opt,name=BatchGet,proto3,oneof" json:"BatchGet,omitempty"`
 }
 type BatchCommandsRequest_Request_BatchRollback struct {
-	BatchRollback *BatchRollbackRequest `protobuf:"bytes,8,opt,name=BatchRollback,proto3,oneof" json:"BatchRollback,omitempty"`
+	BatchRollback *kvrpcpb.BatchRollbackRequest `protobuf:"bytes,8,opt,name=BatchRollback,proto3,oneof" json:"BatchRollback,omitempty"`
 }
 type BatchCommandsRequest_Request_ScanLock struct {
-	ScanLock *ScanLockRequest `protobuf:"bytes,9,opt,name=ScanLock,proto3,oneof" json:"ScanLock,omitempty"`
+	ScanLock *kvrpcpb.ScanLockRequest `protobuf:"bytes,9,opt,name=ScanLock,proto3,oneof" json:"ScanLock,omitempty"`
 }
 type BatchCommandsRequest_Request_ResolveLock struct {
-	ResolveLock *ResolveLockRequest `protobuf:"bytes,10,opt,name=ResolveLock,proto3,oneof" json:"ResolveLock,omitempty"`
+	ResolveLock *kvrpcpb.ResolveLockRequest `protobuf:"bytes,10,opt,name=ResolveLock,proto3,oneof" json:"ResolveLock,omitempty"`
 }
 type BatchCommandsRequest_Request_GC struct {
-	GC *GCRequest `protobuf:"bytes,11,opt,name=GC,proto3,oneof" json:"GC,omitempty"`
+	GC *kvrpcpb.GCRequest `protobuf:"bytes,11,opt,name=GC,proto3,oneof" json:"GC,omitempty"`
 }
 type BatchCommandsRequest_Request_DeleteRange struct {
-	DeleteRange *DeleteRangeRequest `protobuf:"bytes,12,opt,name=DeleteRange,proto3,oneof" json:"DeleteRange,omitempty"`
+	DeleteRange *kvrpcpb.DeleteRangeRequest `protobuf:"bytes,12,opt,name=DeleteRange,proto3,oneof" json:"DeleteRange,omitempty"`
 }
 type BatchCommandsRequest_Request_RawGet struct {
-	RawGet *RawGetRequest `protobuf:"bytes,13,opt,name=RawGet,proto3,oneof" json:"RawGet,omitempty"`
+	RawGet *kvrpcpb.RawGetRequest `protobuf:"bytes,13,opt,name=RawGet,proto3,oneof" json:"RawGet,omitempty"`
 }
 type BatchCommandsRequest_Request_RawBatchGet struct {
-	RawBatchGet *RawBatchGetRequest `protobuf:"bytes,14,opt,name=RawBatchGet,proto3,oneof" json:"RawBatchGet,omitempty"`
+	RawBatchGet *kvrpcpb.RawBatchGetRequest `protobuf:"bytes,14,opt,name=RawBatchGet,proto3,oneof" json:"RawBatchGet,omitempty"`
 }
 type BatchCommandsRequest_Request_RawPut struct {
-	RawPut *RawPutRequest `protobuf:"bytes,15,opt,name=RawPut,proto3,oneof" json:"RawPut,omitempty"`
+	RawPut *kvrpcpb.RawPutRequest `protobuf:"bytes,15,opt,name=RawPut,proto3,oneof" json:"RawPut,omitempty"`
 }
 type BatchCommandsRequest_Request_RawBatchPut struct {
-	RawBatchPut *RawBatchPutRequest `protobuf:"bytes,16,opt,name=RawBatchPut,proto3,oneof" json:"RawBatchPut,omitempty"`
+	RawBatchPut *kvrpcpb.RawBatchPutRequest `protobuf:"bytes,16,opt,name=RawBatchPut,proto3,oneof" json:"RawBatchPut,omitempty"`
 }
 type BatchCommandsRequest_Request_RawDelete struct {
-	RawDelete *RawDeleteRequest `protobuf:"bytes,17,opt,name=RawDelete,proto3,oneof" json:"RawDelete,omitempty"`
+	RawDelete *kvrpcpb.RawDeleteRequest `protobuf:"bytes,17,opt,name=RawDelete,proto3,oneof" json:"RawDelete,omitempty"`
 }
 type BatchCommandsRequest_Request_RawBatchDelete struct {
-	RawBatchDelete *RawBatchDeleteRequest `protobuf:"bytes,18,opt,name=RawBatchDelete,proto3,oneof" json:"RawBatchDelete,omitempty"`
+	RawBatchDelete *kvrpcpb.RawBatchDeleteRequest `protobuf:"bytes,18,opt,name=RawBatchDelete,proto3,oneof" json:"RawBatchDelete,omitempty"`
 }
 type BatchCommandsRequest_Request_RawScan struct {
-	RawScan *RawScanRequest `protobuf:"bytes,19,opt,name=RawScan,proto3,oneof" json:"RawScan,omitempty"`
+	RawScan *kvrpcpb.RawScanRequest `protobuf:"bytes,19,opt,name=RawScan,proto3,oneof" json:"RawScan,omitempty"`
 }
 type BatchCommandsRequest_Request_RawDeleteRange struct {
-	RawDeleteRange *RawDeleteRangeRequest `protobuf:"bytes,20,opt,name=RawDeleteRange,proto3,oneof" json:"RawDeleteRange,omitempty"`
+	RawDeleteRange *kvrpcpb.RawDeleteRangeRequest `protobuf:"bytes,20,opt,name=RawDeleteRange,proto3,oneof" json:"RawDeleteRange,omitempty"`
 }
 type BatchCommandsRequest_Request_RawBatchScan struct {
-	RawBatchScan *RawBatchScanRequest `protobuf:"bytes,21,opt,name=RawBatchScan,proto3,oneof" json:"RawBatchScan,omitempty"`
+	RawBatchScan *kvrpcpb.RawBatchScanRequest `protobuf:"bytes,21,opt,name=RawBatchScan,proto3,oneof" json:"RawBatchScan,omitempty"`
 }
 type BatchCommandsRequest_Request_Coprocessor struct {
-	Coprocessor *Request `protobuf:"bytes,22,opt,name=Coprocessor,proto3,oneof" json:"Coprocessor,omitempty"`
+	Coprocessor *coprocessor.Request `protobuf:"bytes,22,opt,name=Coprocessor,proto3,oneof" json:"Coprocessor,omitempty"`
 }
 type BatchCommandsRequest_Request_PessimisticLock struct {
-	PessimisticLock *PessimisticLockRequest `protobuf:"bytes,23,opt,name=PessimisticLock,proto3,oneof" json:"PessimisticLock,omitempty"`
+	PessimisticLock *kvrpcpb.PessimisticLockRequest `protobuf:"bytes,23,opt,name=PessimisticLock,proto3,oneof" json:"PessimisticLock,omitempty"`
 }
 type BatchCommandsRequest_Request_PessimisticRollback struct {
-	PessimisticRollback *PessimisticRollbackRequest `protobuf:"bytes,24,opt,name=PessimisticRollback,proto3,oneof" json:"PessimisticRollback,omitempty"`
+	PessimisticRollback *kvrpcpb.PessimisticRollbackRequest `protobuf:"bytes,24,opt,name=PessimisticRollback,proto3,oneof" json:"PessimisticRollback,omitempty"`
 }
 type BatchCommandsRequest_Request_CheckTxnStatus struct {
-	CheckTxnStatus *CheckTxnStatusRequest `protobuf:"bytes,25,opt,name=CheckTxnStatus,proto3,oneof" json:"CheckTxnStatus,omitempty"`
+	CheckTxnStatus *kvrpcpb.CheckTxnStatusRequest `protobuf:"bytes,25,opt,name=CheckTxnStatus,proto3,oneof" json:"CheckTxnStatus,omitempty"`
 }
 type BatchCommandsRequest_Request_TxnHeartBeat struct {
-	TxnHeartBeat *TxnHeartBeatRequest `protobuf:"bytes,26,opt,name=TxnHeartBeat,proto3,oneof" json:"TxnHeartBeat,omitempty"`
+	TxnHeartBeat *kvrpcpb.TxnHeartBeatRequest `protobuf:"bytes,26,opt,name=TxnHeartBeat,proto3,oneof" json:"TxnHeartBeat,omitempty"`
 }
 type BatchCommandsRequest_Request_CheckSecondaryLocks struct {
-	CheckSecondaryLocks *CheckSecondaryLocksRequest `protobuf:"bytes,33,opt,name=CheckSecondaryLocks,proto3,oneof" json:"CheckSecondaryLocks,omitempty"`
+	CheckSecondaryLocks *kvrpcpb.CheckSecondaryLocksRequest `protobuf:"bytes,33,opt,name=CheckSecondaryLocks,proto3,oneof" json:"CheckSecondaryLocks,omitempty"`
 }
 type BatchCommandsRequest_Request_RawCoprocessor struct {
-	RawCoprocessor *RawCoprocessorRequest `protobuf:"bytes,34,opt,name=RawCoprocessor,proto3,oneof" json:"RawCoprocessor,omitempty"`
+	RawCoprocessor *kvrpcpb.RawCoprocessorRequest `protobuf:"bytes,34,opt,name=RawCoprocessor,proto3,oneof" json:"RawCoprocessor,omitempty"`
 }
 type BatchCommandsRequest_Request_Empty struct {
 	Empty *BatchCommandsEmptyRequest `protobuf:"bytes,255,opt,name=Empty,proto3,oneof" json:"Empty,omitempty"`
@@ -284,196 +288,196 @@ func (m *BatchCommandsRequest_Request) GetCmd() isBatchCommandsRequest_Request_C
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetGet() *GetRequest {
+func (m *BatchCommandsRequest_Request) GetGet() *kvrpcpb.GetRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_Get); ok {
 		return x.Get
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetScan() *ScanRequest {
+func (m *BatchCommandsRequest_Request) GetScan() *kvrpcpb.ScanRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_Scan); ok {
 		return x.Scan
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetPrewrite() *PrewriteRequest {
+func (m *BatchCommandsRequest_Request) GetPrewrite() *kvrpcpb.PrewriteRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_Prewrite); ok {
 		return x.Prewrite
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetCommit() *CommitRequest {
+func (m *BatchCommandsRequest_Request) GetCommit() *kvrpcpb.CommitRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_Commit); ok {
 		return x.Commit
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetImport() *ImportRequest {
+func (m *BatchCommandsRequest_Request) GetImport() *kvrpcpb.ImportRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_Import); ok {
 		return x.Import
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetCleanup() *CleanupRequest {
+func (m *BatchCommandsRequest_Request) GetCleanup() *kvrpcpb.CleanupRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_Cleanup); ok {
 		return x.Cleanup
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetBatchGet() *BatchGetRequest {
+func (m *BatchCommandsRequest_Request) GetBatchGet() *kvrpcpb.BatchGetRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_BatchGet); ok {
 		return x.BatchGet
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetBatchRollback() *BatchRollbackRequest {
+func (m *BatchCommandsRequest_Request) GetBatchRollback() *kvrpcpb.BatchRollbackRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_BatchRollback); ok {
 		return x.BatchRollback
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetScanLock() *ScanLockRequest {
+func (m *BatchCommandsRequest_Request) GetScanLock() *kvrpcpb.ScanLockRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_ScanLock); ok {
 		return x.ScanLock
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetResolveLock() *ResolveLockRequest {
+func (m *BatchCommandsRequest_Request) GetResolveLock() *kvrpcpb.ResolveLockRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_ResolveLock); ok {
 		return x.ResolveLock
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetGC() *GCRequest {
+func (m *BatchCommandsRequest_Request) GetGC() *kvrpcpb.GCRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_GC); ok {
 		return x.GC
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetDeleteRange() *DeleteRangeRequest {
+func (m *BatchCommandsRequest_Request) GetDeleteRange() *kvrpcpb.DeleteRangeRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_DeleteRange); ok {
 		return x.DeleteRange
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetRawGet() *RawGetRequest {
+func (m *BatchCommandsRequest_Request) GetRawGet() *kvrpcpb.RawGetRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_RawGet); ok {
 		return x.RawGet
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetRawBatchGet() *RawBatchGetRequest {
+func (m *BatchCommandsRequest_Request) GetRawBatchGet() *kvrpcpb.RawBatchGetRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_RawBatchGet); ok {
 		return x.RawBatchGet
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetRawPut() *RawPutRequest {
+func (m *BatchCommandsRequest_Request) GetRawPut() *kvrpcpb.RawPutRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_RawPut); ok {
 		return x.RawPut
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetRawBatchPut() *RawBatchPutRequest {
+func (m *BatchCommandsRequest_Request) GetRawBatchPut() *kvrpcpb.RawBatchPutRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_RawBatchPut); ok {
 		return x.RawBatchPut
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetRawDelete() *RawDeleteRequest {
+func (m *BatchCommandsRequest_Request) GetRawDelete() *kvrpcpb.RawDeleteRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_RawDelete); ok {
 		return x.RawDelete
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetRawBatchDelete() *RawBatchDeleteRequest {
+func (m *BatchCommandsRequest_Request) GetRawBatchDelete() *kvrpcpb.RawBatchDeleteRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_RawBatchDelete); ok {
 		return x.RawBatchDelete
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetRawScan() *RawScanRequest {
+func (m *BatchCommandsRequest_Request) GetRawScan() *kvrpcpb.RawScanRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_RawScan); ok {
 		return x.RawScan
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetRawDeleteRange() *RawDeleteRangeRequest {
+func (m *BatchCommandsRequest_Request) GetRawDeleteRange() *kvrpcpb.RawDeleteRangeRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_RawDeleteRange); ok {
 		return x.RawDeleteRange
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetRawBatchScan() *RawBatchScanRequest {
+func (m *BatchCommandsRequest_Request) GetRawBatchScan() *kvrpcpb.RawBatchScanRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_RawBatchScan); ok {
 		return x.RawBatchScan
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetCoprocessor() *Request {
+func (m *BatchCommandsRequest_Request) GetCoprocessor() *coprocessor.Request {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_Coprocessor); ok {
 		return x.Coprocessor
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetPessimisticLock() *PessimisticLockRequest {
+func (m *BatchCommandsRequest_Request) GetPessimisticLock() *kvrpcpb.PessimisticLockRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_PessimisticLock); ok {
 		return x.PessimisticLock
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetPessimisticRollback() *PessimisticRollbackRequest {
+func (m *BatchCommandsRequest_Request) GetPessimisticRollback() *kvrpcpb.PessimisticRollbackRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_PessimisticRollback); ok {
 		return x.PessimisticRollback
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetCheckTxnStatus() *CheckTxnStatusRequest {
+func (m *BatchCommandsRequest_Request) GetCheckTxnStatus() *kvrpcpb.CheckTxnStatusRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_CheckTxnStatus); ok {
 		return x.CheckTxnStatus
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetTxnHeartBeat() *TxnHeartBeatRequest {
+func (m *BatchCommandsRequest_Request) GetTxnHeartBeat() *kvrpcpb.TxnHeartBeatRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_TxnHeartBeat); ok {
 		return x.TxnHeartBeat
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetCheckSecondaryLocks() *CheckSecondaryLocksRequest {
+func (m *BatchCommandsRequest_Request) GetCheckSecondaryLocks() *kvrpcpb.CheckSecondaryLocksRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_CheckSecondaryLocks); ok {
 		return x.CheckSecondaryLocks
 	}
 	return nil
 }
 
-func (m *BatchCommandsRequest_Request) GetRawCoprocessor() *RawCoprocessorRequest {
+func (m *BatchCommandsRequest_Request) GetRawCoprocessor() *kvrpcpb.RawCoprocessorRequest {
 	if x, ok := m.GetCmd().(*BatchCommandsRequest_Request_RawCoprocessor); ok {
 		return x.RawCoprocessor
 	}
@@ -663,88 +667,88 @@ type isBatchCommandsResponse_Response_Cmd interface {
 }
 
 type BatchCommandsResponse_Response_Get struct {
-	Get *GetResponse `protobuf:"bytes,1,opt,name=Get,proto3,oneof" json:"Get,omitempty"`
+	Get *kvrpcpb.GetResponse `protobuf:"bytes,1,opt,name=Get,proto3,oneof" json:"Get,omitempty"`
 }
 type BatchCommandsResponse_Response_Scan struct {
-	Scan *ScanResponse `protobuf:"bytes,2,opt,name=Scan,proto3,oneof" json:"Scan,omitempty"`
+	Scan *kvrpcpb.ScanResponse `protobuf:"bytes,2,opt,name=Scan,proto3,oneof" json:"Scan,omitempty"`
 }
 type BatchCommandsResponse_Response_Prewrite struct {
-	Prewrite *PrewriteResponse `protobuf:"bytes,3,opt,name=Prewrite,proto3,oneof" json:"Prewrite,omitempty"`
+	Prewrite *kvrpcpb.PrewriteResponse `protobuf:"bytes,3,opt,name=Prewrite,proto3,oneof" json:"Prewrite,omitempty"`
 }
 type BatchCommandsResponse_Response_Commit struct {
-	Commit *CommitResponse `protobuf:"bytes,4,opt,name=Commit,proto3,oneof" json:"Commit,omitempty"`
+	Commit *kvrpcpb.CommitResponse `protobuf:"bytes,4,opt,name=Commit,proto3,oneof" json:"Commit,omitempty"`
 }
 type BatchCommandsResponse_Response_Import struct {
-	Import *ImportResponse `protobuf:"bytes,5,opt,name=Import,proto3,oneof" json:"Import,omitempty"`
+	Import *kvrpcpb.ImportResponse `protobuf:"bytes,5,opt,name=Import,proto3,oneof" json:"Import,omitempty"`
 }
 type BatchCommandsResponse_Response_Cleanup struct {
-	Cleanup *CleanupResponse `protobuf:"bytes,6,opt,name=Cleanup,proto3,oneof" json:"Cleanup,omitempty"`
+	Cleanup *kvrpcpb.CleanupResponse `protobuf:"bytes,6,opt,name=Cleanup,proto3,oneof" json:"Cleanup,omitempty"`
 }
 type BatchCommandsResponse_Response_BatchGet struct {
-	BatchGet *BatchGetResponse `protobuf:"bytes,7,opt,name=BatchGet,proto3,oneof" json:"BatchGet,omitempty"`
+	BatchGet *kvrpcpb.BatchGetResponse `protobuf:"bytes,7,opt,name=BatchGet,proto3,oneof" json:"BatchGet,omitempty"`
 }
 type BatchCommandsResponse_Response_BatchRollback struct {
-	BatchRollback *BatchRollbackResponse `protobuf:"bytes,8,opt,name=BatchRollback,proto3,oneof" json:"BatchRollback,omitempty"`
+	BatchRollback *kvrpcpb.BatchRollbackResponse `protobuf:"bytes,8,opt,name=BatchRollback,proto3,oneof" json:"BatchRollback,omitempty"`
 }
 type BatchCommandsResponse_Response_ScanLock struct {
-	ScanLock *ScanLockResponse `protobuf:"bytes,9,opt,name=ScanLock,proto3,oneof" json:"ScanLock,omitempty"`
+	ScanLock *kvrpcpb.ScanLockResponse `protobuf:"bytes,9,opt,name=ScanLock,proto3,oneof" json:"ScanLock,omitempty"`
 }
 type BatchCommandsResponse_Response_ResolveLock struct {
-	ResolveLock *ResolveLockResponse `protobuf:"bytes,10,opt,name=ResolveLock,proto3,oneof" json:"ResolveLock,omitempty"`
+	ResolveLock *kvrpcpb.ResolveLockResponse `protobuf:"bytes,10,opt,name=ResolveLock,proto3,oneof" json:"ResolveLock,omitempty"`
 }
 type BatchCommandsResponse_Response_GC struct {
-	GC *GCResponse `protobuf:"bytes,11,opt,name=GC,proto3,oneof" json:"GC,omitempty"`
+	GC *kvrpcpb.GCResponse `protobuf:"bytes,11,opt,name=GC,proto3,oneof" json:"GC,omitempty"`
 }
 type BatchCommandsResponse_Response_DeleteRange struct {
-	DeleteRange *DeleteRangeResponse `protobuf:"bytes,12,opt,name=DeleteRange,proto3,oneof" json:"DeleteRange,omitempty"`
+	DeleteRange *kvrpcpb.DeleteRangeResponse `protobuf:"bytes,12,opt,name=DeleteRange,proto3,oneof" json:"DeleteRange,omitempty"`
 }
 type BatchCommandsResponse_Response_RawGet struct {
-	RawGet *RawGetResponse `protobuf:"bytes,13,opt,name=RawGet,proto3,oneof" json:"RawGet,omitempty"`
+	RawGet *kvrpcpb.RawGetResponse `protobuf:"bytes,13,opt,name=RawGet,proto3,oneof" json:"RawGet,omitempty"`
 }
 type BatchCommandsResponse_Response_RawBatchGet struct {
-	RawBatchGet *RawBatchGetResponse `protobuf:"bytes,14,opt,name=RawBatchGet,proto3,oneof" json:"RawBatchGet,omitempty"`
+	RawBatchGet *kvrpcpb.RawBatchGetResponse `protobuf:"bytes,14,opt,name=RawBatchGet,proto3,oneof" json:"RawBatchGet,omitempty"`
 }
 type BatchCommandsResponse_Response_RawPut struct {
-	RawPut *RawPutResponse `protobuf:"bytes,15,opt,name=RawPut,proto3,oneof" json:"RawPut,omitempty"`
+	RawPut *kvrpcpb.RawPutResponse `protobuf:"bytes,15,opt,name=RawPut,proto3,oneof" json:"RawPut,omitempty"`
 }
 type BatchCommandsResponse_Response_RawBatchPut struct {
-	RawBatchPut *RawBatchPutResponse `protobuf:"bytes,16,opt,name=RawBatchPut,proto3,oneof" json:"RawBatchPut,omitempty"`
+	RawBatchPut *kvrpcpb.RawBatchPutResponse `protobuf:"bytes,16,opt,name=RawBatchPut,proto3,oneof" json:"RawBatchPut,omitempty"`
 }
 type BatchCommandsResponse_Response_RawDelete struct {
-	RawDelete *RawDeleteResponse `protobuf:"bytes,17,opt,name=RawDelete,proto3,oneof" json:"RawDelete,omitempty"`
+	RawDelete *kvrpcpb.RawDeleteResponse `protobuf:"bytes,17,opt,name=RawDelete,proto3,oneof" json:"RawDelete,omitempty"`
 }
 type BatchCommandsResponse_Response_RawBatchDelete struct {
-	RawBatchDelete *RawBatchDeleteResponse `protobuf:"bytes,18,opt,name=RawBatchDelete,proto3,oneof" json:"RawBatchDelete,omitempty"`
+	RawBatchDelete *kvrpcpb.RawBatchDeleteResponse `protobuf:"bytes,18,opt,name=RawBatchDelete,proto3,oneof" json:"RawBatchDelete,omitempty"`
 }
 type BatchCommandsResponse_Response_RawScan struct {
-	RawScan *RawScanResponse `protobuf:"bytes,19,opt,name=RawScan,proto3,oneof" json:"RawScan,omitempty"`
+	RawScan *kvrpcpb.RawScanResponse `protobuf:"bytes,19,opt,name=RawScan,proto3,oneof" json:"RawScan,omitempty"`
 }
 type BatchCommandsResponse_Response_RawDeleteRange struct {
-	RawDeleteRange *RawDeleteRangeResponse `protobuf:"bytes,20,opt,name=RawDeleteRange,proto3,oneof" json:"RawDeleteRange,omitempty"`
+	RawDeleteRange *kvrpcpb.RawDeleteRangeResponse `protobuf:"bytes,20,opt,name=RawDeleteRange,proto3,oneof" json:"RawDeleteRange,omitempty"`
 }
 type BatchCommandsResponse_Response_RawBatchScan struct {
-	RawBatchScan *RawBatchScanResponse `protobuf:"bytes,21,opt,name=RawBatchScan,proto3,oneof" json:"RawBatchScan,omitempty"`
+	RawBatchScan *kvrpcpb.RawBatchScanResponse `protobuf:"bytes,21,opt,name=RawBatchScan,proto3,oneof" json:"RawBatchScan,omitempty"`
 }
 type BatchCommandsResponse_Response_Coprocessor struct {
-	Coprocessor *Response `protobuf:"bytes,22,opt,name=Coprocessor,proto3,oneof" json:"Coprocessor,omitempty"`
+	Coprocessor *coprocessor.Response `protobuf:"bytes,22,opt,name=Coprocessor,proto3,oneof" json:"Coprocessor,omitempty"`
 }
 type BatchCommandsResponse_Response_PessimisticLock struct {
-	PessimisticLock *PessimisticLockResponse `protobuf:"bytes,23,opt,name=PessimisticLock,proto3,oneof" json:"PessimisticLock,omitempty"`
+	PessimisticLock *kvrpcpb.PessimisticLockResponse `protobuf:"bytes,23,opt,name=PessimisticLock,proto3,oneof" json:"PessimisticLock,omitempty"`
 }
 type BatchCommandsResponse_Response_PessimisticRollback struct {
-	PessimisticRollback *PessimisticRollbackResponse `protobuf:"bytes,24,opt,name=PessimisticRollback,proto3,oneof" json:"PessimisticRollback,omitempty"`
+	PessimisticRollback *kvrpcpb.PessimisticRollbackResponse `protobuf:"bytes,24,opt,name=PessimisticRollback,proto3,oneof" json:"PessimisticRollback,omitempty"`
 }
 type BatchCommandsResponse_Response_CheckTxnStatus struct {
-	CheckTxnStatus *CheckTxnStatusResponse `protobuf:"bytes,25,opt,name=CheckTxnStatus,proto3,oneof" json:"CheckTxnStatus,omitempty"`
+	CheckTxnStatus *kvrpcpb.CheckTxnStatusResponse `protobuf:"bytes,25,opt,name=CheckTxnStatus,proto3,oneof" json:"CheckTxnStatus,omitempty"`
 }
 type BatchCommandsResponse_Response_TxnHeartBeat struct {
-	TxnHeartBeat *TxnHeartBeatResponse `protobuf:"bytes,26,opt,name=TxnHeartBeat,proto3,oneof" json:"TxnHeartBeat,omitempty"`
+	TxnHeartBeat *kvrpcpb.TxnHeartBeatResponse `protobuf:"bytes,26,opt,name=TxnHeartBeat,proto3,oneof" json:"TxnHeartBeat,omitempty"`
 }
 type BatchCommandsResponse_Response_CheckSecondaryLocks struct {
-	CheckSecondaryLocks *CheckSecondaryLocksResponse `protobuf:"bytes,33,opt,name=CheckSecondaryLocks,proto3,oneof" json:"CheckSecondaryLocks,omitempty"`
+	CheckSecondaryLocks *kvrpcpb.CheckSecondaryLocksResponse `protobuf:"bytes,33,opt,name=CheckSecondaryLocks,proto3,oneof" json:"CheckSecondaryLocks,omitempty"`
 }
 type BatchCommandsResponse_Response_RawCoprocessor struct {
-	RawCoprocessor *RawCoprocessorResponse `protobuf:"bytes,34,opt,name=RawCoprocessor,proto3,oneof" json:"RawCoprocessor,omitempty"`
+	RawCoprocessor *kvrpcpb.RawCoprocessorResponse `protobuf:"bytes,34,opt,name=RawCoprocessor,proto3,oneof" json:"RawCoprocessor,omitempty"`
 }
 type BatchCommandsResponse_Response_Empty struct {
 	Empty *BatchCommandsEmptyResponse `protobuf:"bytes,255,opt,name=Empty,proto3,oneof" json:"Empty,omitempty"`
@@ -787,196 +791,196 @@ func (m *BatchCommandsResponse_Response) GetCmd() isBatchCommandsResponse_Respon
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetGet() *GetResponse {
+func (m *BatchCommandsResponse_Response) GetGet() *kvrpcpb.GetResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_Get); ok {
 		return x.Get
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetScan() *ScanResponse {
+func (m *BatchCommandsResponse_Response) GetScan() *kvrpcpb.ScanResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_Scan); ok {
 		return x.Scan
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetPrewrite() *PrewriteResponse {
+func (m *BatchCommandsResponse_Response) GetPrewrite() *kvrpcpb.PrewriteResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_Prewrite); ok {
 		return x.Prewrite
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetCommit() *CommitResponse {
+func (m *BatchCommandsResponse_Response) GetCommit() *kvrpcpb.CommitResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_Commit); ok {
 		return x.Commit
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetImport() *ImportResponse {
+func (m *BatchCommandsResponse_Response) GetImport() *kvrpcpb.ImportResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_Import); ok {
 		return x.Import
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetCleanup() *CleanupResponse {
+func (m *BatchCommandsResponse_Response) GetCleanup() *kvrpcpb.CleanupResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_Cleanup); ok {
 		return x.Cleanup
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetBatchGet() *BatchGetResponse {
+func (m *BatchCommandsResponse_Response) GetBatchGet() *kvrpcpb.BatchGetResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_BatchGet); ok {
 		return x.BatchGet
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetBatchRollback() *BatchRollbackResponse {
+func (m *BatchCommandsResponse_Response) GetBatchRollback() *kvrpcpb.BatchRollbackResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_BatchRollback); ok {
 		return x.BatchRollback
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetScanLock() *ScanLockResponse {
+func (m *BatchCommandsResponse_Response) GetScanLock() *kvrpcpb.ScanLockResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_ScanLock); ok {
 		return x.ScanLock
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetResolveLock() *ResolveLockResponse {
+func (m *BatchCommandsResponse_Response) GetResolveLock() *kvrpcpb.ResolveLockResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_ResolveLock); ok {
 		return x.ResolveLock
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetGC() *GCResponse {
+func (m *BatchCommandsResponse_Response) GetGC() *kvrpcpb.GCResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_GC); ok {
 		return x.GC
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetDeleteRange() *DeleteRangeResponse {
+func (m *BatchCommandsResponse_Response) GetDeleteRange() *kvrpcpb.DeleteRangeResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_DeleteRange); ok {
 		return x.DeleteRange
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetRawGet() *RawGetResponse {
+func (m *BatchCommandsResponse_Response) GetRawGet() *kvrpcpb.RawGetResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_RawGet); ok {
 		return x.RawGet
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetRawBatchGet() *RawBatchGetResponse {
+func (m *BatchCommandsResponse_Response) GetRawBatchGet() *kvrpcpb.RawBatchGetResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_RawBatchGet); ok {
 		return x.RawBatchGet
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetRawPut() *RawPutResponse {
+func (m *BatchCommandsResponse_Response) GetRawPut() *kvrpcpb.RawPutResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_RawPut); ok {
 		return x.RawPut
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetRawBatchPut() *RawBatchPutResponse {
+func (m *BatchCommandsResponse_Response) GetRawBatchPut() *kvrpcpb.RawBatchPutResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_RawBatchPut); ok {
 		return x.RawBatchPut
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetRawDelete() *RawDeleteResponse {
+func (m *BatchCommandsResponse_Response) GetRawDelete() *kvrpcpb.RawDeleteResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_RawDelete); ok {
 		return x.RawDelete
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetRawBatchDelete() *RawBatchDeleteResponse {
+func (m *BatchCommandsResponse_Response) GetRawBatchDelete() *kvrpcpb.RawBatchDeleteResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_RawBatchDelete); ok {
 		return x.RawBatchDelete
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetRawScan() *RawScanResponse {
+func (m *BatchCommandsResponse_Response) GetRawScan() *kvrpcpb.RawScanResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_RawScan); ok {
 		return x.RawScan
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetRawDeleteRange() *RawDeleteRangeResponse {
+func (m *BatchCommandsResponse_Response) GetRawDeleteRange() *kvrpcpb.RawDeleteRangeResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_RawDeleteRange); ok {
 		return x.RawDeleteRange
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetRawBatchScan() *RawBatchScanResponse {
+func (m *BatchCommandsResponse_Response) GetRawBatchScan() *kvrpcpb.RawBatchScanResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_RawBatchScan); ok {
 		return x.RawBatchScan
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetCoprocessor() *Response {
+func (m *BatchCommandsResponse_Response) GetCoprocessor() *coprocessor.Response {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_Coprocessor); ok {
 		return x.Coprocessor
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetPessimisticLock() *PessimisticLockResponse {
+func (m *BatchCommandsResponse_Response) GetPessimisticLock() *kvrpcpb.PessimisticLockResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_PessimisticLock); ok {
 		return x.PessimisticLock
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetPessimisticRollback() *PessimisticRollbackResponse {
+func (m *BatchCommandsResponse_Response) GetPessimisticRollback() *kvrpcpb.PessimisticRollbackResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_PessimisticRollback); ok {
 		return x.PessimisticRollback
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetCheckTxnStatus() *CheckTxnStatusResponse {
+func (m *BatchCommandsResponse_Response) GetCheckTxnStatus() *kvrpcpb.CheckTxnStatusResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_CheckTxnStatus); ok {
 		return x.CheckTxnStatus
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetTxnHeartBeat() *TxnHeartBeatResponse {
+func (m *BatchCommandsResponse_Response) GetTxnHeartBeat() *kvrpcpb.TxnHeartBeatResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_TxnHeartBeat); ok {
 		return x.TxnHeartBeat
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetCheckSecondaryLocks() *CheckSecondaryLocksResponse {
+func (m *BatchCommandsResponse_Response) GetCheckSecondaryLocks() *kvrpcpb.CheckSecondaryLocksResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_CheckSecondaryLocks); ok {
 		return x.CheckSecondaryLocks
 	}
 	return nil
 }
 
-func (m *BatchCommandsResponse_Response) GetRawCoprocessor() *RawCoprocessorResponse {
+func (m *BatchCommandsResponse_Response) GetRawCoprocessor() *kvrpcpb.RawCoprocessorResponse {
 	if x, ok := m.GetCmd().(*BatchCommandsResponse_Response_RawCoprocessor); ok {
 		return x.RawCoprocessor
 	}
@@ -1026,10 +1030,10 @@ func (*BatchCommandsResponse_Response) XXX_OneofWrappers() []interface{} {
 }
 
 type BatchRaftMessage struct {
-	Msgs                 []*RaftMessage `protobuf:"bytes,1,rep,name=msgs,proto3" json:"msgs,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
-	XXX_unrecognized     []byte         `json:"-"`
-	XXX_sizecache        int32          `json:"-"`
+	Msgs                 []*raft_serverpb.RaftMessage `protobuf:"bytes,1,rep,name=msgs,proto3" json:"msgs,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                     `json:"-"`
+	XXX_unrecognized     []byte                       `json:"-"`
+	XXX_sizecache        int32                        `json:"-"`
 }
 
 func (m *BatchRaftMessage) Reset()         { *m = BatchRaftMessage{} }
@@ -1065,7 +1069,7 @@ func (m *BatchRaftMessage) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_BatchRaftMessage proto.InternalMessageInfo
 
-func (m *BatchRaftMessage) GetMsgs() []*RaftMessage {
+func (m *BatchRaftMessage) GetMsgs() []*raft_serverpb.RaftMessage {
 	if m != nil {
 		return m.Msgs
 	}
@@ -1346,85 +1350,85 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type TikvClient interface {
 	// Commands using a transactional interface.
-	KvGet(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
-	KvScan(ctx context.Context, in *ScanRequest, opts ...grpc.CallOption) (*ScanResponse, error)
-	KvPrewrite(ctx context.Context, in *PrewriteRequest, opts ...grpc.CallOption) (*PrewriteResponse, error)
-	KvPessimisticLock(ctx context.Context, in *PessimisticLockRequest, opts ...grpc.CallOption) (*PessimisticLockResponse, error)
-	KVPessimisticRollback(ctx context.Context, in *PessimisticRollbackRequest, opts ...grpc.CallOption) (*PessimisticRollbackResponse, error)
-	KvTxnHeartBeat(ctx context.Context, in *TxnHeartBeatRequest, opts ...grpc.CallOption) (*TxnHeartBeatResponse, error)
-	KvCheckTxnStatus(ctx context.Context, in *CheckTxnStatusRequest, opts ...grpc.CallOption) (*CheckTxnStatusResponse, error)
-	KvCheckSecondaryLocks(ctx context.Context, in *CheckSecondaryLocksRequest, opts ...grpc.CallOption) (*CheckSecondaryLocksResponse, error)
-	KvCommit(ctx context.Context, in *CommitRequest, opts ...grpc.CallOption) (*CommitResponse, error)
-	KvImport(ctx context.Context, in *ImportRequest, opts ...grpc.CallOption) (*ImportResponse, error)
-	KvCleanup(ctx context.Context, in *CleanupRequest, opts ...grpc.CallOption) (*CleanupResponse, error)
-	KvBatchGet(ctx context.Context, in *BatchGetRequest, opts ...grpc.CallOption) (*BatchGetResponse, error)
-	KvBatchRollback(ctx context.Context, in *BatchRollbackRequest, opts ...grpc.CallOption) (*BatchRollbackResponse, error)
-	KvScanLock(ctx context.Context, in *ScanLockRequest, opts ...grpc.CallOption) (*ScanLockResponse, error)
-	KvResolveLock(ctx context.Context, in *ResolveLockRequest, opts ...grpc.CallOption) (*ResolveLockResponse, error)
-	KvGC(ctx context.Context, in *GCRequest, opts ...grpc.CallOption) (*GCResponse, error)
-	KvDeleteRange(ctx context.Context, in *DeleteRangeRequest, opts ...grpc.CallOption) (*DeleteRangeResponse, error)
+	KvGet(ctx context.Context, in *kvrpcpb.GetRequest, opts ...grpc.CallOption) (*kvrpcpb.GetResponse, error)
+	KvScan(ctx context.Context, in *kvrpcpb.ScanRequest, opts ...grpc.CallOption) (*kvrpcpb.ScanResponse, error)
+	KvPrewrite(ctx context.Context, in *kvrpcpb.PrewriteRequest, opts ...grpc.CallOption) (*kvrpcpb.PrewriteResponse, error)
+	KvPessimisticLock(ctx context.Context, in *kvrpcpb.PessimisticLockRequest, opts ...grpc.CallOption) (*kvrpcpb.PessimisticLockResponse, error)
+	KVPessimisticRollback(ctx context.Context, in *kvrpcpb.PessimisticRollbackRequest, opts ...grpc.CallOption) (*kvrpcpb.PessimisticRollbackResponse, error)
+	KvTxnHeartBeat(ctx context.Context, in *kvrpcpb.TxnHeartBeatRequest, opts ...grpc.CallOption) (*kvrpcpb.TxnHeartBeatResponse, error)
+	KvCheckTxnStatus(ctx context.Context, in *kvrpcpb.CheckTxnStatusRequest, opts ...grpc.CallOption) (*kvrpcpb.CheckTxnStatusResponse, error)
+	KvCheckSecondaryLocks(ctx context.Context, in *kvrpcpb.CheckSecondaryLocksRequest, opts ...grpc.CallOption) (*kvrpcpb.CheckSecondaryLocksResponse, error)
+	KvCommit(ctx context.Context, in *kvrpcpb.CommitRequest, opts ...grpc.CallOption) (*kvrpcpb.CommitResponse, error)
+	KvImport(ctx context.Context, in *kvrpcpb.ImportRequest, opts ...grpc.CallOption) (*kvrpcpb.ImportResponse, error)
+	KvCleanup(ctx context.Context, in *kvrpcpb.CleanupRequest, opts ...grpc.CallOption) (*kvrpcpb.CleanupResponse, error)
+	KvBatchGet(ctx context.Context, in *kvrpcpb.BatchGetRequest, opts ...grpc.CallOption) (*kvrpcpb.BatchGetResponse, error)
+	KvBatchRollback(ctx context.Context, in *kvrpcpb.BatchRollbackRequest, opts ...grpc.CallOption) (*kvrpcpb.BatchRollbackResponse, error)
+	KvScanLock(ctx context.Context, in *kvrpcpb.ScanLockRequest, opts ...grpc.CallOption) (*kvrpcpb.ScanLockResponse, error)
+	KvResolveLock(ctx context.Context, in *kvrpcpb.ResolveLockRequest, opts ...grpc.CallOption) (*kvrpcpb.ResolveLockResponse, error)
+	KvGC(ctx context.Context, in *kvrpcpb.GCRequest, opts ...grpc.CallOption) (*kvrpcpb.GCResponse, error)
+	KvDeleteRange(ctx context.Context, in *kvrpcpb.DeleteRangeRequest, opts ...grpc.CallOption) (*kvrpcpb.DeleteRangeResponse, error)
 	// Raw commands; no transaction support.
-	RawGet(ctx context.Context, in *RawGetRequest, opts ...grpc.CallOption) (*RawGetResponse, error)
-	RawBatchGet(ctx context.Context, in *RawBatchGetRequest, opts ...grpc.CallOption) (*RawBatchGetResponse, error)
-	RawPut(ctx context.Context, in *RawPutRequest, opts ...grpc.CallOption) (*RawPutResponse, error)
-	RawBatchPut(ctx context.Context, in *RawBatchPutRequest, opts ...grpc.CallOption) (*RawBatchPutResponse, error)
-	RawDelete(ctx context.Context, in *RawDeleteRequest, opts ...grpc.CallOption) (*RawDeleteResponse, error)
-	RawBatchDelete(ctx context.Context, in *RawBatchDeleteRequest, opts ...grpc.CallOption) (*RawBatchDeleteResponse, error)
-	RawScan(ctx context.Context, in *RawScanRequest, opts ...grpc.CallOption) (*RawScanResponse, error)
-	RawDeleteRange(ctx context.Context, in *RawDeleteRangeRequest, opts ...grpc.CallOption) (*RawDeleteRangeResponse, error)
-	RawBatchScan(ctx context.Context, in *RawBatchScanRequest, opts ...grpc.CallOption) (*RawBatchScanResponse, error)
+	RawGet(ctx context.Context, in *kvrpcpb.RawGetRequest, opts ...grpc.CallOption) (*kvrpcpb.RawGetResponse, error)
+	RawBatchGet(ctx context.Context, in *kvrpcpb.RawBatchGetRequest, opts ...grpc.CallOption) (*kvrpcpb.RawBatchGetResponse, error)
+	RawPut(ctx context.Context, in *kvrpcpb.RawPutRequest, opts ...grpc.CallOption) (*kvrpcpb.RawPutResponse, error)
+	RawBatchPut(ctx context.Context, in *kvrpcpb.RawBatchPutRequest, opts ...grpc.CallOption) (*kvrpcpb.RawBatchPutResponse, error)
+	RawDelete(ctx context.Context, in *kvrpcpb.RawDeleteRequest, opts ...grpc.CallOption) (*kvrpcpb.RawDeleteResponse, error)
+	RawBatchDelete(ctx context.Context, in *kvrpcpb.RawBatchDeleteRequest, opts ...grpc.CallOption) (*kvrpcpb.RawBatchDeleteResponse, error)
+	RawScan(ctx context.Context, in *kvrpcpb.RawScanRequest, opts ...grpc.CallOption) (*kvrpcpb.RawScanResponse, error)
+	RawDeleteRange(ctx context.Context, in *kvrpcpb.RawDeleteRangeRequest, opts ...grpc.CallOption) (*kvrpcpb.RawDeleteRangeResponse, error)
+	RawBatchScan(ctx context.Context, in *kvrpcpb.RawBatchScanRequest, opts ...grpc.CallOption) (*kvrpcpb.RawBatchScanResponse, error)
 	// Get TTL of the key. Returns 0 if TTL is not set for the key.
-	RawGetKeyTTL(ctx context.Context, in *RawGetKeyTTLRequest, opts ...grpc.CallOption) (*RawGetKeyTTLResponse, error)
+	RawGetKeyTTL(ctx context.Context, in *kvrpcpb.RawGetKeyTTLRequest, opts ...grpc.CallOption) (*kvrpcpb.RawGetKeyTTLResponse, error)
 	// Compare if the value in database equals to `RawCASRequest.previous_value` before putting the new value. If not, this request will have no effect and the value in the database will be returned.
-	RawCompareAndSwap(ctx context.Context, in *RawCASRequest, opts ...grpc.CallOption) (*RawCASResponse, error)
-	RawChecksum(ctx context.Context, in *RawChecksumRequest, opts ...grpc.CallOption) (*RawChecksumResponse, error)
+	RawCompareAndSwap(ctx context.Context, in *kvrpcpb.RawCASRequest, opts ...grpc.CallOption) (*kvrpcpb.RawCASResponse, error)
+	RawChecksum(ctx context.Context, in *kvrpcpb.RawChecksumRequest, opts ...grpc.CallOption) (*kvrpcpb.RawChecksumResponse, error)
 	// Store commands (sent to a each TiKV node in a cluster, rather than a certain region).
-	UnsafeDestroyRange(ctx context.Context, in *UnsafeDestroyRangeRequest, opts ...grpc.CallOption) (*UnsafeDestroyRangeResponse, error)
-	RegisterLockObserver(ctx context.Context, in *RegisterLockObserverRequest, opts ...grpc.CallOption) (*RegisterLockObserverResponse, error)
-	CheckLockObserver(ctx context.Context, in *CheckLockObserverRequest, opts ...grpc.CallOption) (*CheckLockObserverResponse, error)
-	RemoveLockObserver(ctx context.Context, in *RemoveLockObserverRequest, opts ...grpc.CallOption) (*RemoveLockObserverResponse, error)
-	PhysicalScanLock(ctx context.Context, in *PhysicalScanLockRequest, opts ...grpc.CallOption) (*PhysicalScanLockResponse, error)
+	UnsafeDestroyRange(ctx context.Context, in *kvrpcpb.UnsafeDestroyRangeRequest, opts ...grpc.CallOption) (*kvrpcpb.UnsafeDestroyRangeResponse, error)
+	RegisterLockObserver(ctx context.Context, in *kvrpcpb.RegisterLockObserverRequest, opts ...grpc.CallOption) (*kvrpcpb.RegisterLockObserverResponse, error)
+	CheckLockObserver(ctx context.Context, in *kvrpcpb.CheckLockObserverRequest, opts ...grpc.CallOption) (*kvrpcpb.CheckLockObserverResponse, error)
+	RemoveLockObserver(ctx context.Context, in *kvrpcpb.RemoveLockObserverRequest, opts ...grpc.CallOption) (*kvrpcpb.RemoveLockObserverResponse, error)
+	PhysicalScanLock(ctx context.Context, in *kvrpcpb.PhysicalScanLockRequest, opts ...grpc.CallOption) (*kvrpcpb.PhysicalScanLockResponse, error)
 	// Commands for executing SQL in the TiKV coprocessor (i.e., 'pushed down' to TiKV rather than
 	// executed in TiDB).
-	Coprocessor(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
-	CoprocessorStream(ctx context.Context, in *Request, opts ...grpc.CallOption) (Tikv_CoprocessorStreamClient, error)
-	BatchCoprocessor(ctx context.Context, in *BatchRequest, opts ...grpc.CallOption) (Tikv_BatchCoprocessorClient, error)
+	Coprocessor(ctx context.Context, in *coprocessor.Request, opts ...grpc.CallOption) (*coprocessor.Response, error)
+	CoprocessorStream(ctx context.Context, in *coprocessor.Request, opts ...grpc.CallOption) (Tikv_CoprocessorStreamClient, error)
+	BatchCoprocessor(ctx context.Context, in *coprocessor.BatchRequest, opts ...grpc.CallOption) (Tikv_BatchCoprocessorClient, error)
 	// Command for executing custom user requests in TiKV coprocessor_v2.
-	RawCoprocessor(ctx context.Context, in *RawCoprocessorRequest, opts ...grpc.CallOption) (*RawCoprocessorResponse, error)
+	RawCoprocessor(ctx context.Context, in *kvrpcpb.RawCoprocessorRequest, opts ...grpc.CallOption) (*kvrpcpb.RawCoprocessorResponse, error)
 	// Raft commands (sent between TiKV nodes).
 	Raft(ctx context.Context, opts ...grpc.CallOption) (Tikv_RaftClient, error)
 	BatchRaft(ctx context.Context, opts ...grpc.CallOption) (Tikv_BatchRaftClient, error)
 	Snapshot(ctx context.Context, opts ...grpc.CallOption) (Tikv_SnapshotClient, error)
 	// Sent from PD or TiDB to a TiKV node.
-	SplitRegion(ctx context.Context, in *SplitRegionRequest, opts ...grpc.CallOption) (*SplitRegionResponse, error)
+	SplitRegion(ctx context.Context, in *kvrpcpb.SplitRegionRequest, opts ...grpc.CallOption) (*kvrpcpb.SplitRegionResponse, error)
 	// Sent from TiFlash or TiKV to a TiKV node.
-	ReadIndex(ctx context.Context, in *ReadIndexRequest, opts ...grpc.CallOption) (*ReadIndexResponse, error)
+	ReadIndex(ctx context.Context, in *kvrpcpb.ReadIndexRequest, opts ...grpc.CallOption) (*kvrpcpb.ReadIndexResponse, error)
 	// Commands for debugging transactions.
-	MvccGetByKey(ctx context.Context, in *MvccGetByKeyRequest, opts ...grpc.CallOption) (*MvccGetByKeyResponse, error)
-	MvccGetByStartTs(ctx context.Context, in *MvccGetByStartTsRequest, opts ...grpc.CallOption) (*MvccGetByStartTsResponse, error)
+	MvccGetByKey(ctx context.Context, in *kvrpcpb.MvccGetByKeyRequest, opts ...grpc.CallOption) (*kvrpcpb.MvccGetByKeyResponse, error)
+	MvccGetByStartTs(ctx context.Context, in *kvrpcpb.MvccGetByStartTsRequest, opts ...grpc.CallOption) (*kvrpcpb.MvccGetByStartTsResponse, error)
 	// Batched commands.
 	BatchCommands(ctx context.Context, opts ...grpc.CallOption) (Tikv_BatchCommandsClient, error)
 	// These are for mpp execution.
-	DispatchMPPTask(ctx context.Context, in *DispatchTaskRequest, opts ...grpc.CallOption) (*DispatchTaskResponse, error)
-	CancelMPPTask(ctx context.Context, in *CancelTaskRequest, opts ...grpc.CallOption) (*CancelTaskResponse, error)
-	EstablishMPPConnection(ctx context.Context, in *EstablishMPPConnectionRequest, opts ...grpc.CallOption) (Tikv_EstablishMPPConnectionClient, error)
-	IsAlive(ctx context.Context, in *IsAliveRequest, opts ...grpc.CallOption) (*IsAliveResponse, error)
-	FillMaterializedView(ctx context.Context, in *FillMaterializedViewRequest, opts ...grpc.CallOption) (*FillMaterializedViewResponse, error)
+	DispatchMPPTask(ctx context.Context, in *mpp.DispatchTaskRequest, opts ...grpc.CallOption) (*mpp.DispatchTaskResponse, error)
+	CancelMPPTask(ctx context.Context, in *mpp.CancelTaskRequest, opts ...grpc.CallOption) (*mpp.CancelTaskResponse, error)
+	EstablishMPPConnection(ctx context.Context, in *mpp.EstablishMPPConnectionRequest, opts ...grpc.CallOption) (Tikv_EstablishMPPConnectionClient, error)
+	IsAlive(ctx context.Context, in *mpp.IsAliveRequest, opts ...grpc.CallOption) (*mpp.IsAliveResponse, error)
+	FillMaterializedView(ctx context.Context, in *mpp.FillMaterializedViewRequest, opts ...grpc.CallOption) (*mpp.FillMaterializedViewResponse, error)
 	/// CheckLeader sends all information (includes region term and epoch) to other stores.
 	/// Once a store receives a request, it checks term and epoch for each region, and sends the regions whose
 	/// term and epoch match with local information in the store.
 	/// After the client collected all responses from all stores, it checks if got a quorum of responses from
 	/// other stores for every region, and decides to advance resolved ts from these regions.
-	CheckLeader(ctx context.Context, in *CheckLeaderRequest, opts ...grpc.CallOption) (*CheckLeaderResponse, error)
+	CheckLeader(ctx context.Context, in *kvrpcpb.CheckLeaderRequest, opts ...grpc.CallOption) (*kvrpcpb.CheckLeaderResponse, error)
 	/// Get the minimal `safe_ts` from regions at the store
-	GetStoreSafeTS(ctx context.Context, in *StoreSafeTSRequest, opts ...grpc.CallOption) (*StoreSafeTSResponse, error)
+	GetStoreSafeTS(ctx context.Context, in *kvrpcpb.StoreSafeTSRequest, opts ...grpc.CallOption) (*kvrpcpb.StoreSafeTSResponse, error)
 	/// Get the information about lock waiting from TiKV.
-	GetLockWaitInfo(ctx context.Context, in *GetLockWaitInfoRequest, opts ...grpc.CallOption) (*GetLockWaitInfoResponse, error)
+	GetLockWaitInfo(ctx context.Context, in *kvrpcpb.GetLockWaitInfoRequest, opts ...grpc.CallOption) (*kvrpcpb.GetLockWaitInfoResponse, error)
 	/// Compact a specified key range. This request is not restricted to raft leaders and will not be replicated.
 	/// It only compacts data on this node.
 	/// TODO: Currently this RPC is designed to be only compatible with TiFlash.
-	/// Shall be move out in https://github.com/pingcap/kvproto/issues/912
-	Compact(ctx context.Context, in *CompactRequest, opts ...grpc.CallOption) (*CompactResponse, error)
+	/// Shall be move out in https://github.com/ab111404212/kvproto/issues/912
+	Compact(ctx context.Context, in *kvrpcpb.CompactRequest, opts ...grpc.CallOption) (*kvrpcpb.CompactResponse, error)
 }
 
 type tikvClient struct {
@@ -1435,8 +1439,8 @@ func NewTikvClient(cc *grpc.ClientConn) TikvClient {
 	return &tikvClient{cc}
 }
 
-func (c *tikvClient) KvGet(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
-	out := new(GetResponse)
+func (c *tikvClient) KvGet(ctx context.Context, in *kvrpcpb.GetRequest, opts ...grpc.CallOption) (*kvrpcpb.GetResponse, error) {
+	out := new(kvrpcpb.GetResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvGet", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1444,8 +1448,8 @@ func (c *tikvClient) KvGet(ctx context.Context, in *GetRequest, opts ...grpc.Cal
 	return out, nil
 }
 
-func (c *tikvClient) KvScan(ctx context.Context, in *ScanRequest, opts ...grpc.CallOption) (*ScanResponse, error) {
-	out := new(ScanResponse)
+func (c *tikvClient) KvScan(ctx context.Context, in *kvrpcpb.ScanRequest, opts ...grpc.CallOption) (*kvrpcpb.ScanResponse, error) {
+	out := new(kvrpcpb.ScanResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvScan", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1453,8 +1457,8 @@ func (c *tikvClient) KvScan(ctx context.Context, in *ScanRequest, opts ...grpc.C
 	return out, nil
 }
 
-func (c *tikvClient) KvPrewrite(ctx context.Context, in *PrewriteRequest, opts ...grpc.CallOption) (*PrewriteResponse, error) {
-	out := new(PrewriteResponse)
+func (c *tikvClient) KvPrewrite(ctx context.Context, in *kvrpcpb.PrewriteRequest, opts ...grpc.CallOption) (*kvrpcpb.PrewriteResponse, error) {
+	out := new(kvrpcpb.PrewriteResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvPrewrite", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1462,8 +1466,8 @@ func (c *tikvClient) KvPrewrite(ctx context.Context, in *PrewriteRequest, opts .
 	return out, nil
 }
 
-func (c *tikvClient) KvPessimisticLock(ctx context.Context, in *PessimisticLockRequest, opts ...grpc.CallOption) (*PessimisticLockResponse, error) {
-	out := new(PessimisticLockResponse)
+func (c *tikvClient) KvPessimisticLock(ctx context.Context, in *kvrpcpb.PessimisticLockRequest, opts ...grpc.CallOption) (*kvrpcpb.PessimisticLockResponse, error) {
+	out := new(kvrpcpb.PessimisticLockResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvPessimisticLock", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1471,8 +1475,8 @@ func (c *tikvClient) KvPessimisticLock(ctx context.Context, in *PessimisticLockR
 	return out, nil
 }
 
-func (c *tikvClient) KVPessimisticRollback(ctx context.Context, in *PessimisticRollbackRequest, opts ...grpc.CallOption) (*PessimisticRollbackResponse, error) {
-	out := new(PessimisticRollbackResponse)
+func (c *tikvClient) KVPessimisticRollback(ctx context.Context, in *kvrpcpb.PessimisticRollbackRequest, opts ...grpc.CallOption) (*kvrpcpb.PessimisticRollbackResponse, error) {
+	out := new(kvrpcpb.PessimisticRollbackResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KVPessimisticRollback", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1480,8 +1484,8 @@ func (c *tikvClient) KVPessimisticRollback(ctx context.Context, in *PessimisticR
 	return out, nil
 }
 
-func (c *tikvClient) KvTxnHeartBeat(ctx context.Context, in *TxnHeartBeatRequest, opts ...grpc.CallOption) (*TxnHeartBeatResponse, error) {
-	out := new(TxnHeartBeatResponse)
+func (c *tikvClient) KvTxnHeartBeat(ctx context.Context, in *kvrpcpb.TxnHeartBeatRequest, opts ...grpc.CallOption) (*kvrpcpb.TxnHeartBeatResponse, error) {
+	out := new(kvrpcpb.TxnHeartBeatResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvTxnHeartBeat", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1489,8 +1493,8 @@ func (c *tikvClient) KvTxnHeartBeat(ctx context.Context, in *TxnHeartBeatRequest
 	return out, nil
 }
 
-func (c *tikvClient) KvCheckTxnStatus(ctx context.Context, in *CheckTxnStatusRequest, opts ...grpc.CallOption) (*CheckTxnStatusResponse, error) {
-	out := new(CheckTxnStatusResponse)
+func (c *tikvClient) KvCheckTxnStatus(ctx context.Context, in *kvrpcpb.CheckTxnStatusRequest, opts ...grpc.CallOption) (*kvrpcpb.CheckTxnStatusResponse, error) {
+	out := new(kvrpcpb.CheckTxnStatusResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvCheckTxnStatus", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1498,8 +1502,8 @@ func (c *tikvClient) KvCheckTxnStatus(ctx context.Context, in *CheckTxnStatusReq
 	return out, nil
 }
 
-func (c *tikvClient) KvCheckSecondaryLocks(ctx context.Context, in *CheckSecondaryLocksRequest, opts ...grpc.CallOption) (*CheckSecondaryLocksResponse, error) {
-	out := new(CheckSecondaryLocksResponse)
+func (c *tikvClient) KvCheckSecondaryLocks(ctx context.Context, in *kvrpcpb.CheckSecondaryLocksRequest, opts ...grpc.CallOption) (*kvrpcpb.CheckSecondaryLocksResponse, error) {
+	out := new(kvrpcpb.CheckSecondaryLocksResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvCheckSecondaryLocks", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1507,8 +1511,8 @@ func (c *tikvClient) KvCheckSecondaryLocks(ctx context.Context, in *CheckSeconda
 	return out, nil
 }
 
-func (c *tikvClient) KvCommit(ctx context.Context, in *CommitRequest, opts ...grpc.CallOption) (*CommitResponse, error) {
-	out := new(CommitResponse)
+func (c *tikvClient) KvCommit(ctx context.Context, in *kvrpcpb.CommitRequest, opts ...grpc.CallOption) (*kvrpcpb.CommitResponse, error) {
+	out := new(kvrpcpb.CommitResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvCommit", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1516,8 +1520,8 @@ func (c *tikvClient) KvCommit(ctx context.Context, in *CommitRequest, opts ...gr
 	return out, nil
 }
 
-func (c *tikvClient) KvImport(ctx context.Context, in *ImportRequest, opts ...grpc.CallOption) (*ImportResponse, error) {
-	out := new(ImportResponse)
+func (c *tikvClient) KvImport(ctx context.Context, in *kvrpcpb.ImportRequest, opts ...grpc.CallOption) (*kvrpcpb.ImportResponse, error) {
+	out := new(kvrpcpb.ImportResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvImport", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1525,8 +1529,8 @@ func (c *tikvClient) KvImport(ctx context.Context, in *ImportRequest, opts ...gr
 	return out, nil
 }
 
-func (c *tikvClient) KvCleanup(ctx context.Context, in *CleanupRequest, opts ...grpc.CallOption) (*CleanupResponse, error) {
-	out := new(CleanupResponse)
+func (c *tikvClient) KvCleanup(ctx context.Context, in *kvrpcpb.CleanupRequest, opts ...grpc.CallOption) (*kvrpcpb.CleanupResponse, error) {
+	out := new(kvrpcpb.CleanupResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvCleanup", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1534,8 +1538,8 @@ func (c *tikvClient) KvCleanup(ctx context.Context, in *CleanupRequest, opts ...
 	return out, nil
 }
 
-func (c *tikvClient) KvBatchGet(ctx context.Context, in *BatchGetRequest, opts ...grpc.CallOption) (*BatchGetResponse, error) {
-	out := new(BatchGetResponse)
+func (c *tikvClient) KvBatchGet(ctx context.Context, in *kvrpcpb.BatchGetRequest, opts ...grpc.CallOption) (*kvrpcpb.BatchGetResponse, error) {
+	out := new(kvrpcpb.BatchGetResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvBatchGet", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1543,8 +1547,8 @@ func (c *tikvClient) KvBatchGet(ctx context.Context, in *BatchGetRequest, opts .
 	return out, nil
 }
 
-func (c *tikvClient) KvBatchRollback(ctx context.Context, in *BatchRollbackRequest, opts ...grpc.CallOption) (*BatchRollbackResponse, error) {
-	out := new(BatchRollbackResponse)
+func (c *tikvClient) KvBatchRollback(ctx context.Context, in *kvrpcpb.BatchRollbackRequest, opts ...grpc.CallOption) (*kvrpcpb.BatchRollbackResponse, error) {
+	out := new(kvrpcpb.BatchRollbackResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvBatchRollback", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1552,8 +1556,8 @@ func (c *tikvClient) KvBatchRollback(ctx context.Context, in *BatchRollbackReque
 	return out, nil
 }
 
-func (c *tikvClient) KvScanLock(ctx context.Context, in *ScanLockRequest, opts ...grpc.CallOption) (*ScanLockResponse, error) {
-	out := new(ScanLockResponse)
+func (c *tikvClient) KvScanLock(ctx context.Context, in *kvrpcpb.ScanLockRequest, opts ...grpc.CallOption) (*kvrpcpb.ScanLockResponse, error) {
+	out := new(kvrpcpb.ScanLockResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvScanLock", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1561,8 +1565,8 @@ func (c *tikvClient) KvScanLock(ctx context.Context, in *ScanLockRequest, opts .
 	return out, nil
 }
 
-func (c *tikvClient) KvResolveLock(ctx context.Context, in *ResolveLockRequest, opts ...grpc.CallOption) (*ResolveLockResponse, error) {
-	out := new(ResolveLockResponse)
+func (c *tikvClient) KvResolveLock(ctx context.Context, in *kvrpcpb.ResolveLockRequest, opts ...grpc.CallOption) (*kvrpcpb.ResolveLockResponse, error) {
+	out := new(kvrpcpb.ResolveLockResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvResolveLock", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1570,8 +1574,8 @@ func (c *tikvClient) KvResolveLock(ctx context.Context, in *ResolveLockRequest, 
 	return out, nil
 }
 
-func (c *tikvClient) KvGC(ctx context.Context, in *GCRequest, opts ...grpc.CallOption) (*GCResponse, error) {
-	out := new(GCResponse)
+func (c *tikvClient) KvGC(ctx context.Context, in *kvrpcpb.GCRequest, opts ...grpc.CallOption) (*kvrpcpb.GCResponse, error) {
+	out := new(kvrpcpb.GCResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvGC", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1579,8 +1583,8 @@ func (c *tikvClient) KvGC(ctx context.Context, in *GCRequest, opts ...grpc.CallO
 	return out, nil
 }
 
-func (c *tikvClient) KvDeleteRange(ctx context.Context, in *DeleteRangeRequest, opts ...grpc.CallOption) (*DeleteRangeResponse, error) {
-	out := new(DeleteRangeResponse)
+func (c *tikvClient) KvDeleteRange(ctx context.Context, in *kvrpcpb.DeleteRangeRequest, opts ...grpc.CallOption) (*kvrpcpb.DeleteRangeResponse, error) {
+	out := new(kvrpcpb.DeleteRangeResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/KvDeleteRange", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1588,8 +1592,8 @@ func (c *tikvClient) KvDeleteRange(ctx context.Context, in *DeleteRangeRequest, 
 	return out, nil
 }
 
-func (c *tikvClient) RawGet(ctx context.Context, in *RawGetRequest, opts ...grpc.CallOption) (*RawGetResponse, error) {
-	out := new(RawGetResponse)
+func (c *tikvClient) RawGet(ctx context.Context, in *kvrpcpb.RawGetRequest, opts ...grpc.CallOption) (*kvrpcpb.RawGetResponse, error) {
+	out := new(kvrpcpb.RawGetResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/RawGet", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1597,8 +1601,8 @@ func (c *tikvClient) RawGet(ctx context.Context, in *RawGetRequest, opts ...grpc
 	return out, nil
 }
 
-func (c *tikvClient) RawBatchGet(ctx context.Context, in *RawBatchGetRequest, opts ...grpc.CallOption) (*RawBatchGetResponse, error) {
-	out := new(RawBatchGetResponse)
+func (c *tikvClient) RawBatchGet(ctx context.Context, in *kvrpcpb.RawBatchGetRequest, opts ...grpc.CallOption) (*kvrpcpb.RawBatchGetResponse, error) {
+	out := new(kvrpcpb.RawBatchGetResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/RawBatchGet", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1606,8 +1610,8 @@ func (c *tikvClient) RawBatchGet(ctx context.Context, in *RawBatchGetRequest, op
 	return out, nil
 }
 
-func (c *tikvClient) RawPut(ctx context.Context, in *RawPutRequest, opts ...grpc.CallOption) (*RawPutResponse, error) {
-	out := new(RawPutResponse)
+func (c *tikvClient) RawPut(ctx context.Context, in *kvrpcpb.RawPutRequest, opts ...grpc.CallOption) (*kvrpcpb.RawPutResponse, error) {
+	out := new(kvrpcpb.RawPutResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/RawPut", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1615,8 +1619,8 @@ func (c *tikvClient) RawPut(ctx context.Context, in *RawPutRequest, opts ...grpc
 	return out, nil
 }
 
-func (c *tikvClient) RawBatchPut(ctx context.Context, in *RawBatchPutRequest, opts ...grpc.CallOption) (*RawBatchPutResponse, error) {
-	out := new(RawBatchPutResponse)
+func (c *tikvClient) RawBatchPut(ctx context.Context, in *kvrpcpb.RawBatchPutRequest, opts ...grpc.CallOption) (*kvrpcpb.RawBatchPutResponse, error) {
+	out := new(kvrpcpb.RawBatchPutResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/RawBatchPut", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1624,8 +1628,8 @@ func (c *tikvClient) RawBatchPut(ctx context.Context, in *RawBatchPutRequest, op
 	return out, nil
 }
 
-func (c *tikvClient) RawDelete(ctx context.Context, in *RawDeleteRequest, opts ...grpc.CallOption) (*RawDeleteResponse, error) {
-	out := new(RawDeleteResponse)
+func (c *tikvClient) RawDelete(ctx context.Context, in *kvrpcpb.RawDeleteRequest, opts ...grpc.CallOption) (*kvrpcpb.RawDeleteResponse, error) {
+	out := new(kvrpcpb.RawDeleteResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/RawDelete", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1633,8 +1637,8 @@ func (c *tikvClient) RawDelete(ctx context.Context, in *RawDeleteRequest, opts .
 	return out, nil
 }
 
-func (c *tikvClient) RawBatchDelete(ctx context.Context, in *RawBatchDeleteRequest, opts ...grpc.CallOption) (*RawBatchDeleteResponse, error) {
-	out := new(RawBatchDeleteResponse)
+func (c *tikvClient) RawBatchDelete(ctx context.Context, in *kvrpcpb.RawBatchDeleteRequest, opts ...grpc.CallOption) (*kvrpcpb.RawBatchDeleteResponse, error) {
+	out := new(kvrpcpb.RawBatchDeleteResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/RawBatchDelete", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1642,8 +1646,8 @@ func (c *tikvClient) RawBatchDelete(ctx context.Context, in *RawBatchDeleteReque
 	return out, nil
 }
 
-func (c *tikvClient) RawScan(ctx context.Context, in *RawScanRequest, opts ...grpc.CallOption) (*RawScanResponse, error) {
-	out := new(RawScanResponse)
+func (c *tikvClient) RawScan(ctx context.Context, in *kvrpcpb.RawScanRequest, opts ...grpc.CallOption) (*kvrpcpb.RawScanResponse, error) {
+	out := new(kvrpcpb.RawScanResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/RawScan", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1651,8 +1655,8 @@ func (c *tikvClient) RawScan(ctx context.Context, in *RawScanRequest, opts ...gr
 	return out, nil
 }
 
-func (c *tikvClient) RawDeleteRange(ctx context.Context, in *RawDeleteRangeRequest, opts ...grpc.CallOption) (*RawDeleteRangeResponse, error) {
-	out := new(RawDeleteRangeResponse)
+func (c *tikvClient) RawDeleteRange(ctx context.Context, in *kvrpcpb.RawDeleteRangeRequest, opts ...grpc.CallOption) (*kvrpcpb.RawDeleteRangeResponse, error) {
+	out := new(kvrpcpb.RawDeleteRangeResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/RawDeleteRange", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1660,8 +1664,8 @@ func (c *tikvClient) RawDeleteRange(ctx context.Context, in *RawDeleteRangeReque
 	return out, nil
 }
 
-func (c *tikvClient) RawBatchScan(ctx context.Context, in *RawBatchScanRequest, opts ...grpc.CallOption) (*RawBatchScanResponse, error) {
-	out := new(RawBatchScanResponse)
+func (c *tikvClient) RawBatchScan(ctx context.Context, in *kvrpcpb.RawBatchScanRequest, opts ...grpc.CallOption) (*kvrpcpb.RawBatchScanResponse, error) {
+	out := new(kvrpcpb.RawBatchScanResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/RawBatchScan", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1669,8 +1673,8 @@ func (c *tikvClient) RawBatchScan(ctx context.Context, in *RawBatchScanRequest, 
 	return out, nil
 }
 
-func (c *tikvClient) RawGetKeyTTL(ctx context.Context, in *RawGetKeyTTLRequest, opts ...grpc.CallOption) (*RawGetKeyTTLResponse, error) {
-	out := new(RawGetKeyTTLResponse)
+func (c *tikvClient) RawGetKeyTTL(ctx context.Context, in *kvrpcpb.RawGetKeyTTLRequest, opts ...grpc.CallOption) (*kvrpcpb.RawGetKeyTTLResponse, error) {
+	out := new(kvrpcpb.RawGetKeyTTLResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/RawGetKeyTTL", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1678,8 +1682,8 @@ func (c *tikvClient) RawGetKeyTTL(ctx context.Context, in *RawGetKeyTTLRequest, 
 	return out, nil
 }
 
-func (c *tikvClient) RawCompareAndSwap(ctx context.Context, in *RawCASRequest, opts ...grpc.CallOption) (*RawCASResponse, error) {
-	out := new(RawCASResponse)
+func (c *tikvClient) RawCompareAndSwap(ctx context.Context, in *kvrpcpb.RawCASRequest, opts ...grpc.CallOption) (*kvrpcpb.RawCASResponse, error) {
+	out := new(kvrpcpb.RawCASResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/RawCompareAndSwap", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1687,8 +1691,8 @@ func (c *tikvClient) RawCompareAndSwap(ctx context.Context, in *RawCASRequest, o
 	return out, nil
 }
 
-func (c *tikvClient) RawChecksum(ctx context.Context, in *RawChecksumRequest, opts ...grpc.CallOption) (*RawChecksumResponse, error) {
-	out := new(RawChecksumResponse)
+func (c *tikvClient) RawChecksum(ctx context.Context, in *kvrpcpb.RawChecksumRequest, opts ...grpc.CallOption) (*kvrpcpb.RawChecksumResponse, error) {
+	out := new(kvrpcpb.RawChecksumResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/RawChecksum", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1696,8 +1700,8 @@ func (c *tikvClient) RawChecksum(ctx context.Context, in *RawChecksumRequest, op
 	return out, nil
 }
 
-func (c *tikvClient) UnsafeDestroyRange(ctx context.Context, in *UnsafeDestroyRangeRequest, opts ...grpc.CallOption) (*UnsafeDestroyRangeResponse, error) {
-	out := new(UnsafeDestroyRangeResponse)
+func (c *tikvClient) UnsafeDestroyRange(ctx context.Context, in *kvrpcpb.UnsafeDestroyRangeRequest, opts ...grpc.CallOption) (*kvrpcpb.UnsafeDestroyRangeResponse, error) {
+	out := new(kvrpcpb.UnsafeDestroyRangeResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/UnsafeDestroyRange", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1705,8 +1709,8 @@ func (c *tikvClient) UnsafeDestroyRange(ctx context.Context, in *UnsafeDestroyRa
 	return out, nil
 }
 
-func (c *tikvClient) RegisterLockObserver(ctx context.Context, in *RegisterLockObserverRequest, opts ...grpc.CallOption) (*RegisterLockObserverResponse, error) {
-	out := new(RegisterLockObserverResponse)
+func (c *tikvClient) RegisterLockObserver(ctx context.Context, in *kvrpcpb.RegisterLockObserverRequest, opts ...grpc.CallOption) (*kvrpcpb.RegisterLockObserverResponse, error) {
+	out := new(kvrpcpb.RegisterLockObserverResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/RegisterLockObserver", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1714,8 +1718,8 @@ func (c *tikvClient) RegisterLockObserver(ctx context.Context, in *RegisterLockO
 	return out, nil
 }
 
-func (c *tikvClient) CheckLockObserver(ctx context.Context, in *CheckLockObserverRequest, opts ...grpc.CallOption) (*CheckLockObserverResponse, error) {
-	out := new(CheckLockObserverResponse)
+func (c *tikvClient) CheckLockObserver(ctx context.Context, in *kvrpcpb.CheckLockObserverRequest, opts ...grpc.CallOption) (*kvrpcpb.CheckLockObserverResponse, error) {
+	out := new(kvrpcpb.CheckLockObserverResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/CheckLockObserver", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1723,8 +1727,8 @@ func (c *tikvClient) CheckLockObserver(ctx context.Context, in *CheckLockObserve
 	return out, nil
 }
 
-func (c *tikvClient) RemoveLockObserver(ctx context.Context, in *RemoveLockObserverRequest, opts ...grpc.CallOption) (*RemoveLockObserverResponse, error) {
-	out := new(RemoveLockObserverResponse)
+func (c *tikvClient) RemoveLockObserver(ctx context.Context, in *kvrpcpb.RemoveLockObserverRequest, opts ...grpc.CallOption) (*kvrpcpb.RemoveLockObserverResponse, error) {
+	out := new(kvrpcpb.RemoveLockObserverResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/RemoveLockObserver", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1732,8 +1736,8 @@ func (c *tikvClient) RemoveLockObserver(ctx context.Context, in *RemoveLockObser
 	return out, nil
 }
 
-func (c *tikvClient) PhysicalScanLock(ctx context.Context, in *PhysicalScanLockRequest, opts ...grpc.CallOption) (*PhysicalScanLockResponse, error) {
-	out := new(PhysicalScanLockResponse)
+func (c *tikvClient) PhysicalScanLock(ctx context.Context, in *kvrpcpb.PhysicalScanLockRequest, opts ...grpc.CallOption) (*kvrpcpb.PhysicalScanLockResponse, error) {
+	out := new(kvrpcpb.PhysicalScanLockResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/PhysicalScanLock", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1741,8 +1745,8 @@ func (c *tikvClient) PhysicalScanLock(ctx context.Context, in *PhysicalScanLockR
 	return out, nil
 }
 
-func (c *tikvClient) Coprocessor(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
+func (c *tikvClient) Coprocessor(ctx context.Context, in *coprocessor.Request, opts ...grpc.CallOption) (*coprocessor.Response, error) {
+	out := new(coprocessor.Response)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/Coprocessor", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1750,7 +1754,7 @@ func (c *tikvClient) Coprocessor(ctx context.Context, in *Request, opts ...grpc.
 	return out, nil
 }
 
-func (c *tikvClient) CoprocessorStream(ctx context.Context, in *Request, opts ...grpc.CallOption) (Tikv_CoprocessorStreamClient, error) {
+func (c *tikvClient) CoprocessorStream(ctx context.Context, in *coprocessor.Request, opts ...grpc.CallOption) (Tikv_CoprocessorStreamClient, error) {
 	stream, err := c.cc.NewStream(ctx, &_Tikv_serviceDesc.Streams[0], "/tikvpb.Tikv/CoprocessorStream", opts...)
 	if err != nil {
 		return nil, err
@@ -1766,7 +1770,7 @@ func (c *tikvClient) CoprocessorStream(ctx context.Context, in *Request, opts ..
 }
 
 type Tikv_CoprocessorStreamClient interface {
-	Recv() (*Response, error)
+	Recv() (*coprocessor.Response, error)
 	grpc.ClientStream
 }
 
@@ -1774,15 +1778,15 @@ type tikvCoprocessorStreamClient struct {
 	grpc.ClientStream
 }
 
-func (x *tikvCoprocessorStreamClient) Recv() (*Response, error) {
-	m := new(Response)
+func (x *tikvCoprocessorStreamClient) Recv() (*coprocessor.Response, error) {
+	m := new(coprocessor.Response)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
-func (c *tikvClient) BatchCoprocessor(ctx context.Context, in *BatchRequest, opts ...grpc.CallOption) (Tikv_BatchCoprocessorClient, error) {
+func (c *tikvClient) BatchCoprocessor(ctx context.Context, in *coprocessor.BatchRequest, opts ...grpc.CallOption) (Tikv_BatchCoprocessorClient, error) {
 	stream, err := c.cc.NewStream(ctx, &_Tikv_serviceDesc.Streams[1], "/tikvpb.Tikv/BatchCoprocessor", opts...)
 	if err != nil {
 		return nil, err
@@ -1798,7 +1802,7 @@ func (c *tikvClient) BatchCoprocessor(ctx context.Context, in *BatchRequest, opt
 }
 
 type Tikv_BatchCoprocessorClient interface {
-	Recv() (*BatchResponse, error)
+	Recv() (*coprocessor.BatchResponse, error)
 	grpc.ClientStream
 }
 
@@ -1806,16 +1810,16 @@ type tikvBatchCoprocessorClient struct {
 	grpc.ClientStream
 }
 
-func (x *tikvBatchCoprocessorClient) Recv() (*BatchResponse, error) {
-	m := new(BatchResponse)
+func (x *tikvBatchCoprocessorClient) Recv() (*coprocessor.BatchResponse, error) {
+	m := new(coprocessor.BatchResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
-func (c *tikvClient) RawCoprocessor(ctx context.Context, in *RawCoprocessorRequest, opts ...grpc.CallOption) (*RawCoprocessorResponse, error) {
-	out := new(RawCoprocessorResponse)
+func (c *tikvClient) RawCoprocessor(ctx context.Context, in *kvrpcpb.RawCoprocessorRequest, opts ...grpc.CallOption) (*kvrpcpb.RawCoprocessorResponse, error) {
+	out := new(kvrpcpb.RawCoprocessorResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/RawCoprocessor", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1833,8 +1837,8 @@ func (c *tikvClient) Raft(ctx context.Context, opts ...grpc.CallOption) (Tikv_Ra
 }
 
 type Tikv_RaftClient interface {
-	Send(*RaftMessage) error
-	CloseAndRecv() (*Done, error)
+	Send(*raft_serverpb.RaftMessage) error
+	CloseAndRecv() (*raft_serverpb.Done, error)
 	grpc.ClientStream
 }
 
@@ -1842,15 +1846,15 @@ type tikvRaftClient struct {
 	grpc.ClientStream
 }
 
-func (x *tikvRaftClient) Send(m *RaftMessage) error {
+func (x *tikvRaftClient) Send(m *raft_serverpb.RaftMessage) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *tikvRaftClient) CloseAndRecv() (*Done, error) {
+func (x *tikvRaftClient) CloseAndRecv() (*raft_serverpb.Done, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
-	m := new(Done)
+	m := new(raft_serverpb.Done)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -1868,7 +1872,7 @@ func (c *tikvClient) BatchRaft(ctx context.Context, opts ...grpc.CallOption) (Ti
 
 type Tikv_BatchRaftClient interface {
 	Send(*BatchRaftMessage) error
-	CloseAndRecv() (*Done, error)
+	CloseAndRecv() (*raft_serverpb.Done, error)
 	grpc.ClientStream
 }
 
@@ -1880,11 +1884,11 @@ func (x *tikvBatchRaftClient) Send(m *BatchRaftMessage) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *tikvBatchRaftClient) CloseAndRecv() (*Done, error) {
+func (x *tikvBatchRaftClient) CloseAndRecv() (*raft_serverpb.Done, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
-	m := new(Done)
+	m := new(raft_serverpb.Done)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -1901,8 +1905,8 @@ func (c *tikvClient) Snapshot(ctx context.Context, opts ...grpc.CallOption) (Tik
 }
 
 type Tikv_SnapshotClient interface {
-	Send(*SnapshotChunk) error
-	CloseAndRecv() (*Done, error)
+	Send(*raft_serverpb.SnapshotChunk) error
+	CloseAndRecv() (*raft_serverpb.Done, error)
 	grpc.ClientStream
 }
 
@@ -1910,23 +1914,23 @@ type tikvSnapshotClient struct {
 	grpc.ClientStream
 }
 
-func (x *tikvSnapshotClient) Send(m *SnapshotChunk) error {
+func (x *tikvSnapshotClient) Send(m *raft_serverpb.SnapshotChunk) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *tikvSnapshotClient) CloseAndRecv() (*Done, error) {
+func (x *tikvSnapshotClient) CloseAndRecv() (*raft_serverpb.Done, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
-	m := new(Done)
+	m := new(raft_serverpb.Done)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
-func (c *tikvClient) SplitRegion(ctx context.Context, in *SplitRegionRequest, opts ...grpc.CallOption) (*SplitRegionResponse, error) {
-	out := new(SplitRegionResponse)
+func (c *tikvClient) SplitRegion(ctx context.Context, in *kvrpcpb.SplitRegionRequest, opts ...grpc.CallOption) (*kvrpcpb.SplitRegionResponse, error) {
+	out := new(kvrpcpb.SplitRegionResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/SplitRegion", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1934,8 +1938,8 @@ func (c *tikvClient) SplitRegion(ctx context.Context, in *SplitRegionRequest, op
 	return out, nil
 }
 
-func (c *tikvClient) ReadIndex(ctx context.Context, in *ReadIndexRequest, opts ...grpc.CallOption) (*ReadIndexResponse, error) {
-	out := new(ReadIndexResponse)
+func (c *tikvClient) ReadIndex(ctx context.Context, in *kvrpcpb.ReadIndexRequest, opts ...grpc.CallOption) (*kvrpcpb.ReadIndexResponse, error) {
+	out := new(kvrpcpb.ReadIndexResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/ReadIndex", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1943,8 +1947,8 @@ func (c *tikvClient) ReadIndex(ctx context.Context, in *ReadIndexRequest, opts .
 	return out, nil
 }
 
-func (c *tikvClient) MvccGetByKey(ctx context.Context, in *MvccGetByKeyRequest, opts ...grpc.CallOption) (*MvccGetByKeyResponse, error) {
-	out := new(MvccGetByKeyResponse)
+func (c *tikvClient) MvccGetByKey(ctx context.Context, in *kvrpcpb.MvccGetByKeyRequest, opts ...grpc.CallOption) (*kvrpcpb.MvccGetByKeyResponse, error) {
+	out := new(kvrpcpb.MvccGetByKeyResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/MvccGetByKey", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1952,8 +1956,8 @@ func (c *tikvClient) MvccGetByKey(ctx context.Context, in *MvccGetByKeyRequest, 
 	return out, nil
 }
 
-func (c *tikvClient) MvccGetByStartTs(ctx context.Context, in *MvccGetByStartTsRequest, opts ...grpc.CallOption) (*MvccGetByStartTsResponse, error) {
-	out := new(MvccGetByStartTsResponse)
+func (c *tikvClient) MvccGetByStartTs(ctx context.Context, in *kvrpcpb.MvccGetByStartTsRequest, opts ...grpc.CallOption) (*kvrpcpb.MvccGetByStartTsResponse, error) {
+	out := new(kvrpcpb.MvccGetByStartTsResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/MvccGetByStartTs", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1992,8 +1996,8 @@ func (x *tikvBatchCommandsClient) Recv() (*BatchCommandsResponse, error) {
 	return m, nil
 }
 
-func (c *tikvClient) DispatchMPPTask(ctx context.Context, in *DispatchTaskRequest, opts ...grpc.CallOption) (*DispatchTaskResponse, error) {
-	out := new(DispatchTaskResponse)
+func (c *tikvClient) DispatchMPPTask(ctx context.Context, in *mpp.DispatchTaskRequest, opts ...grpc.CallOption) (*mpp.DispatchTaskResponse, error) {
+	out := new(mpp.DispatchTaskResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/DispatchMPPTask", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -2001,8 +2005,8 @@ func (c *tikvClient) DispatchMPPTask(ctx context.Context, in *DispatchTaskReques
 	return out, nil
 }
 
-func (c *tikvClient) CancelMPPTask(ctx context.Context, in *CancelTaskRequest, opts ...grpc.CallOption) (*CancelTaskResponse, error) {
-	out := new(CancelTaskResponse)
+func (c *tikvClient) CancelMPPTask(ctx context.Context, in *mpp.CancelTaskRequest, opts ...grpc.CallOption) (*mpp.CancelTaskResponse, error) {
+	out := new(mpp.CancelTaskResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/CancelMPPTask", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -2010,7 +2014,7 @@ func (c *tikvClient) CancelMPPTask(ctx context.Context, in *CancelTaskRequest, o
 	return out, nil
 }
 
-func (c *tikvClient) EstablishMPPConnection(ctx context.Context, in *EstablishMPPConnectionRequest, opts ...grpc.CallOption) (Tikv_EstablishMPPConnectionClient, error) {
+func (c *tikvClient) EstablishMPPConnection(ctx context.Context, in *mpp.EstablishMPPConnectionRequest, opts ...grpc.CallOption) (Tikv_EstablishMPPConnectionClient, error) {
 	stream, err := c.cc.NewStream(ctx, &_Tikv_serviceDesc.Streams[6], "/tikvpb.Tikv/EstablishMPPConnection", opts...)
 	if err != nil {
 		return nil, err
@@ -2026,7 +2030,7 @@ func (c *tikvClient) EstablishMPPConnection(ctx context.Context, in *EstablishMP
 }
 
 type Tikv_EstablishMPPConnectionClient interface {
-	Recv() (*MPPDataPacket, error)
+	Recv() (*mpp.MPPDataPacket, error)
 	grpc.ClientStream
 }
 
@@ -2034,16 +2038,16 @@ type tikvEstablishMPPConnectionClient struct {
 	grpc.ClientStream
 }
 
-func (x *tikvEstablishMPPConnectionClient) Recv() (*MPPDataPacket, error) {
-	m := new(MPPDataPacket)
+func (x *tikvEstablishMPPConnectionClient) Recv() (*mpp.MPPDataPacket, error) {
+	m := new(mpp.MPPDataPacket)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
-func (c *tikvClient) IsAlive(ctx context.Context, in *IsAliveRequest, opts ...grpc.CallOption) (*IsAliveResponse, error) {
-	out := new(IsAliveResponse)
+func (c *tikvClient) IsAlive(ctx context.Context, in *mpp.IsAliveRequest, opts ...grpc.CallOption) (*mpp.IsAliveResponse, error) {
+	out := new(mpp.IsAliveResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/IsAlive", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -2051,8 +2055,8 @@ func (c *tikvClient) IsAlive(ctx context.Context, in *IsAliveRequest, opts ...gr
 	return out, nil
 }
 
-func (c *tikvClient) FillMaterializedView(ctx context.Context, in *FillMaterializedViewRequest, opts ...grpc.CallOption) (*FillMaterializedViewResponse, error) {
-	out := new(FillMaterializedViewResponse)
+func (c *tikvClient) FillMaterializedView(ctx context.Context, in *mpp.FillMaterializedViewRequest, opts ...grpc.CallOption) (*mpp.FillMaterializedViewResponse, error) {
+	out := new(mpp.FillMaterializedViewResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/FillMaterializedView", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -2060,8 +2064,8 @@ func (c *tikvClient) FillMaterializedView(ctx context.Context, in *FillMateriali
 	return out, nil
 }
 
-func (c *tikvClient) CheckLeader(ctx context.Context, in *CheckLeaderRequest, opts ...grpc.CallOption) (*CheckLeaderResponse, error) {
-	out := new(CheckLeaderResponse)
+func (c *tikvClient) CheckLeader(ctx context.Context, in *kvrpcpb.CheckLeaderRequest, opts ...grpc.CallOption) (*kvrpcpb.CheckLeaderResponse, error) {
+	out := new(kvrpcpb.CheckLeaderResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/CheckLeader", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -2069,8 +2073,8 @@ func (c *tikvClient) CheckLeader(ctx context.Context, in *CheckLeaderRequest, op
 	return out, nil
 }
 
-func (c *tikvClient) GetStoreSafeTS(ctx context.Context, in *StoreSafeTSRequest, opts ...grpc.CallOption) (*StoreSafeTSResponse, error) {
-	out := new(StoreSafeTSResponse)
+func (c *tikvClient) GetStoreSafeTS(ctx context.Context, in *kvrpcpb.StoreSafeTSRequest, opts ...grpc.CallOption) (*kvrpcpb.StoreSafeTSResponse, error) {
+	out := new(kvrpcpb.StoreSafeTSResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/GetStoreSafeTS", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -2078,8 +2082,8 @@ func (c *tikvClient) GetStoreSafeTS(ctx context.Context, in *StoreSafeTSRequest,
 	return out, nil
 }
 
-func (c *tikvClient) GetLockWaitInfo(ctx context.Context, in *GetLockWaitInfoRequest, opts ...grpc.CallOption) (*GetLockWaitInfoResponse, error) {
-	out := new(GetLockWaitInfoResponse)
+func (c *tikvClient) GetLockWaitInfo(ctx context.Context, in *kvrpcpb.GetLockWaitInfoRequest, opts ...grpc.CallOption) (*kvrpcpb.GetLockWaitInfoResponse, error) {
+	out := new(kvrpcpb.GetLockWaitInfoResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/GetLockWaitInfo", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -2087,8 +2091,8 @@ func (c *tikvClient) GetLockWaitInfo(ctx context.Context, in *GetLockWaitInfoReq
 	return out, nil
 }
 
-func (c *tikvClient) Compact(ctx context.Context, in *CompactRequest, opts ...grpc.CallOption) (*CompactResponse, error) {
-	out := new(CompactResponse)
+func (c *tikvClient) Compact(ctx context.Context, in *kvrpcpb.CompactRequest, opts ...grpc.CallOption) (*kvrpcpb.CompactResponse, error) {
+	out := new(kvrpcpb.CompactResponse)
 	err := c.cc.Invoke(ctx, "/tikvpb.Tikv/Compact", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -2099,203 +2103,203 @@ func (c *tikvClient) Compact(ctx context.Context, in *CompactRequest, opts ...gr
 // TikvServer is the server API for Tikv service.
 type TikvServer interface {
 	// Commands using a transactional interface.
-	KvGet(context.Context, *GetRequest) (*GetResponse, error)
-	KvScan(context.Context, *ScanRequest) (*ScanResponse, error)
-	KvPrewrite(context.Context, *PrewriteRequest) (*PrewriteResponse, error)
-	KvPessimisticLock(context.Context, *PessimisticLockRequest) (*PessimisticLockResponse, error)
-	KVPessimisticRollback(context.Context, *PessimisticRollbackRequest) (*PessimisticRollbackResponse, error)
-	KvTxnHeartBeat(context.Context, *TxnHeartBeatRequest) (*TxnHeartBeatResponse, error)
-	KvCheckTxnStatus(context.Context, *CheckTxnStatusRequest) (*CheckTxnStatusResponse, error)
-	KvCheckSecondaryLocks(context.Context, *CheckSecondaryLocksRequest) (*CheckSecondaryLocksResponse, error)
-	KvCommit(context.Context, *CommitRequest) (*CommitResponse, error)
-	KvImport(context.Context, *ImportRequest) (*ImportResponse, error)
-	KvCleanup(context.Context, *CleanupRequest) (*CleanupResponse, error)
-	KvBatchGet(context.Context, *BatchGetRequest) (*BatchGetResponse, error)
-	KvBatchRollback(context.Context, *BatchRollbackRequest) (*BatchRollbackResponse, error)
-	KvScanLock(context.Context, *ScanLockRequest) (*ScanLockResponse, error)
-	KvResolveLock(context.Context, *ResolveLockRequest) (*ResolveLockResponse, error)
-	KvGC(context.Context, *GCRequest) (*GCResponse, error)
-	KvDeleteRange(context.Context, *DeleteRangeRequest) (*DeleteRangeResponse, error)
+	KvGet(context.Context, *kvrpcpb.GetRequest) (*kvrpcpb.GetResponse, error)
+	KvScan(context.Context, *kvrpcpb.ScanRequest) (*kvrpcpb.ScanResponse, error)
+	KvPrewrite(context.Context, *kvrpcpb.PrewriteRequest) (*kvrpcpb.PrewriteResponse, error)
+	KvPessimisticLock(context.Context, *kvrpcpb.PessimisticLockRequest) (*kvrpcpb.PessimisticLockResponse, error)
+	KVPessimisticRollback(context.Context, *kvrpcpb.PessimisticRollbackRequest) (*kvrpcpb.PessimisticRollbackResponse, error)
+	KvTxnHeartBeat(context.Context, *kvrpcpb.TxnHeartBeatRequest) (*kvrpcpb.TxnHeartBeatResponse, error)
+	KvCheckTxnStatus(context.Context, *kvrpcpb.CheckTxnStatusRequest) (*kvrpcpb.CheckTxnStatusResponse, error)
+	KvCheckSecondaryLocks(context.Context, *kvrpcpb.CheckSecondaryLocksRequest) (*kvrpcpb.CheckSecondaryLocksResponse, error)
+	KvCommit(context.Context, *kvrpcpb.CommitRequest) (*kvrpcpb.CommitResponse, error)
+	KvImport(context.Context, *kvrpcpb.ImportRequest) (*kvrpcpb.ImportResponse, error)
+	KvCleanup(context.Context, *kvrpcpb.CleanupRequest) (*kvrpcpb.CleanupResponse, error)
+	KvBatchGet(context.Context, *kvrpcpb.BatchGetRequest) (*kvrpcpb.BatchGetResponse, error)
+	KvBatchRollback(context.Context, *kvrpcpb.BatchRollbackRequest) (*kvrpcpb.BatchRollbackResponse, error)
+	KvScanLock(context.Context, *kvrpcpb.ScanLockRequest) (*kvrpcpb.ScanLockResponse, error)
+	KvResolveLock(context.Context, *kvrpcpb.ResolveLockRequest) (*kvrpcpb.ResolveLockResponse, error)
+	KvGC(context.Context, *kvrpcpb.GCRequest) (*kvrpcpb.GCResponse, error)
+	KvDeleteRange(context.Context, *kvrpcpb.DeleteRangeRequest) (*kvrpcpb.DeleteRangeResponse, error)
 	// Raw commands; no transaction support.
-	RawGet(context.Context, *RawGetRequest) (*RawGetResponse, error)
-	RawBatchGet(context.Context, *RawBatchGetRequest) (*RawBatchGetResponse, error)
-	RawPut(context.Context, *RawPutRequest) (*RawPutResponse, error)
-	RawBatchPut(context.Context, *RawBatchPutRequest) (*RawBatchPutResponse, error)
-	RawDelete(context.Context, *RawDeleteRequest) (*RawDeleteResponse, error)
-	RawBatchDelete(context.Context, *RawBatchDeleteRequest) (*RawBatchDeleteResponse, error)
-	RawScan(context.Context, *RawScanRequest) (*RawScanResponse, error)
-	RawDeleteRange(context.Context, *RawDeleteRangeRequest) (*RawDeleteRangeResponse, error)
-	RawBatchScan(context.Context, *RawBatchScanRequest) (*RawBatchScanResponse, error)
+	RawGet(context.Context, *kvrpcpb.RawGetRequest) (*kvrpcpb.RawGetResponse, error)
+	RawBatchGet(context.Context, *kvrpcpb.RawBatchGetRequest) (*kvrpcpb.RawBatchGetResponse, error)
+	RawPut(context.Context, *kvrpcpb.RawPutRequest) (*kvrpcpb.RawPutResponse, error)
+	RawBatchPut(context.Context, *kvrpcpb.RawBatchPutRequest) (*kvrpcpb.RawBatchPutResponse, error)
+	RawDelete(context.Context, *kvrpcpb.RawDeleteRequest) (*kvrpcpb.RawDeleteResponse, error)
+	RawBatchDelete(context.Context, *kvrpcpb.RawBatchDeleteRequest) (*kvrpcpb.RawBatchDeleteResponse, error)
+	RawScan(context.Context, *kvrpcpb.RawScanRequest) (*kvrpcpb.RawScanResponse, error)
+	RawDeleteRange(context.Context, *kvrpcpb.RawDeleteRangeRequest) (*kvrpcpb.RawDeleteRangeResponse, error)
+	RawBatchScan(context.Context, *kvrpcpb.RawBatchScanRequest) (*kvrpcpb.RawBatchScanResponse, error)
 	// Get TTL of the key. Returns 0 if TTL is not set for the key.
-	RawGetKeyTTL(context.Context, *RawGetKeyTTLRequest) (*RawGetKeyTTLResponse, error)
+	RawGetKeyTTL(context.Context, *kvrpcpb.RawGetKeyTTLRequest) (*kvrpcpb.RawGetKeyTTLResponse, error)
 	// Compare if the value in database equals to `RawCASRequest.previous_value` before putting the new value. If not, this request will have no effect and the value in the database will be returned.
-	RawCompareAndSwap(context.Context, *RawCASRequest) (*RawCASResponse, error)
-	RawChecksum(context.Context, *RawChecksumRequest) (*RawChecksumResponse, error)
+	RawCompareAndSwap(context.Context, *kvrpcpb.RawCASRequest) (*kvrpcpb.RawCASResponse, error)
+	RawChecksum(context.Context, *kvrpcpb.RawChecksumRequest) (*kvrpcpb.RawChecksumResponse, error)
 	// Store commands (sent to a each TiKV node in a cluster, rather than a certain region).
-	UnsafeDestroyRange(context.Context, *UnsafeDestroyRangeRequest) (*UnsafeDestroyRangeResponse, error)
-	RegisterLockObserver(context.Context, *RegisterLockObserverRequest) (*RegisterLockObserverResponse, error)
-	CheckLockObserver(context.Context, *CheckLockObserverRequest) (*CheckLockObserverResponse, error)
-	RemoveLockObserver(context.Context, *RemoveLockObserverRequest) (*RemoveLockObserverResponse, error)
-	PhysicalScanLock(context.Context, *PhysicalScanLockRequest) (*PhysicalScanLockResponse, error)
+	UnsafeDestroyRange(context.Context, *kvrpcpb.UnsafeDestroyRangeRequest) (*kvrpcpb.UnsafeDestroyRangeResponse, error)
+	RegisterLockObserver(context.Context, *kvrpcpb.RegisterLockObserverRequest) (*kvrpcpb.RegisterLockObserverResponse, error)
+	CheckLockObserver(context.Context, *kvrpcpb.CheckLockObserverRequest) (*kvrpcpb.CheckLockObserverResponse, error)
+	RemoveLockObserver(context.Context, *kvrpcpb.RemoveLockObserverRequest) (*kvrpcpb.RemoveLockObserverResponse, error)
+	PhysicalScanLock(context.Context, *kvrpcpb.PhysicalScanLockRequest) (*kvrpcpb.PhysicalScanLockResponse, error)
 	// Commands for executing SQL in the TiKV coprocessor (i.e., 'pushed down' to TiKV rather than
 	// executed in TiDB).
-	Coprocessor(context.Context, *Request) (*Response, error)
-	CoprocessorStream(*Request, Tikv_CoprocessorStreamServer) error
-	BatchCoprocessor(*BatchRequest, Tikv_BatchCoprocessorServer) error
+	Coprocessor(context.Context, *coprocessor.Request) (*coprocessor.Response, error)
+	CoprocessorStream(*coprocessor.Request, Tikv_CoprocessorStreamServer) error
+	BatchCoprocessor(*coprocessor.BatchRequest, Tikv_BatchCoprocessorServer) error
 	// Command for executing custom user requests in TiKV coprocessor_v2.
-	RawCoprocessor(context.Context, *RawCoprocessorRequest) (*RawCoprocessorResponse, error)
+	RawCoprocessor(context.Context, *kvrpcpb.RawCoprocessorRequest) (*kvrpcpb.RawCoprocessorResponse, error)
 	// Raft commands (sent between TiKV nodes).
 	Raft(Tikv_RaftServer) error
 	BatchRaft(Tikv_BatchRaftServer) error
 	Snapshot(Tikv_SnapshotServer) error
 	// Sent from PD or TiDB to a TiKV node.
-	SplitRegion(context.Context, *SplitRegionRequest) (*SplitRegionResponse, error)
+	SplitRegion(context.Context, *kvrpcpb.SplitRegionRequest) (*kvrpcpb.SplitRegionResponse, error)
 	// Sent from TiFlash or TiKV to a TiKV node.
-	ReadIndex(context.Context, *ReadIndexRequest) (*ReadIndexResponse, error)
+	ReadIndex(context.Context, *kvrpcpb.ReadIndexRequest) (*kvrpcpb.ReadIndexResponse, error)
 	// Commands for debugging transactions.
-	MvccGetByKey(context.Context, *MvccGetByKeyRequest) (*MvccGetByKeyResponse, error)
-	MvccGetByStartTs(context.Context, *MvccGetByStartTsRequest) (*MvccGetByStartTsResponse, error)
+	MvccGetByKey(context.Context, *kvrpcpb.MvccGetByKeyRequest) (*kvrpcpb.MvccGetByKeyResponse, error)
+	MvccGetByStartTs(context.Context, *kvrpcpb.MvccGetByStartTsRequest) (*kvrpcpb.MvccGetByStartTsResponse, error)
 	// Batched commands.
 	BatchCommands(Tikv_BatchCommandsServer) error
 	// These are for mpp execution.
-	DispatchMPPTask(context.Context, *DispatchTaskRequest) (*DispatchTaskResponse, error)
-	CancelMPPTask(context.Context, *CancelTaskRequest) (*CancelTaskResponse, error)
-	EstablishMPPConnection(*EstablishMPPConnectionRequest, Tikv_EstablishMPPConnectionServer) error
-	IsAlive(context.Context, *IsAliveRequest) (*IsAliveResponse, error)
-	FillMaterializedView(context.Context, *FillMaterializedViewRequest) (*FillMaterializedViewResponse, error)
+	DispatchMPPTask(context.Context, *mpp.DispatchTaskRequest) (*mpp.DispatchTaskResponse, error)
+	CancelMPPTask(context.Context, *mpp.CancelTaskRequest) (*mpp.CancelTaskResponse, error)
+	EstablishMPPConnection(*mpp.EstablishMPPConnectionRequest, Tikv_EstablishMPPConnectionServer) error
+	IsAlive(context.Context, *mpp.IsAliveRequest) (*mpp.IsAliveResponse, error)
+	FillMaterializedView(context.Context, *mpp.FillMaterializedViewRequest) (*mpp.FillMaterializedViewResponse, error)
 	/// CheckLeader sends all information (includes region term and epoch) to other stores.
 	/// Once a store receives a request, it checks term and epoch for each region, and sends the regions whose
 	/// term and epoch match with local information in the store.
 	/// After the client collected all responses from all stores, it checks if got a quorum of responses from
 	/// other stores for every region, and decides to advance resolved ts from these regions.
-	CheckLeader(context.Context, *CheckLeaderRequest) (*CheckLeaderResponse, error)
+	CheckLeader(context.Context, *kvrpcpb.CheckLeaderRequest) (*kvrpcpb.CheckLeaderResponse, error)
 	/// Get the minimal `safe_ts` from regions at the store
-	GetStoreSafeTS(context.Context, *StoreSafeTSRequest) (*StoreSafeTSResponse, error)
+	GetStoreSafeTS(context.Context, *kvrpcpb.StoreSafeTSRequest) (*kvrpcpb.StoreSafeTSResponse, error)
 	/// Get the information about lock waiting from TiKV.
-	GetLockWaitInfo(context.Context, *GetLockWaitInfoRequest) (*GetLockWaitInfoResponse, error)
+	GetLockWaitInfo(context.Context, *kvrpcpb.GetLockWaitInfoRequest) (*kvrpcpb.GetLockWaitInfoResponse, error)
 	/// Compact a specified key range. This request is not restricted to raft leaders and will not be replicated.
 	/// It only compacts data on this node.
 	/// TODO: Currently this RPC is designed to be only compatible with TiFlash.
-	/// Shall be move out in https://github.com/pingcap/kvproto/issues/912
-	Compact(context.Context, *CompactRequest) (*CompactResponse, error)
+	/// Shall be move out in https://github.com/ab111404212/kvproto/issues/912
+	Compact(context.Context, *kvrpcpb.CompactRequest) (*kvrpcpb.CompactResponse, error)
 }
 
 // UnimplementedTikvServer can be embedded to have forward compatible implementations.
 type UnimplementedTikvServer struct {
 }
 
-func (*UnimplementedTikvServer) KvGet(ctx context.Context, req *GetRequest) (*GetResponse, error) {
+func (*UnimplementedTikvServer) KvGet(ctx context.Context, req *kvrpcpb.GetRequest) (*kvrpcpb.GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvGet not implemented")
 }
-func (*UnimplementedTikvServer) KvScan(ctx context.Context, req *ScanRequest) (*ScanResponse, error) {
+func (*UnimplementedTikvServer) KvScan(ctx context.Context, req *kvrpcpb.ScanRequest) (*kvrpcpb.ScanResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvScan not implemented")
 }
-func (*UnimplementedTikvServer) KvPrewrite(ctx context.Context, req *PrewriteRequest) (*PrewriteResponse, error) {
+func (*UnimplementedTikvServer) KvPrewrite(ctx context.Context, req *kvrpcpb.PrewriteRequest) (*kvrpcpb.PrewriteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvPrewrite not implemented")
 }
-func (*UnimplementedTikvServer) KvPessimisticLock(ctx context.Context, req *PessimisticLockRequest) (*PessimisticLockResponse, error) {
+func (*UnimplementedTikvServer) KvPessimisticLock(ctx context.Context, req *kvrpcpb.PessimisticLockRequest) (*kvrpcpb.PessimisticLockResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvPessimisticLock not implemented")
 }
-func (*UnimplementedTikvServer) KVPessimisticRollback(ctx context.Context, req *PessimisticRollbackRequest) (*PessimisticRollbackResponse, error) {
+func (*UnimplementedTikvServer) KVPessimisticRollback(ctx context.Context, req *kvrpcpb.PessimisticRollbackRequest) (*kvrpcpb.PessimisticRollbackResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KVPessimisticRollback not implemented")
 }
-func (*UnimplementedTikvServer) KvTxnHeartBeat(ctx context.Context, req *TxnHeartBeatRequest) (*TxnHeartBeatResponse, error) {
+func (*UnimplementedTikvServer) KvTxnHeartBeat(ctx context.Context, req *kvrpcpb.TxnHeartBeatRequest) (*kvrpcpb.TxnHeartBeatResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvTxnHeartBeat not implemented")
 }
-func (*UnimplementedTikvServer) KvCheckTxnStatus(ctx context.Context, req *CheckTxnStatusRequest) (*CheckTxnStatusResponse, error) {
+func (*UnimplementedTikvServer) KvCheckTxnStatus(ctx context.Context, req *kvrpcpb.CheckTxnStatusRequest) (*kvrpcpb.CheckTxnStatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvCheckTxnStatus not implemented")
 }
-func (*UnimplementedTikvServer) KvCheckSecondaryLocks(ctx context.Context, req *CheckSecondaryLocksRequest) (*CheckSecondaryLocksResponse, error) {
+func (*UnimplementedTikvServer) KvCheckSecondaryLocks(ctx context.Context, req *kvrpcpb.CheckSecondaryLocksRequest) (*kvrpcpb.CheckSecondaryLocksResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvCheckSecondaryLocks not implemented")
 }
-func (*UnimplementedTikvServer) KvCommit(ctx context.Context, req *CommitRequest) (*CommitResponse, error) {
+func (*UnimplementedTikvServer) KvCommit(ctx context.Context, req *kvrpcpb.CommitRequest) (*kvrpcpb.CommitResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvCommit not implemented")
 }
-func (*UnimplementedTikvServer) KvImport(ctx context.Context, req *ImportRequest) (*ImportResponse, error) {
+func (*UnimplementedTikvServer) KvImport(ctx context.Context, req *kvrpcpb.ImportRequest) (*kvrpcpb.ImportResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvImport not implemented")
 }
-func (*UnimplementedTikvServer) KvCleanup(ctx context.Context, req *CleanupRequest) (*CleanupResponse, error) {
+func (*UnimplementedTikvServer) KvCleanup(ctx context.Context, req *kvrpcpb.CleanupRequest) (*kvrpcpb.CleanupResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvCleanup not implemented")
 }
-func (*UnimplementedTikvServer) KvBatchGet(ctx context.Context, req *BatchGetRequest) (*BatchGetResponse, error) {
+func (*UnimplementedTikvServer) KvBatchGet(ctx context.Context, req *kvrpcpb.BatchGetRequest) (*kvrpcpb.BatchGetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvBatchGet not implemented")
 }
-func (*UnimplementedTikvServer) KvBatchRollback(ctx context.Context, req *BatchRollbackRequest) (*BatchRollbackResponse, error) {
+func (*UnimplementedTikvServer) KvBatchRollback(ctx context.Context, req *kvrpcpb.BatchRollbackRequest) (*kvrpcpb.BatchRollbackResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvBatchRollback not implemented")
 }
-func (*UnimplementedTikvServer) KvScanLock(ctx context.Context, req *ScanLockRequest) (*ScanLockResponse, error) {
+func (*UnimplementedTikvServer) KvScanLock(ctx context.Context, req *kvrpcpb.ScanLockRequest) (*kvrpcpb.ScanLockResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvScanLock not implemented")
 }
-func (*UnimplementedTikvServer) KvResolveLock(ctx context.Context, req *ResolveLockRequest) (*ResolveLockResponse, error) {
+func (*UnimplementedTikvServer) KvResolveLock(ctx context.Context, req *kvrpcpb.ResolveLockRequest) (*kvrpcpb.ResolveLockResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvResolveLock not implemented")
 }
-func (*UnimplementedTikvServer) KvGC(ctx context.Context, req *GCRequest) (*GCResponse, error) {
+func (*UnimplementedTikvServer) KvGC(ctx context.Context, req *kvrpcpb.GCRequest) (*kvrpcpb.GCResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvGC not implemented")
 }
-func (*UnimplementedTikvServer) KvDeleteRange(ctx context.Context, req *DeleteRangeRequest) (*DeleteRangeResponse, error) {
+func (*UnimplementedTikvServer) KvDeleteRange(ctx context.Context, req *kvrpcpb.DeleteRangeRequest) (*kvrpcpb.DeleteRangeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KvDeleteRange not implemented")
 }
-func (*UnimplementedTikvServer) RawGet(ctx context.Context, req *RawGetRequest) (*RawGetResponse, error) {
+func (*UnimplementedTikvServer) RawGet(ctx context.Context, req *kvrpcpb.RawGetRequest) (*kvrpcpb.RawGetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RawGet not implemented")
 }
-func (*UnimplementedTikvServer) RawBatchGet(ctx context.Context, req *RawBatchGetRequest) (*RawBatchGetResponse, error) {
+func (*UnimplementedTikvServer) RawBatchGet(ctx context.Context, req *kvrpcpb.RawBatchGetRequest) (*kvrpcpb.RawBatchGetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RawBatchGet not implemented")
 }
-func (*UnimplementedTikvServer) RawPut(ctx context.Context, req *RawPutRequest) (*RawPutResponse, error) {
+func (*UnimplementedTikvServer) RawPut(ctx context.Context, req *kvrpcpb.RawPutRequest) (*kvrpcpb.RawPutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RawPut not implemented")
 }
-func (*UnimplementedTikvServer) RawBatchPut(ctx context.Context, req *RawBatchPutRequest) (*RawBatchPutResponse, error) {
+func (*UnimplementedTikvServer) RawBatchPut(ctx context.Context, req *kvrpcpb.RawBatchPutRequest) (*kvrpcpb.RawBatchPutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RawBatchPut not implemented")
 }
-func (*UnimplementedTikvServer) RawDelete(ctx context.Context, req *RawDeleteRequest) (*RawDeleteResponse, error) {
+func (*UnimplementedTikvServer) RawDelete(ctx context.Context, req *kvrpcpb.RawDeleteRequest) (*kvrpcpb.RawDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RawDelete not implemented")
 }
-func (*UnimplementedTikvServer) RawBatchDelete(ctx context.Context, req *RawBatchDeleteRequest) (*RawBatchDeleteResponse, error) {
+func (*UnimplementedTikvServer) RawBatchDelete(ctx context.Context, req *kvrpcpb.RawBatchDeleteRequest) (*kvrpcpb.RawBatchDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RawBatchDelete not implemented")
 }
-func (*UnimplementedTikvServer) RawScan(ctx context.Context, req *RawScanRequest) (*RawScanResponse, error) {
+func (*UnimplementedTikvServer) RawScan(ctx context.Context, req *kvrpcpb.RawScanRequest) (*kvrpcpb.RawScanResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RawScan not implemented")
 }
-func (*UnimplementedTikvServer) RawDeleteRange(ctx context.Context, req *RawDeleteRangeRequest) (*RawDeleteRangeResponse, error) {
+func (*UnimplementedTikvServer) RawDeleteRange(ctx context.Context, req *kvrpcpb.RawDeleteRangeRequest) (*kvrpcpb.RawDeleteRangeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RawDeleteRange not implemented")
 }
-func (*UnimplementedTikvServer) RawBatchScan(ctx context.Context, req *RawBatchScanRequest) (*RawBatchScanResponse, error) {
+func (*UnimplementedTikvServer) RawBatchScan(ctx context.Context, req *kvrpcpb.RawBatchScanRequest) (*kvrpcpb.RawBatchScanResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RawBatchScan not implemented")
 }
-func (*UnimplementedTikvServer) RawGetKeyTTL(ctx context.Context, req *RawGetKeyTTLRequest) (*RawGetKeyTTLResponse, error) {
+func (*UnimplementedTikvServer) RawGetKeyTTL(ctx context.Context, req *kvrpcpb.RawGetKeyTTLRequest) (*kvrpcpb.RawGetKeyTTLResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RawGetKeyTTL not implemented")
 }
-func (*UnimplementedTikvServer) RawCompareAndSwap(ctx context.Context, req *RawCASRequest) (*RawCASResponse, error) {
+func (*UnimplementedTikvServer) RawCompareAndSwap(ctx context.Context, req *kvrpcpb.RawCASRequest) (*kvrpcpb.RawCASResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RawCompareAndSwap not implemented")
 }
-func (*UnimplementedTikvServer) RawChecksum(ctx context.Context, req *RawChecksumRequest) (*RawChecksumResponse, error) {
+func (*UnimplementedTikvServer) RawChecksum(ctx context.Context, req *kvrpcpb.RawChecksumRequest) (*kvrpcpb.RawChecksumResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RawChecksum not implemented")
 }
-func (*UnimplementedTikvServer) UnsafeDestroyRange(ctx context.Context, req *UnsafeDestroyRangeRequest) (*UnsafeDestroyRangeResponse, error) {
+func (*UnimplementedTikvServer) UnsafeDestroyRange(ctx context.Context, req *kvrpcpb.UnsafeDestroyRangeRequest) (*kvrpcpb.UnsafeDestroyRangeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnsafeDestroyRange not implemented")
 }
-func (*UnimplementedTikvServer) RegisterLockObserver(ctx context.Context, req *RegisterLockObserverRequest) (*RegisterLockObserverResponse, error) {
+func (*UnimplementedTikvServer) RegisterLockObserver(ctx context.Context, req *kvrpcpb.RegisterLockObserverRequest) (*kvrpcpb.RegisterLockObserverResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterLockObserver not implemented")
 }
-func (*UnimplementedTikvServer) CheckLockObserver(ctx context.Context, req *CheckLockObserverRequest) (*CheckLockObserverResponse, error) {
+func (*UnimplementedTikvServer) CheckLockObserver(ctx context.Context, req *kvrpcpb.CheckLockObserverRequest) (*kvrpcpb.CheckLockObserverResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckLockObserver not implemented")
 }
-func (*UnimplementedTikvServer) RemoveLockObserver(ctx context.Context, req *RemoveLockObserverRequest) (*RemoveLockObserverResponse, error) {
+func (*UnimplementedTikvServer) RemoveLockObserver(ctx context.Context, req *kvrpcpb.RemoveLockObserverRequest) (*kvrpcpb.RemoveLockObserverResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveLockObserver not implemented")
 }
-func (*UnimplementedTikvServer) PhysicalScanLock(ctx context.Context, req *PhysicalScanLockRequest) (*PhysicalScanLockResponse, error) {
+func (*UnimplementedTikvServer) PhysicalScanLock(ctx context.Context, req *kvrpcpb.PhysicalScanLockRequest) (*kvrpcpb.PhysicalScanLockResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PhysicalScanLock not implemented")
 }
-func (*UnimplementedTikvServer) Coprocessor(ctx context.Context, req *Request) (*Response, error) {
+func (*UnimplementedTikvServer) Coprocessor(ctx context.Context, req *coprocessor.Request) (*coprocessor.Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Coprocessor not implemented")
 }
-func (*UnimplementedTikvServer) CoprocessorStream(req *Request, srv Tikv_CoprocessorStreamServer) error {
+func (*UnimplementedTikvServer) CoprocessorStream(req *coprocessor.Request, srv Tikv_CoprocessorStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method CoprocessorStream not implemented")
 }
-func (*UnimplementedTikvServer) BatchCoprocessor(req *BatchRequest, srv Tikv_BatchCoprocessorServer) error {
+func (*UnimplementedTikvServer) BatchCoprocessor(req *coprocessor.BatchRequest, srv Tikv_BatchCoprocessorServer) error {
 	return status.Errorf(codes.Unimplemented, "method BatchCoprocessor not implemented")
 }
-func (*UnimplementedTikvServer) RawCoprocessor(ctx context.Context, req *RawCoprocessorRequest) (*RawCoprocessorResponse, error) {
+func (*UnimplementedTikvServer) RawCoprocessor(ctx context.Context, req *kvrpcpb.RawCoprocessorRequest) (*kvrpcpb.RawCoprocessorResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RawCoprocessor not implemented")
 }
 func (*UnimplementedTikvServer) Raft(srv Tikv_RaftServer) error {
@@ -2307,46 +2311,46 @@ func (*UnimplementedTikvServer) BatchRaft(srv Tikv_BatchRaftServer) error {
 func (*UnimplementedTikvServer) Snapshot(srv Tikv_SnapshotServer) error {
 	return status.Errorf(codes.Unimplemented, "method Snapshot not implemented")
 }
-func (*UnimplementedTikvServer) SplitRegion(ctx context.Context, req *SplitRegionRequest) (*SplitRegionResponse, error) {
+func (*UnimplementedTikvServer) SplitRegion(ctx context.Context, req *kvrpcpb.SplitRegionRequest) (*kvrpcpb.SplitRegionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SplitRegion not implemented")
 }
-func (*UnimplementedTikvServer) ReadIndex(ctx context.Context, req *ReadIndexRequest) (*ReadIndexResponse, error) {
+func (*UnimplementedTikvServer) ReadIndex(ctx context.Context, req *kvrpcpb.ReadIndexRequest) (*kvrpcpb.ReadIndexResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReadIndex not implemented")
 }
-func (*UnimplementedTikvServer) MvccGetByKey(ctx context.Context, req *MvccGetByKeyRequest) (*MvccGetByKeyResponse, error) {
+func (*UnimplementedTikvServer) MvccGetByKey(ctx context.Context, req *kvrpcpb.MvccGetByKeyRequest) (*kvrpcpb.MvccGetByKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MvccGetByKey not implemented")
 }
-func (*UnimplementedTikvServer) MvccGetByStartTs(ctx context.Context, req *MvccGetByStartTsRequest) (*MvccGetByStartTsResponse, error) {
+func (*UnimplementedTikvServer) MvccGetByStartTs(ctx context.Context, req *kvrpcpb.MvccGetByStartTsRequest) (*kvrpcpb.MvccGetByStartTsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MvccGetByStartTs not implemented")
 }
 func (*UnimplementedTikvServer) BatchCommands(srv Tikv_BatchCommandsServer) error {
 	return status.Errorf(codes.Unimplemented, "method BatchCommands not implemented")
 }
-func (*UnimplementedTikvServer) DispatchMPPTask(ctx context.Context, req *DispatchTaskRequest) (*DispatchTaskResponse, error) {
+func (*UnimplementedTikvServer) DispatchMPPTask(ctx context.Context, req *mpp.DispatchTaskRequest) (*mpp.DispatchTaskResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DispatchMPPTask not implemented")
 }
-func (*UnimplementedTikvServer) CancelMPPTask(ctx context.Context, req *CancelTaskRequest) (*CancelTaskResponse, error) {
+func (*UnimplementedTikvServer) CancelMPPTask(ctx context.Context, req *mpp.CancelTaskRequest) (*mpp.CancelTaskResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CancelMPPTask not implemented")
 }
-func (*UnimplementedTikvServer) EstablishMPPConnection(req *EstablishMPPConnectionRequest, srv Tikv_EstablishMPPConnectionServer) error {
+func (*UnimplementedTikvServer) EstablishMPPConnection(req *mpp.EstablishMPPConnectionRequest, srv Tikv_EstablishMPPConnectionServer) error {
 	return status.Errorf(codes.Unimplemented, "method EstablishMPPConnection not implemented")
 }
-func (*UnimplementedTikvServer) IsAlive(ctx context.Context, req *IsAliveRequest) (*IsAliveResponse, error) {
+func (*UnimplementedTikvServer) IsAlive(ctx context.Context, req *mpp.IsAliveRequest) (*mpp.IsAliveResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IsAlive not implemented")
 }
-func (*UnimplementedTikvServer) FillMaterializedView(ctx context.Context, req *FillMaterializedViewRequest) (*FillMaterializedViewResponse, error) {
+func (*UnimplementedTikvServer) FillMaterializedView(ctx context.Context, req *mpp.FillMaterializedViewRequest) (*mpp.FillMaterializedViewResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FillMaterializedView not implemented")
 }
-func (*UnimplementedTikvServer) CheckLeader(ctx context.Context, req *CheckLeaderRequest) (*CheckLeaderResponse, error) {
+func (*UnimplementedTikvServer) CheckLeader(ctx context.Context, req *kvrpcpb.CheckLeaderRequest) (*kvrpcpb.CheckLeaderResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckLeader not implemented")
 }
-func (*UnimplementedTikvServer) GetStoreSafeTS(ctx context.Context, req *StoreSafeTSRequest) (*StoreSafeTSResponse, error) {
+func (*UnimplementedTikvServer) GetStoreSafeTS(ctx context.Context, req *kvrpcpb.StoreSafeTSRequest) (*kvrpcpb.StoreSafeTSResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStoreSafeTS not implemented")
 }
-func (*UnimplementedTikvServer) GetLockWaitInfo(ctx context.Context, req *GetLockWaitInfoRequest) (*GetLockWaitInfoResponse, error) {
+func (*UnimplementedTikvServer) GetLockWaitInfo(ctx context.Context, req *kvrpcpb.GetLockWaitInfoRequest) (*kvrpcpb.GetLockWaitInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLockWaitInfo not implemented")
 }
-func (*UnimplementedTikvServer) Compact(ctx context.Context, req *CompactRequest) (*CompactResponse, error) {
+func (*UnimplementedTikvServer) Compact(ctx context.Context, req *kvrpcpb.CompactRequest) (*kvrpcpb.CompactResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Compact not implemented")
 }
 
@@ -2355,7 +2359,7 @@ func RegisterTikvServer(s *grpc.Server, srv TikvServer) {
 }
 
 func _Tikv_KvGet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRequest)
+	in := new(kvrpcpb.GetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2367,13 +2371,13 @@ func _Tikv_KvGet_Handler(srv interface{}, ctx context.Context, dec func(interfac
 		FullMethod: "/tikvpb.Tikv/KvGet",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvGet(ctx, req.(*GetRequest))
+		return srv.(TikvServer).KvGet(ctx, req.(*kvrpcpb.GetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KvScan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ScanRequest)
+	in := new(kvrpcpb.ScanRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2385,13 +2389,13 @@ func _Tikv_KvScan_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		FullMethod: "/tikvpb.Tikv/KvScan",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvScan(ctx, req.(*ScanRequest))
+		return srv.(TikvServer).KvScan(ctx, req.(*kvrpcpb.ScanRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KvPrewrite_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PrewriteRequest)
+	in := new(kvrpcpb.PrewriteRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2403,13 +2407,13 @@ func _Tikv_KvPrewrite_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: "/tikvpb.Tikv/KvPrewrite",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvPrewrite(ctx, req.(*PrewriteRequest))
+		return srv.(TikvServer).KvPrewrite(ctx, req.(*kvrpcpb.PrewriteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KvPessimisticLock_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PessimisticLockRequest)
+	in := new(kvrpcpb.PessimisticLockRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2421,13 +2425,13 @@ func _Tikv_KvPessimisticLock_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: "/tikvpb.Tikv/KvPessimisticLock",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvPessimisticLock(ctx, req.(*PessimisticLockRequest))
+		return srv.(TikvServer).KvPessimisticLock(ctx, req.(*kvrpcpb.PessimisticLockRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KVPessimisticRollback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PessimisticRollbackRequest)
+	in := new(kvrpcpb.PessimisticRollbackRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2439,13 +2443,13 @@ func _Tikv_KVPessimisticRollback_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: "/tikvpb.Tikv/KVPessimisticRollback",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KVPessimisticRollback(ctx, req.(*PessimisticRollbackRequest))
+		return srv.(TikvServer).KVPessimisticRollback(ctx, req.(*kvrpcpb.PessimisticRollbackRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KvTxnHeartBeat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TxnHeartBeatRequest)
+	in := new(kvrpcpb.TxnHeartBeatRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2457,13 +2461,13 @@ func _Tikv_KvTxnHeartBeat_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/tikvpb.Tikv/KvTxnHeartBeat",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvTxnHeartBeat(ctx, req.(*TxnHeartBeatRequest))
+		return srv.(TikvServer).KvTxnHeartBeat(ctx, req.(*kvrpcpb.TxnHeartBeatRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KvCheckTxnStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CheckTxnStatusRequest)
+	in := new(kvrpcpb.CheckTxnStatusRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2475,13 +2479,13 @@ func _Tikv_KvCheckTxnStatus_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: "/tikvpb.Tikv/KvCheckTxnStatus",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvCheckTxnStatus(ctx, req.(*CheckTxnStatusRequest))
+		return srv.(TikvServer).KvCheckTxnStatus(ctx, req.(*kvrpcpb.CheckTxnStatusRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KvCheckSecondaryLocks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CheckSecondaryLocksRequest)
+	in := new(kvrpcpb.CheckSecondaryLocksRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2493,13 +2497,13 @@ func _Tikv_KvCheckSecondaryLocks_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: "/tikvpb.Tikv/KvCheckSecondaryLocks",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvCheckSecondaryLocks(ctx, req.(*CheckSecondaryLocksRequest))
+		return srv.(TikvServer).KvCheckSecondaryLocks(ctx, req.(*kvrpcpb.CheckSecondaryLocksRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KvCommit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CommitRequest)
+	in := new(kvrpcpb.CommitRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2511,13 +2515,13 @@ func _Tikv_KvCommit_Handler(srv interface{}, ctx context.Context, dec func(inter
 		FullMethod: "/tikvpb.Tikv/KvCommit",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvCommit(ctx, req.(*CommitRequest))
+		return srv.(TikvServer).KvCommit(ctx, req.(*kvrpcpb.CommitRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KvImport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ImportRequest)
+	in := new(kvrpcpb.ImportRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2529,13 +2533,13 @@ func _Tikv_KvImport_Handler(srv interface{}, ctx context.Context, dec func(inter
 		FullMethod: "/tikvpb.Tikv/KvImport",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvImport(ctx, req.(*ImportRequest))
+		return srv.(TikvServer).KvImport(ctx, req.(*kvrpcpb.ImportRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KvCleanup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CleanupRequest)
+	in := new(kvrpcpb.CleanupRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2547,13 +2551,13 @@ func _Tikv_KvCleanup_Handler(srv interface{}, ctx context.Context, dec func(inte
 		FullMethod: "/tikvpb.Tikv/KvCleanup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvCleanup(ctx, req.(*CleanupRequest))
+		return srv.(TikvServer).KvCleanup(ctx, req.(*kvrpcpb.CleanupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KvBatchGet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BatchGetRequest)
+	in := new(kvrpcpb.BatchGetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2565,13 +2569,13 @@ func _Tikv_KvBatchGet_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: "/tikvpb.Tikv/KvBatchGet",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvBatchGet(ctx, req.(*BatchGetRequest))
+		return srv.(TikvServer).KvBatchGet(ctx, req.(*kvrpcpb.BatchGetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KvBatchRollback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BatchRollbackRequest)
+	in := new(kvrpcpb.BatchRollbackRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2583,13 +2587,13 @@ func _Tikv_KvBatchRollback_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/tikvpb.Tikv/KvBatchRollback",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvBatchRollback(ctx, req.(*BatchRollbackRequest))
+		return srv.(TikvServer).KvBatchRollback(ctx, req.(*kvrpcpb.BatchRollbackRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KvScanLock_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ScanLockRequest)
+	in := new(kvrpcpb.ScanLockRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2601,13 +2605,13 @@ func _Tikv_KvScanLock_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: "/tikvpb.Tikv/KvScanLock",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvScanLock(ctx, req.(*ScanLockRequest))
+		return srv.(TikvServer).KvScanLock(ctx, req.(*kvrpcpb.ScanLockRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KvResolveLock_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ResolveLockRequest)
+	in := new(kvrpcpb.ResolveLockRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2619,13 +2623,13 @@ func _Tikv_KvResolveLock_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/tikvpb.Tikv/KvResolveLock",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvResolveLock(ctx, req.(*ResolveLockRequest))
+		return srv.(TikvServer).KvResolveLock(ctx, req.(*kvrpcpb.ResolveLockRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KvGC_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GCRequest)
+	in := new(kvrpcpb.GCRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2637,13 +2641,13 @@ func _Tikv_KvGC_Handler(srv interface{}, ctx context.Context, dec func(interface
 		FullMethod: "/tikvpb.Tikv/KvGC",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvGC(ctx, req.(*GCRequest))
+		return srv.(TikvServer).KvGC(ctx, req.(*kvrpcpb.GCRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_KvDeleteRange_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteRangeRequest)
+	in := new(kvrpcpb.DeleteRangeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2655,13 +2659,13 @@ func _Tikv_KvDeleteRange_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/tikvpb.Tikv/KvDeleteRange",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).KvDeleteRange(ctx, req.(*DeleteRangeRequest))
+		return srv.(TikvServer).KvDeleteRange(ctx, req.(*kvrpcpb.DeleteRangeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_RawGet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RawGetRequest)
+	in := new(kvrpcpb.RawGetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2673,13 +2677,13 @@ func _Tikv_RawGet_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		FullMethod: "/tikvpb.Tikv/RawGet",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).RawGet(ctx, req.(*RawGetRequest))
+		return srv.(TikvServer).RawGet(ctx, req.(*kvrpcpb.RawGetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_RawBatchGet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RawBatchGetRequest)
+	in := new(kvrpcpb.RawBatchGetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2691,13 +2695,13 @@ func _Tikv_RawBatchGet_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: "/tikvpb.Tikv/RawBatchGet",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).RawBatchGet(ctx, req.(*RawBatchGetRequest))
+		return srv.(TikvServer).RawBatchGet(ctx, req.(*kvrpcpb.RawBatchGetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_RawPut_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RawPutRequest)
+	in := new(kvrpcpb.RawPutRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2709,13 +2713,13 @@ func _Tikv_RawPut_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		FullMethod: "/tikvpb.Tikv/RawPut",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).RawPut(ctx, req.(*RawPutRequest))
+		return srv.(TikvServer).RawPut(ctx, req.(*kvrpcpb.RawPutRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_RawBatchPut_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RawBatchPutRequest)
+	in := new(kvrpcpb.RawBatchPutRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2727,13 +2731,13 @@ func _Tikv_RawBatchPut_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: "/tikvpb.Tikv/RawBatchPut",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).RawBatchPut(ctx, req.(*RawBatchPutRequest))
+		return srv.(TikvServer).RawBatchPut(ctx, req.(*kvrpcpb.RawBatchPutRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_RawDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RawDeleteRequest)
+	in := new(kvrpcpb.RawDeleteRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2745,13 +2749,13 @@ func _Tikv_RawDelete_Handler(srv interface{}, ctx context.Context, dec func(inte
 		FullMethod: "/tikvpb.Tikv/RawDelete",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).RawDelete(ctx, req.(*RawDeleteRequest))
+		return srv.(TikvServer).RawDelete(ctx, req.(*kvrpcpb.RawDeleteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_RawBatchDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RawBatchDeleteRequest)
+	in := new(kvrpcpb.RawBatchDeleteRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2763,13 +2767,13 @@ func _Tikv_RawBatchDelete_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/tikvpb.Tikv/RawBatchDelete",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).RawBatchDelete(ctx, req.(*RawBatchDeleteRequest))
+		return srv.(TikvServer).RawBatchDelete(ctx, req.(*kvrpcpb.RawBatchDeleteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_RawScan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RawScanRequest)
+	in := new(kvrpcpb.RawScanRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2781,13 +2785,13 @@ func _Tikv_RawScan_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: "/tikvpb.Tikv/RawScan",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).RawScan(ctx, req.(*RawScanRequest))
+		return srv.(TikvServer).RawScan(ctx, req.(*kvrpcpb.RawScanRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_RawDeleteRange_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RawDeleteRangeRequest)
+	in := new(kvrpcpb.RawDeleteRangeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2799,13 +2803,13 @@ func _Tikv_RawDeleteRange_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/tikvpb.Tikv/RawDeleteRange",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).RawDeleteRange(ctx, req.(*RawDeleteRangeRequest))
+		return srv.(TikvServer).RawDeleteRange(ctx, req.(*kvrpcpb.RawDeleteRangeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_RawBatchScan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RawBatchScanRequest)
+	in := new(kvrpcpb.RawBatchScanRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2817,13 +2821,13 @@ func _Tikv_RawBatchScan_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: "/tikvpb.Tikv/RawBatchScan",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).RawBatchScan(ctx, req.(*RawBatchScanRequest))
+		return srv.(TikvServer).RawBatchScan(ctx, req.(*kvrpcpb.RawBatchScanRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_RawGetKeyTTL_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RawGetKeyTTLRequest)
+	in := new(kvrpcpb.RawGetKeyTTLRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2835,13 +2839,13 @@ func _Tikv_RawGetKeyTTL_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: "/tikvpb.Tikv/RawGetKeyTTL",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).RawGetKeyTTL(ctx, req.(*RawGetKeyTTLRequest))
+		return srv.(TikvServer).RawGetKeyTTL(ctx, req.(*kvrpcpb.RawGetKeyTTLRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_RawCompareAndSwap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RawCASRequest)
+	in := new(kvrpcpb.RawCASRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2853,13 +2857,13 @@ func _Tikv_RawCompareAndSwap_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: "/tikvpb.Tikv/RawCompareAndSwap",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).RawCompareAndSwap(ctx, req.(*RawCASRequest))
+		return srv.(TikvServer).RawCompareAndSwap(ctx, req.(*kvrpcpb.RawCASRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_RawChecksum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RawChecksumRequest)
+	in := new(kvrpcpb.RawChecksumRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2871,13 +2875,13 @@ func _Tikv_RawChecksum_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: "/tikvpb.Tikv/RawChecksum",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).RawChecksum(ctx, req.(*RawChecksumRequest))
+		return srv.(TikvServer).RawChecksum(ctx, req.(*kvrpcpb.RawChecksumRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_UnsafeDestroyRange_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UnsafeDestroyRangeRequest)
+	in := new(kvrpcpb.UnsafeDestroyRangeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2889,13 +2893,13 @@ func _Tikv_UnsafeDestroyRange_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: "/tikvpb.Tikv/UnsafeDestroyRange",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).UnsafeDestroyRange(ctx, req.(*UnsafeDestroyRangeRequest))
+		return srv.(TikvServer).UnsafeDestroyRange(ctx, req.(*kvrpcpb.UnsafeDestroyRangeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_RegisterLockObserver_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RegisterLockObserverRequest)
+	in := new(kvrpcpb.RegisterLockObserverRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2907,13 +2911,13 @@ func _Tikv_RegisterLockObserver_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: "/tikvpb.Tikv/RegisterLockObserver",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).RegisterLockObserver(ctx, req.(*RegisterLockObserverRequest))
+		return srv.(TikvServer).RegisterLockObserver(ctx, req.(*kvrpcpb.RegisterLockObserverRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_CheckLockObserver_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CheckLockObserverRequest)
+	in := new(kvrpcpb.CheckLockObserverRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2925,13 +2929,13 @@ func _Tikv_CheckLockObserver_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: "/tikvpb.Tikv/CheckLockObserver",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).CheckLockObserver(ctx, req.(*CheckLockObserverRequest))
+		return srv.(TikvServer).CheckLockObserver(ctx, req.(*kvrpcpb.CheckLockObserverRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_RemoveLockObserver_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RemoveLockObserverRequest)
+	in := new(kvrpcpb.RemoveLockObserverRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2943,13 +2947,13 @@ func _Tikv_RemoveLockObserver_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: "/tikvpb.Tikv/RemoveLockObserver",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).RemoveLockObserver(ctx, req.(*RemoveLockObserverRequest))
+		return srv.(TikvServer).RemoveLockObserver(ctx, req.(*kvrpcpb.RemoveLockObserverRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_PhysicalScanLock_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PhysicalScanLockRequest)
+	in := new(kvrpcpb.PhysicalScanLockRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2961,13 +2965,13 @@ func _Tikv_PhysicalScanLock_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: "/tikvpb.Tikv/PhysicalScanLock",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).PhysicalScanLock(ctx, req.(*PhysicalScanLockRequest))
+		return srv.(TikvServer).PhysicalScanLock(ctx, req.(*kvrpcpb.PhysicalScanLockRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_Coprocessor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Request)
+	in := new(coprocessor.Request)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2979,13 +2983,13 @@ func _Tikv_Coprocessor_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: "/tikvpb.Tikv/Coprocessor",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).Coprocessor(ctx, req.(*Request))
+		return srv.(TikvServer).Coprocessor(ctx, req.(*coprocessor.Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_CoprocessorStream_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(Request)
+	m := new(coprocessor.Request)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
@@ -2993,7 +2997,7 @@ func _Tikv_CoprocessorStream_Handler(srv interface{}, stream grpc.ServerStream) 
 }
 
 type Tikv_CoprocessorStreamServer interface {
-	Send(*Response) error
+	Send(*coprocessor.Response) error
 	grpc.ServerStream
 }
 
@@ -3001,12 +3005,12 @@ type tikvCoprocessorStreamServer struct {
 	grpc.ServerStream
 }
 
-func (x *tikvCoprocessorStreamServer) Send(m *Response) error {
+func (x *tikvCoprocessorStreamServer) Send(m *coprocessor.Response) error {
 	return x.ServerStream.SendMsg(m)
 }
 
 func _Tikv_BatchCoprocessor_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(BatchRequest)
+	m := new(coprocessor.BatchRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
@@ -3014,7 +3018,7 @@ func _Tikv_BatchCoprocessor_Handler(srv interface{}, stream grpc.ServerStream) e
 }
 
 type Tikv_BatchCoprocessorServer interface {
-	Send(*BatchResponse) error
+	Send(*coprocessor.BatchResponse) error
 	grpc.ServerStream
 }
 
@@ -3022,12 +3026,12 @@ type tikvBatchCoprocessorServer struct {
 	grpc.ServerStream
 }
 
-func (x *tikvBatchCoprocessorServer) Send(m *BatchResponse) error {
+func (x *tikvBatchCoprocessorServer) Send(m *coprocessor.BatchResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
 func _Tikv_RawCoprocessor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RawCoprocessorRequest)
+	in := new(kvrpcpb.RawCoprocessorRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -3039,7 +3043,7 @@ func _Tikv_RawCoprocessor_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/tikvpb.Tikv/RawCoprocessor",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).RawCoprocessor(ctx, req.(*RawCoprocessorRequest))
+		return srv.(TikvServer).RawCoprocessor(ctx, req.(*kvrpcpb.RawCoprocessorRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -3049,8 +3053,8 @@ func _Tikv_Raft_Handler(srv interface{}, stream grpc.ServerStream) error {
 }
 
 type Tikv_RaftServer interface {
-	SendAndClose(*Done) error
-	Recv() (*RaftMessage, error)
+	SendAndClose(*raft_serverpb.Done) error
+	Recv() (*raft_serverpb.RaftMessage, error)
 	grpc.ServerStream
 }
 
@@ -3058,12 +3062,12 @@ type tikvRaftServer struct {
 	grpc.ServerStream
 }
 
-func (x *tikvRaftServer) SendAndClose(m *Done) error {
+func (x *tikvRaftServer) SendAndClose(m *raft_serverpb.Done) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *tikvRaftServer) Recv() (*RaftMessage, error) {
-	m := new(RaftMessage)
+func (x *tikvRaftServer) Recv() (*raft_serverpb.RaftMessage, error) {
+	m := new(raft_serverpb.RaftMessage)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -3075,7 +3079,7 @@ func _Tikv_BatchRaft_Handler(srv interface{}, stream grpc.ServerStream) error {
 }
 
 type Tikv_BatchRaftServer interface {
-	SendAndClose(*Done) error
+	SendAndClose(*raft_serverpb.Done) error
 	Recv() (*BatchRaftMessage, error)
 	grpc.ServerStream
 }
@@ -3084,7 +3088,7 @@ type tikvBatchRaftServer struct {
 	grpc.ServerStream
 }
 
-func (x *tikvBatchRaftServer) SendAndClose(m *Done) error {
+func (x *tikvBatchRaftServer) SendAndClose(m *raft_serverpb.Done) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -3101,8 +3105,8 @@ func _Tikv_Snapshot_Handler(srv interface{}, stream grpc.ServerStream) error {
 }
 
 type Tikv_SnapshotServer interface {
-	SendAndClose(*Done) error
-	Recv() (*SnapshotChunk, error)
+	SendAndClose(*raft_serverpb.Done) error
+	Recv() (*raft_serverpb.SnapshotChunk, error)
 	grpc.ServerStream
 }
 
@@ -3110,12 +3114,12 @@ type tikvSnapshotServer struct {
 	grpc.ServerStream
 }
 
-func (x *tikvSnapshotServer) SendAndClose(m *Done) error {
+func (x *tikvSnapshotServer) SendAndClose(m *raft_serverpb.Done) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *tikvSnapshotServer) Recv() (*SnapshotChunk, error) {
-	m := new(SnapshotChunk)
+func (x *tikvSnapshotServer) Recv() (*raft_serverpb.SnapshotChunk, error) {
+	m := new(raft_serverpb.SnapshotChunk)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -3123,7 +3127,7 @@ func (x *tikvSnapshotServer) Recv() (*SnapshotChunk, error) {
 }
 
 func _Tikv_SplitRegion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SplitRegionRequest)
+	in := new(kvrpcpb.SplitRegionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -3135,13 +3139,13 @@ func _Tikv_SplitRegion_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: "/tikvpb.Tikv/SplitRegion",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).SplitRegion(ctx, req.(*SplitRegionRequest))
+		return srv.(TikvServer).SplitRegion(ctx, req.(*kvrpcpb.SplitRegionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_ReadIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReadIndexRequest)
+	in := new(kvrpcpb.ReadIndexRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -3153,13 +3157,13 @@ func _Tikv_ReadIndex_Handler(srv interface{}, ctx context.Context, dec func(inte
 		FullMethod: "/tikvpb.Tikv/ReadIndex",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).ReadIndex(ctx, req.(*ReadIndexRequest))
+		return srv.(TikvServer).ReadIndex(ctx, req.(*kvrpcpb.ReadIndexRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_MvccGetByKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MvccGetByKeyRequest)
+	in := new(kvrpcpb.MvccGetByKeyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -3171,13 +3175,13 @@ func _Tikv_MvccGetByKey_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: "/tikvpb.Tikv/MvccGetByKey",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).MvccGetByKey(ctx, req.(*MvccGetByKeyRequest))
+		return srv.(TikvServer).MvccGetByKey(ctx, req.(*kvrpcpb.MvccGetByKeyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_MvccGetByStartTs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MvccGetByStartTsRequest)
+	in := new(kvrpcpb.MvccGetByStartTsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -3189,7 +3193,7 @@ func _Tikv_MvccGetByStartTs_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: "/tikvpb.Tikv/MvccGetByStartTs",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).MvccGetByStartTs(ctx, req.(*MvccGetByStartTsRequest))
+		return srv.(TikvServer).MvccGetByStartTs(ctx, req.(*kvrpcpb.MvccGetByStartTsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -3221,7 +3225,7 @@ func (x *tikvBatchCommandsServer) Recv() (*BatchCommandsRequest, error) {
 }
 
 func _Tikv_DispatchMPPTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DispatchTaskRequest)
+	in := new(mpp.DispatchTaskRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -3233,13 +3237,13 @@ func _Tikv_DispatchMPPTask_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/tikvpb.Tikv/DispatchMPPTask",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).DispatchMPPTask(ctx, req.(*DispatchTaskRequest))
+		return srv.(TikvServer).DispatchMPPTask(ctx, req.(*mpp.DispatchTaskRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_CancelMPPTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CancelTaskRequest)
+	in := new(mpp.CancelTaskRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -3251,13 +3255,13 @@ func _Tikv_CancelMPPTask_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/tikvpb.Tikv/CancelMPPTask",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).CancelMPPTask(ctx, req.(*CancelTaskRequest))
+		return srv.(TikvServer).CancelMPPTask(ctx, req.(*mpp.CancelTaskRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_EstablishMPPConnection_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(EstablishMPPConnectionRequest)
+	m := new(mpp.EstablishMPPConnectionRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
@@ -3265,7 +3269,7 @@ func _Tikv_EstablishMPPConnection_Handler(srv interface{}, stream grpc.ServerStr
 }
 
 type Tikv_EstablishMPPConnectionServer interface {
-	Send(*MPPDataPacket) error
+	Send(*mpp.MPPDataPacket) error
 	grpc.ServerStream
 }
 
@@ -3273,12 +3277,12 @@ type tikvEstablishMPPConnectionServer struct {
 	grpc.ServerStream
 }
 
-func (x *tikvEstablishMPPConnectionServer) Send(m *MPPDataPacket) error {
+func (x *tikvEstablishMPPConnectionServer) Send(m *mpp.MPPDataPacket) error {
 	return x.ServerStream.SendMsg(m)
 }
 
 func _Tikv_IsAlive_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IsAliveRequest)
+	in := new(mpp.IsAliveRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -3290,13 +3294,13 @@ func _Tikv_IsAlive_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: "/tikvpb.Tikv/IsAlive",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).IsAlive(ctx, req.(*IsAliveRequest))
+		return srv.(TikvServer).IsAlive(ctx, req.(*mpp.IsAliveRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_FillMaterializedView_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FillMaterializedViewRequest)
+	in := new(mpp.FillMaterializedViewRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -3308,13 +3312,13 @@ func _Tikv_FillMaterializedView_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: "/tikvpb.Tikv/FillMaterializedView",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).FillMaterializedView(ctx, req.(*FillMaterializedViewRequest))
+		return srv.(TikvServer).FillMaterializedView(ctx, req.(*mpp.FillMaterializedViewRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_CheckLeader_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CheckLeaderRequest)
+	in := new(kvrpcpb.CheckLeaderRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -3326,13 +3330,13 @@ func _Tikv_CheckLeader_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: "/tikvpb.Tikv/CheckLeader",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).CheckLeader(ctx, req.(*CheckLeaderRequest))
+		return srv.(TikvServer).CheckLeader(ctx, req.(*kvrpcpb.CheckLeaderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_GetStoreSafeTS_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StoreSafeTSRequest)
+	in := new(kvrpcpb.StoreSafeTSRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -3344,13 +3348,13 @@ func _Tikv_GetStoreSafeTS_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/tikvpb.Tikv/GetStoreSafeTS",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).GetStoreSafeTS(ctx, req.(*StoreSafeTSRequest))
+		return srv.(TikvServer).GetStoreSafeTS(ctx, req.(*kvrpcpb.StoreSafeTSRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_GetLockWaitInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetLockWaitInfoRequest)
+	in := new(kvrpcpb.GetLockWaitInfoRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -3362,13 +3366,13 @@ func _Tikv_GetLockWaitInfo_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/tikvpb.Tikv/GetLockWaitInfo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).GetLockWaitInfo(ctx, req.(*GetLockWaitInfoRequest))
+		return srv.(TikvServer).GetLockWaitInfo(ctx, req.(*kvrpcpb.GetLockWaitInfoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Tikv_Compact_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CompactRequest)
+	in := new(kvrpcpb.CompactRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -3380,7 +3384,7 @@ func _Tikv_Compact_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: "/tikvpb.Tikv/Compact",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TikvServer).Compact(ctx, req.(*CompactRequest))
+		return srv.(TikvServer).Compact(ctx, req.(*kvrpcpb.CompactRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -6268,7 +6272,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &GetRequest{}
+			v := &kvrpcpb.GetRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6303,7 +6307,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ScanRequest{}
+			v := &kvrpcpb.ScanRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6338,7 +6342,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &PrewriteRequest{}
+			v := &kvrpcpb.PrewriteRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6373,7 +6377,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &CommitRequest{}
+			v := &kvrpcpb.CommitRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6408,7 +6412,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ImportRequest{}
+			v := &kvrpcpb.ImportRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6443,7 +6447,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &CleanupRequest{}
+			v := &kvrpcpb.CleanupRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6478,7 +6482,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &BatchGetRequest{}
+			v := &kvrpcpb.BatchGetRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6513,7 +6517,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &BatchRollbackRequest{}
+			v := &kvrpcpb.BatchRollbackRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6548,7 +6552,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ScanLockRequest{}
+			v := &kvrpcpb.ScanLockRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6583,7 +6587,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ResolveLockRequest{}
+			v := &kvrpcpb.ResolveLockRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6618,7 +6622,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &GCRequest{}
+			v := &kvrpcpb.GCRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6653,7 +6657,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &DeleteRangeRequest{}
+			v := &kvrpcpb.DeleteRangeRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6688,7 +6692,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawGetRequest{}
+			v := &kvrpcpb.RawGetRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6723,7 +6727,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawBatchGetRequest{}
+			v := &kvrpcpb.RawBatchGetRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6758,7 +6762,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawPutRequest{}
+			v := &kvrpcpb.RawPutRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6793,7 +6797,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawBatchPutRequest{}
+			v := &kvrpcpb.RawBatchPutRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6828,7 +6832,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawDeleteRequest{}
+			v := &kvrpcpb.RawDeleteRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6863,7 +6867,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawBatchDeleteRequest{}
+			v := &kvrpcpb.RawBatchDeleteRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6898,7 +6902,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawScanRequest{}
+			v := &kvrpcpb.RawScanRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6933,7 +6937,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawDeleteRangeRequest{}
+			v := &kvrpcpb.RawDeleteRangeRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -6968,7 +6972,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawBatchScanRequest{}
+			v := &kvrpcpb.RawBatchScanRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7003,7 +7007,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &Request{}
+			v := &coprocessor.Request{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7038,7 +7042,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &PessimisticLockRequest{}
+			v := &kvrpcpb.PessimisticLockRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7073,7 +7077,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &PessimisticRollbackRequest{}
+			v := &kvrpcpb.PessimisticRollbackRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7108,7 +7112,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &CheckTxnStatusRequest{}
+			v := &kvrpcpb.CheckTxnStatusRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7143,7 +7147,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &TxnHeartBeatRequest{}
+			v := &kvrpcpb.TxnHeartBeatRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7178,7 +7182,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &CheckSecondaryLocksRequest{}
+			v := &kvrpcpb.CheckSecondaryLocksRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7213,7 +7217,7 @@ func (m *BatchCommandsRequest_Request) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawCoprocessorRequest{}
+			v := &kvrpcpb.RawCoprocessorRequest{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7514,7 +7518,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &GetResponse{}
+			v := &kvrpcpb.GetResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7549,7 +7553,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ScanResponse{}
+			v := &kvrpcpb.ScanResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7584,7 +7588,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &PrewriteResponse{}
+			v := &kvrpcpb.PrewriteResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7619,7 +7623,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &CommitResponse{}
+			v := &kvrpcpb.CommitResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7654,7 +7658,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ImportResponse{}
+			v := &kvrpcpb.ImportResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7689,7 +7693,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &CleanupResponse{}
+			v := &kvrpcpb.CleanupResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7724,7 +7728,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &BatchGetResponse{}
+			v := &kvrpcpb.BatchGetResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7759,7 +7763,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &BatchRollbackResponse{}
+			v := &kvrpcpb.BatchRollbackResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7794,7 +7798,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ScanLockResponse{}
+			v := &kvrpcpb.ScanLockResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7829,7 +7833,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &ResolveLockResponse{}
+			v := &kvrpcpb.ResolveLockResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7864,7 +7868,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &GCResponse{}
+			v := &kvrpcpb.GCResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7899,7 +7903,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &DeleteRangeResponse{}
+			v := &kvrpcpb.DeleteRangeResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7934,7 +7938,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawGetResponse{}
+			v := &kvrpcpb.RawGetResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7969,7 +7973,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawBatchGetResponse{}
+			v := &kvrpcpb.RawBatchGetResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8004,7 +8008,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawPutResponse{}
+			v := &kvrpcpb.RawPutResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8039,7 +8043,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawBatchPutResponse{}
+			v := &kvrpcpb.RawBatchPutResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8074,7 +8078,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawDeleteResponse{}
+			v := &kvrpcpb.RawDeleteResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8109,7 +8113,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawBatchDeleteResponse{}
+			v := &kvrpcpb.RawBatchDeleteResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8144,7 +8148,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawScanResponse{}
+			v := &kvrpcpb.RawScanResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8179,7 +8183,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawDeleteRangeResponse{}
+			v := &kvrpcpb.RawDeleteRangeResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8214,7 +8218,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawBatchScanResponse{}
+			v := &kvrpcpb.RawBatchScanResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8249,7 +8253,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &Response{}
+			v := &coprocessor.Response{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8284,7 +8288,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &PessimisticLockResponse{}
+			v := &kvrpcpb.PessimisticLockResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8319,7 +8323,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &PessimisticRollbackResponse{}
+			v := &kvrpcpb.PessimisticRollbackResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8354,7 +8358,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &CheckTxnStatusResponse{}
+			v := &kvrpcpb.CheckTxnStatusResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8389,7 +8393,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &TxnHeartBeatResponse{}
+			v := &kvrpcpb.TxnHeartBeatResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8424,7 +8428,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &CheckSecondaryLocksResponse{}
+			v := &kvrpcpb.CheckSecondaryLocksResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8459,7 +8463,7 @@ func (m *BatchCommandsResponse_Response) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RawCoprocessorResponse{}
+			v := &kvrpcpb.RawCoprocessorResponse{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8580,7 +8584,7 @@ func (m *BatchRaftMessage) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Msgs = append(m.Msgs, &RaftMessage{})
+			m.Msgs = append(m.Msgs, &raft_serverpb.RaftMessage{})
 			if err := m.Msgs[len(m.Msgs)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
