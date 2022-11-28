@@ -75,10 +75,10 @@ message Error {
 }
 
 message FillMaterializedViewRequest {
-    bytes base_db_name = 1;
-    bytes base_table_name = 2;
-    bytes mv_db_name = 3;
-    bytes mv_table_name = 4;
+    int64 base_db_id = 1;
+    int64 base_table_id = 2;
+    int64 mv_db_id = 3;
+    int64 mv_table_id = 4;
     bytes select_query = 5;
 }
 
